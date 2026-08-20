@@ -27,11 +27,8 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/mcp.json
-.history/*
 .claude/
-.gemini/
-.agent/
-.agents/
+.history/*
 *.local
 
 # Auto-generated (scripts/sync-version.js)
