@@ -3,7 +3,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideSicTheme, provideSicConfig, TutorialPageComponent } from 'sic-ng';
 import { AppLayoutComponent } from './layout/app-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { CoursesPlaceholderComponent } from './features/courses/courses-placeholder.component';
+import { CoursesCatalogComponent } from './features/courses/courses-catalog.component';
 import { MyLearningPlaceholderComponent } from './features/my-learning/my-learning-placeholder.component';
 import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
 import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
             },
             {
               path: 'courses',
-              component: CoursesPlaceholderComponent,
+              component: CoursesCatalogComponent,
               title: 'หลักสูตรทั้งหมด | SICR E-LEARNING',
             },
             {

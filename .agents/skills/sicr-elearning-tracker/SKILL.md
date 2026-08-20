@@ -59,12 +59,31 @@ description: >-
 
 ---
 
+### ✅ Step 2: Course Catalog & Multi-Filter System (2026-08-20)
+- **Course Models & Dataset (`course.model.ts`):**
+  - กำหนด Interface สำหรับ `Course`, `CourseModule`, `CourseLesson`, `CourseCategory`, `CourseLevel`, `EnrollmentStatus`
+  - บรรจุ Mock Courses 8 หลักสูตรหลักครอบคลุม Frontend, Backend, AI, QA, DevOps, Mobile, Onboarding, Agile
+- **State Management Service (`courses.service.ts`):**
+  - Signals-based Reactive Filtering: Instant Search, Category Filter Chips, Level Filter, Enrollment Status, Sorting (Popular, Rating, Duration, Newest)
+  - คำนวณ KPI สถิติอัตโนมัติ (จำนวนหลักสูตร, คอร์สบังคับ, คอร์สที่ลงทะเบียนแล้ว, XP รวม)
+  - ระบบบันทึกการลงทะเบียน `enrollCourse()` อัปเดตสถานะแบบ In-Memory Real-time
+- **Course Card Component (`CourseCardComponent`):**
+  - รองรับทั้ง Grid View และ List View
+  - ภาพปก 16:9, Category Badge, Level Badge, Mandatory Tag, ข้อมูลผู้สอน, Rating Star, แต้ม XP
+  - แสดงแถบ Progress Bar เมื่อกำลังเรียนอยู่ และปุ่ม Action (ลงทะเบียนเรียนฟรี / ▶ เรียนต่อ / 🔄 ทบทวน)
+- **Course Catalog Page (`CoursesCatalogComponent`):**
+  - Hero Header พร้อม KPI Metric Cards 4 ช่อง
+  - Category Filter Chips แนวนอนเลื่อนได้พร้อมป้ายนับจำนวน
+  - Search Box + Toolbar ตัวกรอง + ตัวสลับมุมมอง Grid/List
+  - การแจ้งเตือน Toast แบบลอยด้านบนเมื่อกดลงทะเบียนเรียน
+- **Responsive & Theme Verification:**
+  - ผ่านการทดสอบบนความละเอียด 1920x1200, 1440x900, 768x1024, และ 375x812 อย่างสมบูรณ์แบบ
+  - ผลการทดสอบบันทึกไว้ใน [walkthrough.md](file:///C:/Users/engka/.gemini/antigravity-ide/brain/9c9a1d96-3528-446d-a7f8-a8e1e560dd4e/walkthrough.md)
+
+---
+
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 2: Course Catalog & Filter System (คลังหลักสูตร LMS)**
-  - หมวดหมู่ (Frontend, Backend, AI, Onboarding)
-  - ช่องค้นหาและตัวกรองระดับความยาก (Beginner, Intermediate, Advanced)
-  - Course Card พร้อมข้อมูลผู้สอน, จำนวนชั่วโมง, Rating, และปุ่ม Enroll
 - **Step 3: Course Detail & Curriculum Outline (หน้ารายละเอียดคอร์ส)**
   - รายละเอียดหลักสูตร, วัตถุประสงค์, รายชื่อบทเรียน (Modules & Lessons)
   - ปุ่มกดเริ่มเรียน / Resume Lesson
