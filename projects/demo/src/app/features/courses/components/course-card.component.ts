@@ -15,7 +15,7 @@ import { Course } from '../../../core/models/course.model';
       [class.is-completed]="course.enrolledStatus === 'completed'"
     >
       <!-- Media / Thumbnail Header -->
-      <div class="card-thumb-wrapper">
+      <div class="card-thumb-wrapper" [routerLink]="['/courses', course.id]" style="cursor: pointer;">
         <img [src]="course.thumbnail" [alt]="course.title" class="card-thumb" loading="lazy" />
         <div class="thumb-overlay"></div>
 
@@ -50,7 +50,7 @@ import { Course } from '../../../core/models/course.model';
         </div>
 
         <!-- Course Title & Description -->
-        <h3 class="course-title" [title]="course.title">
+        <h3 class="course-title" [title]="course.title" [routerLink]="['/courses', course.id]" style="cursor: pointer;">
           {{ course.title }}
         </h3>
         

@@ -185,21 +185,25 @@ export class CoursesService {
   }
 
   getCourseById(id: string): Course | undefined {
-    return this._courses().find((c) => c.id === id);
+    return this._courses().find((c) => c.id === id || c.slug === id);
+  }
+
+  getCourseByIdOrSlug(idOrSlug: string): Course | undefined {
+    return this._courses().find((c) => c.id === idOrSlug || c.slug === idOrSlug);
   }
 
   enrollCourse(courseId: string): boolean {
     const list = this._courses();
-    const target = list.find((c) => c.id === courseId);
+    const target = list.find((c) => c.id === courseId || c.slug === courseId);
     if (!target) return false;
 
     if (target.enrolledStatus === 'not_enrolled') {
       const updated = list.map((c) =>
-        c.id === courseId
+        c.id === target.id
           ? {
               ...c,
               enrolledStatus: 'in_progress' as const,
-              userProgressPercent: 5,
+              userProgressPercent: 10,
               totalEnrolled: c.totalEnrolled + 1,
             }
           : c
@@ -212,16 +216,64 @@ export class CoursesService {
 
   unenrollCourse(courseId: string): boolean {
     const list = this._courses();
-    const target = list.find((c) => c.id === courseId);
+    const target = list.find((c) => c.id === courseId || c.slug === courseId);
     if (!target) return false;
 
     const updated = list.map((c) =>
-      c.id === courseId
+      c.id === target.id
         ? {
             ...c,
             enrolledStatus: 'not_enrolled' as const,
             userProgressPercent: 0,
             totalEnrolled: Math.max(0, c.totalEnrolled - 1),
+          }
+        : c
+    );
+    this._courses.set(updated);
+    return true;
+  }
+
+  toggleLessonCompletion(courseId: string, lessonId: string): boolean {
+    const list = this._courses();
+    const target = list.find((c) => c.id === courseId || c.slug === courseId);
+    if (!target) return false;
+
+    let totalLessonsCount = 0;
+    let completedLessonsCount = 0;
+
+    const updatedModules = target.modules.map((mod) => {
+      const updatedLessons = mod.lessons.map((les) => {
+        totalLessonsCount++;
+        if (les.id === lessonId) {
+          const newCompleted = !les.isCompleted;
+          if (newCompleted) completedLessonsCount++;
+          return { ...les, isCompleted: newCompleted };
+        } else {
+          if (les.isCompleted) completedLessonsCount++;
+          return les;
+        }
+      });
+      return { ...mod, lessons: updatedLessons };
+    });
+
+    const newPercent = totalLessonsCount > 0
+      ? Math.round((completedLessonsCount / totalLessonsCount) * 100)
+      : 0;
+
+    const newStatus =
+      newPercent === 100
+        ? ('completed' as const)
+        : newPercent > 0
+        ? ('in_progress' as const)
+        : target.enrolledStatus;
+
+    const updated = list.map((c) =>
+      c.id === target.id
+        ? {
+            ...c,
+            modules: updatedModules,
+            userProgressPercent: newPercent,
+            enrolledStatus: newStatus,
           }
         : c
     );

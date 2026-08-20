@@ -492,7 +492,7 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
       align-items: center;
       gap: 0.6rem;
       overflow-x: auto;
-      padding-bottom: 0.5rem;
+      padding: 0.5rem 0;
       scrollbar-width: thin;
     }
 
@@ -900,7 +900,7 @@ export class CoursesCatalogComponent {
   }
 
   handleResume(courseId: string, courseTitle: string): void {
-    this.showToast(`🚀 กำลังเข้าสู่ห้องเรียนสำหรับหลักสูตร "${courseTitle}"...`);
+    this.router.navigate(['/courses', courseId]);
   }
 
   private showToast(msg: string): void {

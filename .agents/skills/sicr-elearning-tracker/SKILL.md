@@ -136,11 +136,26 @@ description: >-
 
 ---
 
+### ✅ Step 3: Course Detail & Curriculum Outline (2026-08-20)
+- **Course Models Expansion (`course.model.ts`):**
+  - เพิ่มฟิลด์: `whatYouWillLearn`, `requirements`, `targetAudience`, `language`, `lastUpdated`, `certificateAvailable`, `reviews`, `faqs`, `isPreviewable`, `bio`, `totalCourses`, `totalStudents`
+- **Course Detail Component (`CourseDetailComponent`):**
+  - Breadcrumb Bar นำทาง
+  - Hero Banner พร้อม Key Badges, Rating, Duration, Total Lessons, Instructor Info
+  - Action Sidebar Card: ปุ่ม Enroll / Resume, Progress Bar, What's included checklist
+  - Tabs: ภาพรวมหลักสูตร, วัตถุประสงค์การเรียนรู้, คุณสมบัติผู้เรียน
+  - Curriculum Outline Accordion: รายการ Modules & Lessons พร้อมระยะเวลา, ป้ายพรีวิว และปุ่ม Checkbox ทำเครื่องหมายเรียนจบแบบ Real-time
+  - Instructor Profile Card: แสดง Bio, จำนวนหลักสูตรที่สอน, จำนวนผู้เรียน, Rating
+  - Reviews Section: ความคิดเห็นและดาวจากเพื่อนร่วมงาน
+  - FAQ Accordion: คำถามที่พบบ่อยพร้อมคำตอบ
+- **Navigation & Routing Integration:**
+  - Route `/courses/:id` เชื่อมโยงเข้าสู่ `CourseDetailComponent`
+  - การ์ดใน Course Catalog รองรับคลิกภาพปกหรือชื่อคอร์สเพื่อเปิดหน้ารายละเอียด
+
+---
+
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 3: Course Detail & Curriculum Outline (หน้ารายละเอียดคอร์ส)**
-  - รายละเอียดหลักสูตร, วัตถุประสงค์, รายชื่อบทเรียน (Modules & Lessons)
-  - ปุ่มกดเริ่มเรียน / Resume Lesson
 - **Step 4: Classroom Player & Video Lesson (ห้องเรียนออนไลน์)**
   - เครื่องเล่นวิดีโอ `sic-video-player`
   - Playlist ด้านข้างแสดงบทเรียน พร้อม Checkmark สถานะเรียนจบ
