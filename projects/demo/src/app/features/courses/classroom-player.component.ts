@@ -70,10 +70,20 @@ import { SicVideoPlayerComponent } from 'sic-ng';
             <div class="quiz-box">
               <div class="quiz-icon">📝</div>
               <h2>{{ currentLesson()?.title }}</h2>
-              <p class="quiz-desc">แบบทดสอบนี้ประกอบด้วยคำถามแบบปรนัยและถูก-ผิด กรุณาทำแบบทดสอบให้ครบทุกข้อ</p>
-              <button type="button" class="btn-start-quiz">
-                🚀 เริ่มทำแบบทดสอบ
-              </button>
+              <p class="quiz-desc">
+                แบบทดสอบนี้ประกอบด้วยคำถามแบบปรนัยและถูก-ผิด เพื่อประเมินความเข้าใจตามมาตรฐานหลักสูตร เกณฑ์ผ่าน 80%
+              </p>
+              <div class="quiz-info-chips">
+                <span class="qchip">🎯 เกณฑ์ผ่าน 80%</span>
+                <span class="qchip">⏱️ มีเวลาจำกัด</span>
+                <span class="qchip">✨ รับ XP พิเศษ</span>
+              </div>
+              <a
+                [routerLink]="['/courses', course()!.slug || course()!.id, 'quiz', currentLesson()!.quizId || 'quiz-001']"
+                class="btn-start-quiz"
+              >
+                🚀 เริ่มทำแบบทดสอบ (Take Assessment)
+              </a>
             </div>
           </div>
 
@@ -477,6 +487,22 @@ import { SicVideoPlayerComponent } from 'sic-ng';
       color: var(--sic-color-text-secondary, #64748b);
       line-height: 1.6;
     }
+    .quiz-info-chips {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .qchip {
+      background: var(--sic-color-bg, #f1f5f9);
+      border: 1px solid var(--sic-color-border, #e2e8f0);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--sic-color-text-secondary, #475569);
+    }
     .btn-start-quiz {
       display: inline-flex;
       align-items: center;
@@ -484,6 +510,7 @@ import { SicVideoPlayerComponent } from 'sic-ng';
       padding: 12px 32px;
       background: linear-gradient(135deg, #00a887, #10b981);
       color: #fff;
+      text-decoration: none;
       border: none;
       border-radius: 10px;
       font-size: 1rem;

@@ -2100,7 +2100,12 @@ export class CourseDetailComponent implements OnInit {
     if (c.enrolledStatus === 'not_enrolled') {
       this.coursesService.enrollCourse(c.id);
     }
-    this.router.navigate(['/courses', c.slug || c.id, 'learn', lesson.id]);
+
+    if (lesson.type === 'quiz' && lesson.quizId) {
+      this.router.navigate(['/courses', c.slug || c.id, 'quiz', lesson.quizId]);
+    } else {
+      this.router.navigate(['/courses', c.slug || c.id, 'learn', lesson.id]);
+    }
   }
 
   onResumeLearning(): void {

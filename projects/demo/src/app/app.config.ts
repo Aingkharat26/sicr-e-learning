@@ -9,6 +9,7 @@ import { ClassroomPlayerComponent } from './features/courses/classroom-player.co
 import { MyLearningPlaceholderComponent } from './features/my-learning/my-learning-placeholder.component';
 import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
 import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
+import { QuizRunnerComponent } from './features/quiz/quiz-runner.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -43,6 +44,11 @@ export const appConfig: ApplicationConfig = {
               path: 'courses/:id/learn/:lessonId',
               component: ClassroomPlayerComponent,
               title: 'ห้องเรียน | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/quiz/:quizId',
+              component: QuizRunnerComponent,
+              title: 'แบบทดสอบ | SICR E-LEARNING',
             },
             {
               path: 'my-learning',

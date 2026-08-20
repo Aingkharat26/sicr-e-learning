@@ -30,6 +30,9 @@ description: >-
    - เขียนข้อความ Commit เป็น **ภาษาไทย** เสมอ
    - มี **Description (คำอธิบายรายละเอียด)** เป็นภาษาไทยแจกแจงสิ่งที่แก้ไข/สร้างใหม่ชัดเจน
    - ห้าม Commit หรือ Push อัตโนมัติเด็ดขาด ต้องรอคำสั่งจากผู้ใช้เท่านั้น
+6. **การตรวจสอบ Build Error ทุกรอบการทำงาน (Mandatory Build Validation):**
+   - ต้องรัน `cmd /c npm run build` (Build Library) และ `cmd /c npx ng build demo` (Build Application) ทุกครั้งหลังจบแต่ละ Step
+   - ตรวจเช็คและแก้ไข Error ทั้งหมดจนผ่าน 100% (Zero Errors) ก่อนส่งตรวจงานเสมอ
 
 ---
 
@@ -99,7 +102,7 @@ description: >-
 | `sic-video-player` | Media | เครื่องเล่นวิดีโอบทเรียนในห้องเรียนออนไลน์ (Classroom Player) |
 | `sic-progress-bar` | Indicator | แถบ % ความคืบหน้าการเรียน (Course Progress & Completion) |
 | `sic-search` | Feedback | กล่องค้นหาคำสำคัญความเร็วสูง (Instant Search) ใน LMS และ KM |
-| `sic-code` | Media | ตัวแสดง Code Block พร้อม Syntax Highlighting ในคลังความรู้ KM |
+| `sic-code` | Media | ตัวแสดง Code Block พร้อม Syntax Highlighting ในคลังความรู้ KM และข้อสอบ |
 | `sic-timeline` | Display | ไทม์ไลน์ประวัติการแก้ไขบทความ Wiki (Version History & Audit) |
 | `sic-stepper` | Navigation | ตัวนำทางขั้นตอนการทำแบบทดสอบ (Quiz Stepper) และสร้างคอร์ส |
 | `sic-radio` / `sic-checkbox` | Data Entry | ตัวเลือกคำตอบในข้อสอบ (Multiple Choice & Multi-select) |
@@ -165,17 +168,40 @@ description: >-
   - เชื่อมโยงปุ่ม "▶ เข้าสู่ห้องเรียน (Classroom)" และคลิกที่บทเรียนในหน้า Course Detail ให้เปิดเข้าสู่ห้องเรียนได้ทันที
 - **ผลการทดสอบ:** ตรวจสอบผ่าน Browser Subagent รองรับการเล่นวิดีโอ การสลับบทเรียน และการคำนวณความคืบหน้าอย่างสมบูรณ์
 
+### ✅ Step 5: Quiz & Assessment Engine (2026-08-20)
+- **Quiz Models & Datasets (`quiz.model.ts`):**
+  - กำหนด Interface: `Quiz`, `QuizQuestion`, `QuizOption`, `QuizAttempt`
+  - รองรับคำถาม 3 รูปแบบ: **Single Choice** (เลือก 1 คำตอบ), **Multiple Choice** (เลือกหลายคำตอบ), **True/False** (ถูก/ผิด)
+  - รองรับ Code Snippet พร้อม Syntax Highlighting
+  - ชุดแบบทดสอบตัวอย่าง:
+    - `quiz-001`: Signals Foundation & Reactivity Assessment (5 ข้อ)
+    - `quiz-002`: Angular 22 Comprehensive Final Assessment (8 ข้อ)
+    - `quiz-003`: SICR Onboarding & IT Security Assessment (5 ข้อ)
+- **State Management & Auto-completion Service (`quiz.service.ts`):**
+  - คำนวณคะแนน, เปอร์เซ็นต์, ตัดเกรด Pass/Fail (เกณฑ์ 80%)
+  - บันทึกประวัติการสอบ Attempt พร้อมคำนวณเวลาที่ใช้และ XP ที่ได้รับ
+  - เชื่อมต่อกับ `CoursesService` อัปเดต Lesson Completion อัตโนมัติเมื่อสอบผ่าน
+- **Quiz Runner Component (`QuizRunnerComponent`):**
+  - **Intro Screen:** แสดงรายละเอียดแบบทดสอบ, เกณฑ์ผ่าน 80%, จำนวนข้อ, เวลาที่กำหนด, และประวัติการสอบล่าสุด
+  - **Active Quiz Screen:** ตัวจับเวลาถอยหลัง (Countdown Timer), ตัวนำทางข้อสอบ (Question Stepper / Grid Navigator), ปักหมุดทบทวน (Flag), ป๊อปอัปยืนยันก่อนส่ง (Submit Modal)
+  - **Result Screen:** แสดงการ์ดผลสอบ Passed/Failed, คะแนนที่ได้, เวลาที่ใช้, XP ที่ได้รับ พร้อมปุ่ม Retake / Review / Return to Classroom
+  - **Detailed Review Mode:** แสดงเฉลยละเอียดทุกข้อ ไฮไลต์คำตอบที่เลือก vs คำตอบที่ถูกต้อง พร้อมกล่องคำอธิบาย (Explanation) ทางเทคนิค
+- **Navigation & Classroom Integration:**
+  - Route `/courses/:id/quiz/:quizId`
+  - เชื่อมต่อจากหน้า Classroom Player (`type === 'quiz'`) และ Course Detail Curriculum
+- **Responsive & Design Verification:**
+  - ผ่านการทดสอบบนความละเอียด 1920x1200, 1440x900, 768x1024, และ 375x812 อย่างสมบูรณ์
+
 ---
 
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 5: Quiz & Assessment Engine (ระบบทำแบบทดสอบ)**
-  - ข้อสอบ Multiple Choice / True-False พร้อมตัวจับเวลา
-  - ระบบตรวจคะแนนและตัดเกรดอัตโนมัติ (เกณฑ์ 80%)
-- **Step 6: Automated Certificate Generator (ใบประกาศนียบัตร)**
-  - หน้าดูใบ Certificate สวยงามพร้อมปุ่มพิมพ์ PDF
-- **Step 7: Knowledge Base KM Spaces (คลังความรู้ฝ่ายต่างๆ)**
+- **Step 6: Automated Certificate Generator (ระบบสร้างใบประกาศนียบัตรดิจิทัล)**
+  - กรอบใบประกาศนียบัตรระดับพรีเมียม Soft Inter Chiangrai
+  - Auto-generate ชื่อผู้เรียน, รหัสใบรับรอง, วันที่สำเร็จการศึกษา, ลายเซ็นผู้บริหาร
+  - ปุ่ม Export / พิมพ์ PDF และปุ่มแชร์ลง LinkedIn / Social Media
+- **Step 7: Knowledge Base KM Spaces (คลังความรู้องค์กรตามฝ่าย)**
   - แยก Space ตามแผนก (Dev, QA, HR, Sales, Support)
   - Instant Search และหน้าอ่าน Wiki พร้อม Markdown/Code Viewer
 - **Step 8: Instructor Course Builder & Admin Reporting**
-  - หน้ารายงานสถิติภาพรวม Completion Rate ของพนักงาน
+  - หน้ารายงานสถิติภาพรวม Completion Rate และสถิติผู้เรียนของ HR และ Admin
