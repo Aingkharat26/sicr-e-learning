@@ -94,11 +94,14 @@ import { AuthStateService } from '../core/services/auth-state.service';
     }
 
     .alert-content {
-      max-width: 1440px;
+      max-width: 1720px;
       width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 2.5vw, 2.5rem);
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      box-sizing: border-box;
     }
 
     .role-badge-pill {
@@ -109,6 +112,8 @@ import { AuthStateService } from '../core/services/auth-state.service';
       border-radius: 999px;
       background: currentColor;
       color: #ffffff !important;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .bar-learner .role-badge-pill {
@@ -141,14 +146,15 @@ import { AuthStateService } from '../core/services/auth-state.service';
     }
 
     .footer-container {
-      max-width: 1440px;
+      max-width: 1720px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 clamp(1rem, 2.5vw, 2.5rem);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
+      box-sizing: border-box;
     }
 
     .footer-left {

@@ -14,12 +14,16 @@ description: >-
 1. **พัฒนาทีละชิ้น/โมดูลเท่านั้น (One piece at a time):**
    - ห้ามทำหลายฟีเจอร์พร้อมกันในคราวเดียว
    - เมื่อสร้างหรือแก้ไขแต่ละตัวเสร็จ **ต้องหยุดรอให้ผู้ใช้ตรวจหน้าจอ (Check Preview) ก่อนเสมอ**
-2. **รักษาความสมบูรณ์ของ Brand Identity:**
+2. **Responsive Design ระดับพรีเมียมทุกขนาดหน้าจอ (High Priority):**
+   - รองรับขนาดจอทุกระดับตั้งแต่ Large Screen (**1920x1200**, 1920x1080), Desktop, Laptop (1366-1440px), Tablet (768-1024px) ไปจนถึง Mobile (<640px)
+   - ป้องกันปุ่มล้น, ตัวหนังสือหักบรรทัดผิดธรรมชาติ (ใช้ `white-space: nowrap`, `flex-shrink: 0`, `gap` ที่พอดี)
+   - มี Breakpoints ที่สมูทสวยงามทุกความกว้างหน้าจอ
+3. **รักษาความสมบูรณ์ของ Brand Identity:**
    - Primary Brand: `#00a887` / `#009688` (Teal Emerald Green)
    - Secondary Accent: `#10b981` / `#34d399`
    - Dark Slate: `#0f172a` / `#1e293b`
    - รองรับ Dark / Light Mode เสมอ
-3. **ใช้คอมโพเนนต์จาก `sic-ng` อย่างมีประสิทธิภาพ:**
+4. **ใช้คอมโพเนนต์จาก `sic-ng` อย่างมีประสิทธิภาพ:**
    - ใช้ Tokens `--sic-*` ในการจัดสไตล์
    - รักษา Standalone Components และ Zoneless Angular 22 Signals architecture
 

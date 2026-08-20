@@ -154,21 +154,24 @@ import { AuthStateService } from '../../core/services/auth-state.service';
   `,
   styles: [`
     .dashboard-page {
-      max-width: 1440px;
+      max-width: 1720px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 4rem 1.5rem;
+      padding: clamp(1.5rem, 2.5vw, 3rem) clamp(1rem, 2.5vw, 2.5rem);
       width: 100%;
+      box-sizing: border-box;
     }
 
     /* Hero Section */
     .hero-section {
       position: relative;
       border-radius: 20px;
-      padding: 3rem 2.5rem;
+      padding: clamp(2rem, 3vw, 3.5rem) clamp(1.5rem, 2.5vw, 3rem);
       background: linear-gradient(135deg, rgba(0, 168, 135, 0.12) 0%, rgba(2, 132, 199, 0.08) 100%);
       border: 1px solid rgba(0, 168, 135, 0.25);
       overflow: hidden;
       margin-bottom: 2.5rem;
+      box-sizing: border-box;
+      width: 100%;
     }
 
     .hero-content {
@@ -356,19 +359,23 @@ import { AuthStateService } from '../../core/services/auth-state.service';
     .module-cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
+      gap: clamp(1.25rem, 2vw, 2rem);
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .module-card {
       background: var(--sic-color-bg, #ffffff);
       border-radius: 18px;
       border: 1px solid var(--sic-color-border, #e2e8f0);
-      padding: 1.75rem;
+      padding: clamp(1.25rem, 2vw, 1.85rem);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       transition: all 0.25s ease;
       box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
+      width: 100%;
     }
 
     .module-card:hover {
@@ -420,6 +427,12 @@ import { AuthStateService } from '../../core/services/auth-state.service';
       color: #7c3aed;
     }
 
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
     .card-title {
       font-size: 1.15rem;
       font-weight: 700;
@@ -432,6 +445,7 @@ import { AuthStateService } from '../../core/services/auth-state.service';
       color: var(--sic-color-text-muted, #64748b);
       line-height: 1.5;
       margin-bottom: 1.25rem;
+      flex-grow: 1;
     }
 
     .feature-bullets {
