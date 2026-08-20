@@ -2100,13 +2100,13 @@ export class CourseDetailComponent implements OnInit {
     if (c.enrolledStatus === 'not_enrolled') {
       this.coursesService.enrollCourse(c.id);
     }
-    this.showToast(`🚀 กำลังเปิดบทเรียน "${lesson.title}"... (เข้าสู่ Classroom ใน Step 4)`);
+    this.router.navigate(['/courses', c.slug || c.id, 'learn', lesson.id]);
   }
 
   onResumeLearning(): void {
     const c = this.course();
     if (!c) return;
-    this.showToast(`🚀 กำลังเข้าสู่ห้องเรียนออนไลน์สำหรับ "${c.title}"... (Classroom Player ใน Step 4)`);
+    this.router.navigate(['/courses', c.slug || c.id, 'learn']);
   }
 
   onViewCertificate(): void {

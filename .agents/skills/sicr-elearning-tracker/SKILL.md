@@ -152,14 +152,23 @@ description: >-
   - Route `/courses/:id` เชื่อมโยงเข้าสู่ `CourseDetailComponent`
   - การ์ดใน Course Catalog รองรับคลิกภาพปกหรือชื่อคอร์สเพื่อเปิดหน้ารายละเอียด
 
+### ✅ Step 4: Classroom Player & Video Lesson (2026-08-20)
+- **Classroom Player Component (`ClassroomPlayerComponent`):**
+  - เครื่องเล่นวิดีโอบทเรียนเชื่อมต่อ `sic-video-player` พร้อม Poster ปกหลักสูตร
+  - เครื่องอ่านเอกสารและคู่มือบทความ Markdown Reader
+  - Playlist ด้านข้าง (Sidebar Accordion) แสดง Modules & Lessons พร้อม Checkmark (`✓`/`○`) และแถบคำนวณ % ความคืบหน้าแบบ Real-time
+  - แถบควบคุมบทเรียน (Next Lesson, Previous Lesson, Mark as Completed)
+  - แท็บด้านล่าง: 📝 จดบันทึกส่วนตัว (Personal Notes), 📄 รายการเอกสารประกอบ (Resources), ℹ️ ข้อมูลหลักสูตร (Course Info)
+  - Responsive Design: Sidebar แสดงเป็น Slide-out Panel พร้อม Backdrop บนอุปกรณ์ Mobile/Tablet
+- **Navigation & Routing Integration:**
+  - Route `/courses/:id/learn` และ `/courses/:id/learn/:lessonId`
+  - เชื่อมโยงปุ่ม "▶ เข้าสู่ห้องเรียน (Classroom)" และคลิกที่บทเรียนในหน้า Course Detail ให้เปิดเข้าสู่ห้องเรียนได้ทันที
+- **ผลการทดสอบ:** ตรวจสอบผ่าน Browser Subagent รองรับการเล่นวิดีโอ การสลับบทเรียน และการคำนวณความคืบหน้าอย่างสมบูรณ์
+
 ---
 
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 4: Classroom Player & Video Lesson (ห้องเรียนออนไลน์)**
-  - เครื่องเล่นวิดีโอ `sic-video-player`
-  - Playlist ด้านข้างแสดงบทเรียน พร้อม Checkmark สถานะเรียนจบ
-  - ปุ่ม Next Lesson / Mark as Completed และแท็บเอกสารประกอบ
 - **Step 5: Quiz & Assessment Engine (ระบบทำแบบทดสอบ)**
   - ข้อสอบ Multiple Choice / True-False พร้อมตัวจับเวลา
   - ระบบตรวจคะแนนและตัดเกรดอัตโนมัติ (เกณฑ์ 80%)

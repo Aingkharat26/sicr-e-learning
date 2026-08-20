@@ -5,6 +5,7 @@ import { AppLayoutComponent } from './layout/app-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { CoursesCatalogComponent } from './features/courses/courses-catalog.component';
 import { CourseDetailComponent } from './features/courses/course-detail.component';
+import { ClassroomPlayerComponent } from './features/courses/classroom-player.component';
 import { MyLearningPlaceholderComponent } from './features/my-learning/my-learning-placeholder.component';
 import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
 import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
@@ -32,6 +33,16 @@ export const appConfig: ApplicationConfig = {
               path: 'courses/:id',
               component: CourseDetailComponent,
               title: 'รายละเอียดหลักสูตร | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/learn',
+              component: ClassroomPlayerComponent,
+              title: 'ห้องเรียน | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/learn/:lessonId',
+              component: ClassroomPlayerComponent,
+              title: 'ห้องเรียน | SICR E-LEARNING',
             },
             {
               path: 'my-learning',
