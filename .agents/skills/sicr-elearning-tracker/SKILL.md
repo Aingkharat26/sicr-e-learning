@@ -82,6 +82,60 @@ description: >-
 
 ---
 
+## 🧩 บันทึกการตรวจสอบคอมโพเนนต์ `@sic-ng` (Component Usage & Audit Matrix)
+
+### 1. ✅ คอมโพเนนต์ที่นำมาใช้งานในโปรเจกต์นี้ (In-Use Components)
+| คอมโพเนนต์ | หมวดหมู่ | หน้าจอ / ฟังก์ชันที่นำไปใช้ในระบบ |
+| :--- | :--- | :--- |
+| `sic-navbar` | Navigation | เมนูแถบบนสุด (Header), นำทางหน้าต่างๆ, สลับ Theme |
+| `sic-sidebar` | Navigation | เมนูข้างสำหรับหน้า Admin Dashboard & Instructor Studio |
+| `sic-avatar` | Display | รูปโปรไฟล์ผู้ใช้, ผู้สอน (Instructor), และเจ้าของบทความ (Page Owner) |
+| `sic-badge` | Display | ป้ายสถานะ (Passed, In Progress, Mandatory, Admin/Learner) |
+| `sic-tag` | Display | ป้ายคีย์เวิร์ดและหมวดหมู่ (Frontend, Backend, AI, Dev, QA) |
+| `sic-card` | General | การ์ดคอนเทนต์, การ์ดแสดงผลบทเรียน, สถิติ KPI |
+| `sic-button` | General | ปุ่ม Action หลัก (ลงทะเบียน, เริ่มเรียน, ส่งข้อสอบ, บันทึก) |
+| `sic-tabs` | Navigation | แท็บสลับหมวดหมู่, แท็บรายละเอียดคอร์ส / เนื้อหา / รีวิว |
+| `sic-accordion` | Display | โครงสร้างบทเรียน (Curriculum Outline: Modules & Lessons) |
+| `sic-video-player` | Media | เครื่องเล่นวิดีโอบทเรียนในห้องเรียนออนไลน์ (Classroom Player) |
+| `sic-progress-bar` | Indicator | แถบ % ความคืบหน้าการเรียน (Course Progress & Completion) |
+| `sic-search` | Feedback | กล่องค้นหาคำสำคัญความเร็วสูง (Instant Search) ใน LMS และ KM |
+| `sic-code` | Media | ตัวแสดง Code Block พร้อม Syntax Highlighting ในคลังความรู้ KM |
+| `sic-timeline` | Display | ไทม์ไลน์ประวัติการแก้ไขบทความ Wiki (Version History & Audit) |
+| `sic-stepper` | Navigation | ตัวนำทางขั้นตอนการทำแบบทดสอบ (Quiz Stepper) และสร้างคอร์ส |
+| `sic-radio` / `sic-checkbox` | Data Entry | ตัวเลือกคำตอบในข้อสอบ (Multiple Choice & Multi-select) |
+| `sic-input` / `sic-input-area` | Data Entry | ฟอร์มสร้างบทเรียน, ฟอร์มเขียนเอกสาร Wiki Markdown |
+| `sic-upload` | Data Entry | อัปโหลดสไลด์ PDF, วิดีโอ, และไฟล์เอกสารประกอบการเรียน |
+| `sic-datepicker` | Data Entry | กำหนดวันหมดอายุคอร์ส, วันที่ทบทวนเอกสาร KM |
+| `sic-gridpanel` | Display | ตารางสรุปรายงานสถิติผู้เรียนของ HR และ Admin |
+| `sic-toast` / `sic-dialog` | Feedback | ป๊อปอัปแจ้งเตือน (Toast Notification) และหน้าต่างยืนยันส่งข้อสอบ |
+| `sic-rating` | Data Entry | ระบบให้คะแนนดาวรีวิวหลักสูตร (1 - 5 ดาว) |
+
+---
+
+### 2. ⏸️ คอมโพเนนต์ใน `sic-ng` ที่ไม่ได้นำมาใช้ในโปรเจกต์นี้ (Unused / Out of Scope)
+| คอมโพเนนต์ที่ไม่ได้ใช้ | เหตุผลที่ไม่นำมาใช้งานในระบบ E-Learning & KM |
+| :--- | :--- |
+| `sic-colorpicker` | ไม่มีความจำเป็นต้องให้ผู้เรียนหรือผู้สอนเลือกพาเลตต์สีอิสระ เนื่องจากระบบใช้ Brand Theme Token แบบคงที่ |
+| `sic-input-phone` | ระบบใช้ข้อมูลพนักงานจากองค์กร (SSO/Internal ID) ไม่มีการกรอกเบอร์โทรศัพท์ในหน้าจอเรียน |
+| `sic-calendar-timeline` | มีขนาดใหญ่เกินความจำเป็น (ระบบใช้ `sic-timeline` และ `sic-gridpanel` ทดแทน) |
+| `sic-sound-player` | เนื้อหาการเรียนในระบบ Soft Inter Chiangrai เน้นวิดีโอและเอกสาร จึงใช้ `sic-video-player` เป็นหลัก |
+| `sic-masonry` | ระบบแคตตาล็อกและบทความจัดวางแบบ Structured Grid ที่แน่นอน เพื่อความสมมาตรของ UI |
+| `sic-card-stack` | รูปแบบ Card Stack ไม่เหมาะกับรายการหลักสูตรที่ต้องการสแกนข้อมูลอย่างรวดเร็ว |
+| `sic-space-bg` | เอฟเฟกต์ตกแต่ง Canvas อวกาศ ไม่สอดคล้องกับ Corporate Enterprise Clean Theme ของบริษัท |
+| `sic-timepicker` | ระบบนับระยะเวลาเป็นชั่วโมง/นาทีจากวิดีโอ ไม่ต้องมีตัวเลือกเวลาแบบนาฬิกา Timepicker |
+
+---
+
+### 3. ✨ ฟังก์ชัน / Custom Feature เฉพาะทางที่สร้างเสริมเพิ่มเติม (Custom Features)
+| สิ่งที่สร้างเสริม | รายละเอียดและประโยชน์การใช้งาน |
+| :--- | :--- |
+| **Dynamic Role Switcher Widget** | ตัวสลับสิทธิ์จำลองทันที (Learner 🎒 / Instructor 👨‍🏫 / Admin 🛡️) ใน Header เพื่อทดสอบมุมมองผู้ใช้แต่ละระดับโดยไม่ต้อง Re-login |
+| **Instant Category Filter Chips Bar** | แถบชิปตัวกรองหมวดหมู่แนวนอนแบบมีตัวเลขนับ (Count Badges) เลื่อนได้สมูทและคลิกกรองได้ทันที |
+| **Automated Certificate Canvas Frame** | กรอบใบประกาศนียบัตรระดับพรีเมียมพร้อมระบบ Auto-generate ชื่อ, รหัสใบรับรอง และปุ่ม Export PDF |
+| **Department KM Space Hub** | ตัวสลับพื้นที่ความรู้ตามฝ่าย (Dev, QA, HR, Sales, Support) พร้อมแสดงสถิติบทความและเจ้าของฝ่าย |
+
+---
+
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
 - **Step 3: Course Detail & Curriculum Outline (หน้ารายละเอียดคอร์ส)**
