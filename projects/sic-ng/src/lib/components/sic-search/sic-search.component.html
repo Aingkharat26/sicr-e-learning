@@ -1,0 +1,41 @@
+<ng-template #panelTemplate>
+  <div class="sic-search__panel" role="dialog" aria-modal="true" [style.min-width]="minWidth">
+    <div class="sic-search__input-row">
+      <span class="sic-search__icon" aria-hidden="true">🔍</span>
+      <input
+        type="text"
+        class="sic-search__input"
+        [placeholder]="placeholder"
+        [value]="query"
+        (input)="handleQueryInput($any($event.target).value)"
+        (keydown)="handleKeydown($event)"
+      />
+      <button type="button" class="sic-search__close" (click)="close()" aria-label="Close">✕</button>
+    </div>
+
+    <ul class="sic-search__list" role="listbox">
+      @if (filteredItems.length === 0) {
+        <li class="sic-search__empty">{{ noResultsText }}</li>
+      } @else {
+        @for (item of filteredItems; track $index) {
+          <li
+            class="sic-search__item"
+            [class.sic-search__item--active]="$index === activeIndex"
+            role="option"
+            [attr.aria-selected]="$index === activeIndex"
+            (mouseenter)="activeIndex = $index"
+            (click)="selectItem(item)"
+          >
+            @if (itemTemplate) {
+              <ng-container
+                *ngTemplateOutlet="itemTemplate; context: { $implicit: item, active: $index === activeIndex, query: query }"
+              ></ng-container>
+            } @else {
+              <span class="sic-search__item-label">{{ labelFor(item) }}</span>
+            }
+          </li>
+        }
+      }
+    </ul>
+  </div>
+</ng-template>

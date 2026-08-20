@@ -1,0 +1,41 @@
+@if (buttonTemplate) {
+  <ng-container *ngTemplateOutlet="buttonTemplate; context: templateContext"></ng-container>
+} @else {
+  <button
+    type="button"
+    class="sic-popover__default-trigger"
+    (click)="toggle()"
+    aria-haspopup="true"
+    [attr.aria-expanded]="open"
+  >
+    ⋯
+  </button>
+}
+
+<ng-template #panelTemplate>
+  <div class="sic-popover__panel" role="dialog">
+    @if (headerTemplate) {
+      <ng-container *ngTemplateOutlet="headerTemplate; context: templateContext"></ng-container>
+    }
+
+    <div class="sic-popover__list">
+      @if (!items.length) {
+        <div class="sic-popover__empty">{{ noItemsText }}</div>
+      } @else {
+        @for (item of items; track $index) {
+          <div class="sic-popover__list-item" (click)="selectItem(item)">
+            @if (listTemplate) {
+              <ng-container *ngTemplateOutlet="listTemplate; context: { $implicit: item, index: $index }"></ng-container>
+            } @else {
+              <span>{{ item }}</span>
+            }
+          </div>
+        }
+      }
+    </div>
+
+    @if (footerTemplate) {
+      <ng-container *ngTemplateOutlet="footerTemplate; context: templateContext"></ng-container>
+    }
+  </div>
+</ng-template>

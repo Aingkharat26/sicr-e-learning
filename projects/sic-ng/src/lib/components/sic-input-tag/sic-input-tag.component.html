@@ -1,0 +1,40 @@
+<label class="sic-field" [attr.for]="fieldId">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <div
+    class="sic-input-tag sic-control-field"
+    [class.sic-control-field--invalid]="showError"
+    (click)="focusInput()"
+  >
+    @if (tags.length) {
+      <sic-tag [items]="tagItems" [closable]="!disabled && !readonly" (itemClosed)="removeTag($event.index)" />
+    }
+
+    <input
+      #inputEl
+      [id]="fieldId"
+      type="text"
+      class="sic-input-tag__input"
+      [placeholder]="tags.length ? '' : placeholder"
+      [disabled]="disabled || isAtMaxTags"
+      [readOnly]="readonly"
+      [value]="inputValue"
+      (input)="handleInput($event)"
+      (keydown)="handleKeydown($event)"
+      (blur)="handleBlur()"
+    />
+  </div>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</label>

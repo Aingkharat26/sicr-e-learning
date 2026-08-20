@@ -1,0 +1,63 @@
+:host {
+  display: inline-flex;
+}
+
+.sic-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  cursor: pointer;
+}
+
+.sic-switch--disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.sic-switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sic-switch__track {
+  display: inline-flex;
+  align-items: center;
+  /* Height matches sic-checkbox's 1.2rem box so the two sit at the same
+     visual size wherever they're used side by side (e.g. sic-gridpanel). */
+  width: 2rem;
+  height: 1.2rem;
+  padding: 0.15rem;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-border);
+  transition: background var(--sic-transition-fast);
+}
+
+.sic-switch__thumb {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: var(--sic-radius-full);
+  background: #fff;
+  box-shadow: var(--sic-shadow-sm);
+  transition: transform var(--sic-transition-fast);
+}
+
+.sic-switch__input:checked + .sic-switch__track {
+  background: var(--sic-color-primary);
+}
+
+.sic-switch__input:focus-visible + .sic-switch__track {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 30%, transparent);
+}
+
+.sic-switch__input:checked + .sic-switch__track .sic-switch__thumb {
+  transform: translateX(0.8rem);
+}
+
+.sic-switch__label {
+  color: var(--sic-color-text-active);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+}

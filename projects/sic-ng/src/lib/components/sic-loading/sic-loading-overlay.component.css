@@ -1,0 +1,33 @@
+.sic-loading__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.sic-loading__backdrop {
+  background: color-mix(in srgb, #000 45%, transparent);
+}
+
+.sic-loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sic-space-3);
+  font-family: var(--sic-font-sans);
+}
+
+.sic-loading-overlay__image {
+  display: block;
+  max-width: 6rem;
+  max-height: 6rem;
+}
+
+.sic-loading-overlay__message {
+  margin: 0;
+  color: #fff;
+  font-size: var(--sic-font-size-sm);
+  text-align: center;
+}

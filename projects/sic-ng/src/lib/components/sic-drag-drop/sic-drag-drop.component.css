@@ -1,0 +1,82 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-drag-drop {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sic-space-4);
+  overflow-x: auto;
+}
+
+.sic-drag-drop__list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 16rem;
+  min-width: 16rem;
+}
+
+.sic-drag-drop__list-title {
+  margin-bottom: var(--sic-space-2);
+  color: var(--sic-color-text-active);
+  font-weight: 600;
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-drag-drop__drop-zone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sic-space-2);
+  min-height: 3rem;
+  padding: var(--sic-space-2);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+}
+
+.sic-drag-drop__drop-zone.cdk-drop-list-dragging .sic-drag-drop__item:not(.cdk-drag-placeholder) {
+  transition: transform var(--sic-transition-fast);
+}
+
+.sic-drag-drop__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  box-shadow: var(--sic-shadow-sm);
+  cursor: move;
+}
+
+.sic-drag-drop__item.cdk-drag-preview {
+  box-shadow: var(--sic-shadow-md);
+}
+
+.sic-drag-drop__item.cdk-drag-placeholder {
+  opacity: 0.4;
+}
+
+.sic-drag-drop__handle {
+  flex: none;
+  padding: var(--sic-space-2) 0 var(--sic-space-2) var(--sic-space-2);
+  color: var(--sic-color-text-muted);
+  cursor: grab;
+}
+
+.sic-drag-drop__fallback {
+  flex: 1;
+  padding: var(--sic-space-3);
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-drag-drop__placeholder {
+  display: none;
+}
+
+.sic-drag-drop__empty {
+  padding: var(--sic-space-3);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  text-align: center;
+}

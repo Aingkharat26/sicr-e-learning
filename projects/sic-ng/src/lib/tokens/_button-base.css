@@ -1,0 +1,106 @@
+/**
+ * Shared visual styles for anything that should look like a sic-ng button — `sic-button` itself
+ * (a real `<button>`) and `sic-a-link` (a real `<a>`, for cases that need actual navigation/href
+ * semantics: right-click "open in new tab", crawlable links, etc.). Kept as one partial so the two
+ * never visually drift apart.
+ */
+.sic-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sic-space-2);
+  width: 100%;
+  border: 1.5px solid transparent;
+  border-radius: var(--sic-radius-md);
+  font-family: var(--sic-font-sans);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--sic-transition-fast), border-color var(--sic-transition-fast), opacity var(--sic-transition-fast);
+}
+
+.sic-button--sm {
+  min-height: var(--sic-control-height-sm);
+  padding: 0 var(--sic-space-3);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-button--md {
+  min-height: var(--sic-control-height-md);
+  padding: 0 var(--sic-space-4);
+  font-size: var(--sic-font-size-md);
+}
+
+.sic-button--lg {
+  min-height: var(--sic-control-height-lg);
+  padding: 0 calc(var(--sic-space-4) * 1.5);
+  font-size: var(--sic-font-size-lg);
+}
+
+.sic-button--primary.sic-button--solid {
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+}
+
+.sic-button--success.sic-button--solid {
+  background: var(--sic-color-success);
+  color: #fff;
+}
+
+.sic-button--danger.sic-button--solid {
+  background: var(--sic-color-danger);
+  color: #fff;
+}
+
+.sic-button--warning.sic-button--solid {
+  background: var(--sic-color-warning);
+  color: #fff;
+}
+
+.sic-button--outline {
+  background: transparent;
+  border-color: currentColor;
+}
+
+.sic-button--outline.sic-button--primary { color: var(--sic-color-primary); }
+.sic-button--outline.sic-button--success { color: var(--sic-color-success); }
+.sic-button--outline.sic-button--danger { color: var(--sic-color-danger); }
+.sic-button--outline.sic-button--warning { color: var(--sic-color-warning); }
+
+.sic-button--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.sic-button--ghost.sic-button--primary { color: var(--sic-color-primary); }
+.sic-button--ghost.sic-button--success { color: var(--sic-color-success); }
+.sic-button--ghost.sic-button--danger { color: var(--sic-color-danger); }
+.sic-button--ghost.sic-button--warning { color: var(--sic-color-warning); }
+
+.sic-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* `:disabled` only ever matches a real `<button>` — `.sic-button--disabled`/`[aria-disabled]`
+   cover the `<a>` case, which has no native disabled state of its own. */
+.sic-button:disabled,
+.sic-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.sic-button__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: sic-button-spin 0.6s linear infinite;
+}
+
+@keyframes sic-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

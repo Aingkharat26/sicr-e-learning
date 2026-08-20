@@ -1,0 +1,247 @@
+:host {
+  --sic-sidebar-accent: var(--sic-color-danger);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+  height: 100%;
+  background: var(--sic-color-bg);
+  border-right: 1px solid var(--sic-color-border);
+  font-family: var(--sic-font-sans);
+  transition: width var(--sic-transition-base);
+  overflow: visible;
+}
+
+/* Peeking (hover-to-reveal while collapsed) reuses this same width transition — a collapsed
+   sidebar simply isn't ".sic-sidebar--collapsed" width-wise while peek is active, so it grows back
+   to the normal 16rem in place, the same safe/proven mechanism the click-to-expand toggle already
+   uses. An earlier version instead switched `.sic-sidebar__body` to `position: absolute` on hover so
+   sibling page content wouldn't reflow, but toggling an element's position TYPE (not just a value)
+   under a stationary cursor is fragile — it repeatedly triggered spurious mouseleave/mouseenter
+   hit-test glitches in real browsers, reported as constant flickering. Growing in place trades away
+   the "never reflow siblings" ideal for genuine stability: the host's own top-left corner (where
+   :host's mouseenter/mouseleave listeners live) never moves, it only grows rightward/downward away
+   from wherever the cursor already is, so the hovered point stays continuously covered throughout. */
+:host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) {
+  width: 4.6rem;
+}
+
+:host(.sic-sidebar--peek) {
+  z-index: 30;
+  box-shadow: var(--sic-shadow-lg, var(--sic-shadow-sm));
+}
+
+/* collapseMode="hidden": collapsed sidebar disappears entirely instead of shrinking to an icon
+   rail — same mechanism the mobile-only rule below already uses, just not gated by viewport width. */
+:host(.sic-sidebar--hide-collapsed.sic-sidebar--collapsed):not(.sic-sidebar--peek) {
+  width: 0;
+  border-right: none;
+}
+
+:host(.sic-sidebar--hide-collapsed.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__body {
+  display: none;
+}
+
+:host(.sic-sidebar--hide-collapsed.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__toggle {
+  right: auto;
+  left: 5px;
+}
+
+.sic-sidebar__body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sic-sidebar__header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-4) var(--sic-space-3);
+}
+
+:host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__header {
+  justify-content: center;
+}
+
+.sic-sidebar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: none;
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  font-size: 1.1rem;
+}
+
+.sic-sidebar__brand {
+  overflow: hidden;
+  color: var(--sic-color-text-active);
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sic-sidebar__toggle {
+  position: absolute;
+  top: 1.4rem;
+  right: -0.85rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: none;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+  box-shadow: var(--sic-shadow-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.sic-sidebar__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sic-sidebar__section {
+  padding: var(--sic-space-2) 0;
+}
+
+.sic-sidebar__section + .sic-sidebar__section {
+  border-top: 1px solid var(--sic-color-border);
+}
+
+/* Icon-only rail: merge sections into one continuous list instead of visually grouping them. */
+:host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__section + .sic-sidebar__section {
+  border-top: none;
+  padding-top: 0;
+}
+
+.sic-sidebar__section-title {
+  margin: 0 var(--sic-space-3) var(--sic-space-1);
+  padding: 0 var(--sic-space-2);
+  color: var(--sic-color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sic-sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--sic-space-2);
+}
+
+.sic-sidebar__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border-radius: var(--sic-radius-md);
+  color: var(--sic-color-text);
+  cursor: pointer;
+  font-size: var(--sic-font-size-md);
+}
+
+:host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__link {
+  justify-content: center;
+}
+
+.sic-sidebar__link:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-sidebar__link--active {
+  background: color-mix(in srgb, var(--sic-sidebar-accent) 14%, var(--sic-color-surface));
+  color: var(--sic-color-text-active);
+  font-weight: 600;
+}
+
+.sic-sidebar__link--active::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.3rem;
+  left: -0.05rem;
+  width: 0.2rem;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-sidebar-accent);
+}
+
+.sic-sidebar__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  font-size: 1.05rem;
+}
+
+.sic-sidebar__dot {
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: var(--sic-radius-full);
+}
+
+.sic-sidebar__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sic-sidebar__badge {
+  margin-inline-start: auto;
+  flex: none;
+  padding: 0.05rem 0.4rem;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-sidebar-accent);
+  color: var(--sic-color-primary-contrast);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sic-sidebar__caret,
+.sic-sidebar__chevron {
+  margin-inline-start: auto;
+  flex: none;
+  color: var(--sic-color-text-muted);
+  font-size: 0.85rem;
+}
+
+.sic-sidebar__children {
+  padding-inline-start: var(--sic-space-4);
+}
+
+/* Mobile: a collapsed sidebar hides entirely, leaving only the expand toggle; tap it to open. */
+@media (max-width: 768px) {
+  :host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) {
+    width: 0;
+    border-right: none;
+  }
+
+  :host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__body {
+    display: none;
+  }
+
+  /* The toggle normally straddles the host's right edge (half in, half out) so it sits on top of
+     the sidebar's border. With the host's width collapsed to 0 that same edge is also its left
+     edge, so straddling it clipped the button in half. Anchor it fully inside instead. */
+  :host(.sic-sidebar--collapsed):not(.sic-sidebar--peek) .sic-sidebar__toggle {
+    right: auto;
+    left: 5px;
+  }
+}

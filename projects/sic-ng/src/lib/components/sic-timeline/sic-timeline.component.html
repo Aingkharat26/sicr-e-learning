@@ -1,0 +1,49 @@
+<div class="sic-timeline__list">
+  @for (item of items; track trackByFn($index, item); let i = $index) {
+    <div class="sic-timeline__row">
+      <div class="sic-timeline__content sic-timeline__content--start">
+        @if (contentSide(i) === 'start') {
+          <ng-container
+            *ngTemplateOutlet="itemTemplate ?? defaultItemTemplate; context: { $implicit: item, index: i, side: contentSide(i) }"
+          ></ng-container>
+        }
+      </div>
+
+      <div class="sic-timeline__axis">
+        @if (isHorizontal && i > 0) {
+          <span class="sic-timeline__connector"></span>
+        }
+        <span class="sic-timeline__circle" [style.border-color]="item.color" [style.color]="item.color">
+          @if (item.icon) {
+            {{ item.icon }}
+          } @else {
+            {{ i + 1 }}
+          }
+        </span>
+        @if (i < items.length - 1) {
+          <span class="sic-timeline__connector"></span>
+        }
+      </div>
+
+      <div class="sic-timeline__content sic-timeline__content--end">
+        @if (contentSide(i) === 'end') {
+          <ng-container
+            *ngTemplateOutlet="itemTemplate ?? defaultItemTemplate; context: { $implicit: item, index: i, side: contentSide(i) }"
+          ></ng-container>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<ng-template #defaultItemTemplate let-item>
+  @if (item.date) {
+    <div class="sic-timeline__date" [style.color]="item.color">{{ item.date }}</div>
+  }
+  @if (item.title) {
+    <div class="sic-timeline__title">{{ item.title }}</div>
+  }
+  @if (item.description) {
+    <div class="sic-timeline__description">{{ item.description }}</div>
+  }
+</ng-template>

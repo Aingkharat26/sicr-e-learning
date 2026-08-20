@@ -1,0 +1,45 @@
+/**
+ * sic-ng design tokens — "Sunset" theme, standalone (applies unconditionally, no class needed).
+ * Import this on its own when the app only ever uses one named theme.
+ * For runtime switching between multiple named themes, import all-themes.css instead
+ * and use SicThemeService.setThemeName('sunset').
+ */
+@import './_tokens.css';
+@import './_tokens.dark.css';
+
+:root {
+  --sic-color-bg: #fffaf5;
+  --sic-color-surface: #fdf1e6;
+  --sic-color-border: #f0ddc8;
+  --sic-color-text: #2b1c10;
+  --sic-color-text-muted: #8a6f57;
+  --sic-color-text-active: #1a1006;
+
+  --sic-color-primary: #ea580c;
+  --sic-color-primary-contrast: #ffffff;
+  --sic-color-success: #16a34a;
+  --sic-color-danger: #e11d48;
+  --sic-color-warning: #d97706;
+
+  --sic-radius-sm: 0.65rem;
+  --sic-radius-md: 1.1rem;
+  --sic-radius-lg: 1.6rem;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #7c2d12 10%, transparent);
+  --sic-shadow-md: 0 10px 26px color-mix(in srgb, #7c2d12 16%, transparent);
+}
+
+:root.dark {
+  --sic-color-bg: #1a120a;
+  --sic-color-surface: #241a10;
+  --sic-color-border: #3a2a18;
+  --sic-color-text: #f7ece0;
+  --sic-color-text-muted: #c2a58a;
+  --sic-color-text-active: #ffffff;
+
+  --sic-color-primary: #fb923c;
+  --sic-color-primary-contrast: #1a1006;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 40%, transparent);
+  --sic-shadow-md: 0 10px 26px color-mix(in srgb, #000 48%, transparent);
+}

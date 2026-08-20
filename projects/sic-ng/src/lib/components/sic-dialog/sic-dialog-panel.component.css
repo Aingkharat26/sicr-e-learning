@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  min-width: 20rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  border-radius: var(--sic-radius-lg);
+  background: var(--sic-color-bg);
+  box-shadow: var(--sic-shadow-md);
+}

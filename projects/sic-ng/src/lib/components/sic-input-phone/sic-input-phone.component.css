@@ -1,0 +1,147 @@
+@import '../../tokens/_field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-input-phone__wrap {
+  display: flex;
+  min-height: var(--sic-control-height-md);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  transition: border-color var(--sic-transition-fast), box-shadow var(--sic-transition-fast);
+}
+
+:host(.sic-size-sm) .sic-input-phone__wrap {
+  min-height: var(--sic-control-height-sm);
+}
+
+:host(.sic-size-lg) .sic-input-phone__wrap {
+  min-height: var(--sic-control-height-lg);
+}
+
+.sic-input-phone__wrap:focus-within {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 45%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+}
+
+.sic-input-phone__wrap--invalid {
+  border-color: color-mix(in srgb, var(--sic-color-danger) 46%, var(--sic-color-border));
+}
+
+.sic-input-phone__dial {
+  position: relative;
+  flex: none;
+}
+
+.sic-input-phone__dial-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 100%;
+  min-height: inherit;
+  padding: 0 var(--sic-space-2);
+  border: none;
+  border-right: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md) 0 0 var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-sm);
+  cursor: pointer;
+}
+
+.sic-input-phone__dial-trigger:disabled {
+  cursor: not-allowed;
+  color: var(--sic-color-text-muted);
+}
+
+.sic-input-phone__dial-code {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sic-input-phone__caret {
+  color: var(--sic-color-text-muted);
+  font-size: 0.75em;
+  transition: transform var(--sic-transition-fast);
+}
+
+.sic-input-phone__caret--open {
+  transform: rotate(180deg);
+}
+
+.sic-input-phone__panel {
+  box-sizing: border-box;
+  background: var(--sic-color-bg);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  box-shadow: var(--sic-shadow-md);
+  overflow: hidden;
+}
+
+.sic-input-phone__options {
+  list-style: none;
+  margin: 0;
+  padding: var(--sic-space-1) 0;
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.sic-input-phone__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--sic-space-2) var(--sic-space-3);
+  cursor: pointer;
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-input-phone__option:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-input-phone__option--selected {
+  color: var(--sic-color-primary);
+  font-weight: 600;
+}
+
+.sic-input-phone__option--active {
+  background: var(--sic-color-surface);
+}
+
+.sic-input-phone__option-dial {
+  flex: 1;
+  color: var(--sic-color-text-active);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sic-input-phone__field {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+  padding: 0 var(--sic-space-3);
+  border-radius: 0 var(--sic-radius-md) var(--sic-radius-md) 0;
+}
+
+.sic-input-phone__field:disabled {
+  cursor: not-allowed;
+  color: var(--sic-color-text-muted);
+}
+
+:host(.sic-align-center) .sic-input-phone__field {
+  text-align: center;
+}
+
+:host(.sic-align-right) .sic-input-phone__field {
+  text-align: right;
+}

@@ -1,0 +1,8 @@
+<span class="sic-badge__anchor">
+  <ng-content></ng-content>
+  @if (dot) {
+    <span class="sic-badge__dot sic-badge__dot--{{ color }} sic-badge__dot--{{ position }}"></span>
+  } @else if (count !== undefined) {
+    <span class="sic-badge__count sic-badge__count--{{ color }} sic-badge__count--{{ position }}">{{ displayCount }}</span>
+  }
+</span>

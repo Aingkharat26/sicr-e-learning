@@ -1,0 +1,41 @@
+/**
+ * sic-ng design tokens — "Slate" theme (monochrome, minimal, sharp corners).
+ * Apply the `theme-slate` class alongside the base tokens (see slate-theme.css).
+ */
+:root.theme-slate {
+  --sic-color-bg: #ffffff;
+  --sic-color-surface: #f4f4f5;
+  --sic-color-border: #d4d4d8;
+  --sic-color-text: #18181b;
+  --sic-color-text-muted: #71717a;
+  --sic-color-text-active: #09090b;
+
+  --sic-color-primary: #0f172a;
+  --sic-color-primary-contrast: #ffffff;
+  --sic-color-success: #15803d;
+  --sic-color-danger: #b91c1c;
+  --sic-color-warning: #b45309;
+
+  --sic-radius-sm: 0.25rem;
+  --sic-radius-md: 0.35rem;
+  --sic-radius-lg: 0.5rem;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 10%, transparent);
+  --sic-shadow-md: 0 6px 16px color-mix(in srgb, #000 14%, transparent);
+}
+
+:root.theme-slate.dark {
+  --sic-color-bg: #0a0a0b;
+  --sic-color-surface: #131316;
+  --sic-color-border: #2a2a2e;
+  --sic-color-text: #f4f4f5;
+  --sic-color-text-muted: #9a9aa2;
+  --sic-color-text-active: #ffffff;
+
+  /* True monochrome inversion: primary flips to near-white in dark mode. */
+  --sic-color-primary: #e4e4e7;
+  --sic-color-primary-contrast: #09090b;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 45%, transparent);
+  --sic-shadow-md: 0 6px 16px color-mix(in srgb, #000 50%, transparent);
+}

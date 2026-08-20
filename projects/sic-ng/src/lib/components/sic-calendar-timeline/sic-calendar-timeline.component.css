@@ -1,0 +1,302 @@
+:host {
+  --sic-calendar-timeline-row-height: 3.25rem;
+  --sic-calendar-timeline-group-height: 1.5rem;
+  --sic-calendar-timeline-header-height: 2.25rem;
+
+  display: block;
+  width: 100%;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  font-family: var(--sic-font-sans);
+  overflow: hidden;
+}
+
+/* ---- View-mode toolbar ---- */
+.sic-calendar-timeline__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border-bottom: 1px solid var(--sic-color-border);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-calendar-timeline__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sic-space-1);
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-sm);
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+  cursor: pointer;
+  font-size: var(--sic-font-size-sm);
+  font-weight: 600;
+}
+
+.sic-calendar-timeline__view-btn:hover {
+  background: var(--sic-color-bg);
+}
+
+.sic-calendar-timeline__view-chevron {
+  font-size: 0.7rem;
+}
+
+.sic-calendar-timeline__view-option--active {
+  color: var(--sic-color-primary);
+  font-weight: 700;
+}
+
+.sic-calendar-timeline__body {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ---- Label column ---- */
+.sic-calendar-timeline__labels {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 14rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--sic-color-border);
+  /* Scroll position is synced from the grid pane (which shows its own scrollbar) — no need for two. */
+  scrollbar-width: none;
+}
+
+.sic-calendar-timeline__labels::-webkit-scrollbar {
+  display: none;
+}
+
+.sic-calendar-timeline__labels-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--sic-calendar-timeline-group-height) + var(--sic-calendar-timeline-header-height));
+  padding: 0 var(--sic-space-3);
+  border-bottom: 1px solid var(--sic-color-border);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  font-weight: 700;
+}
+
+.sic-calendar-timeline__labels-header--compact {
+  height: var(--sic-calendar-timeline-header-height);
+}
+
+.sic-calendar-timeline__label-row {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--sic-calendar-timeline-row-height);
+  padding: 0 var(--sic-space-3);
+  border-bottom: 1px solid var(--sic-color-border);
+  cursor: pointer;
+}
+
+.sic-calendar-timeline__label-row:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar-timeline__label-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  min-width: 0;
+}
+
+.sic-calendar-timeline__label-text {
+  overflow: hidden;
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-calendar-timeline__progress {
+  flex: none;
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-calendar-timeline__avatar {
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: var(--sic-radius-full);
+  object-fit: cover;
+}
+
+/* ---- Timeline grid ---- */
+.sic-calendar-timeline__scroll {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* Positioned relative to .sic-calendar-timeline__body (a plain, non-scrolling flex container) —
+   not the scrolling grid pane — so it stays put instead of scrolling away with the columns. */
+.sic-calendar-timeline__toggle {
+  position: absolute;
+  left: var(--sic-space-2);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  transform: translateY(-50%);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.sic-calendar-timeline__toggle:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar-timeline__grid {
+  min-width: max-content;
+}
+
+.sic-calendar-timeline__groups,
+.sic-calendar-timeline__header,
+.sic-calendar-timeline__row {
+  display: grid;
+}
+
+.sic-calendar-timeline__groups {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: var(--sic-calendar-timeline-group-height);
+  border-bottom: 1px solid var(--sic-color-border);
+  background: var(--sic-color-bg);
+}
+
+.sic-calendar-timeline__group {
+  overflow: hidden;
+  padding-inline-start: var(--sic-space-2);
+  border-inline-start: 1px solid var(--sic-color-border);
+  color: var(--sic-color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-calendar-timeline__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: var(--sic-calendar-timeline-header-height);
+  border-bottom: 1px solid var(--sic-color-border);
+  background: var(--sic-color-bg);
+}
+
+.sic-calendar-timeline__header--with-groups {
+  top: var(--sic-calendar-timeline-group-height);
+}
+
+.sic-calendar-timeline__header-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-inline-start: 1px solid var(--sic-color-border);
+  color: var(--sic-color-text-muted);
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.sic-calendar-timeline__header-cell--weekend {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar-timeline__header-cell--today .sic-calendar-timeline__header-label {
+  color: var(--sic-color-primary);
+  font-weight: 700;
+}
+
+.sic-calendar-timeline__header-label {
+  color: var(--sic-color-text-active);
+  font-weight: 600;
+}
+
+.sic-calendar-timeline__row {
+  position: relative;
+  align-items: center;
+  height: var(--sic-calendar-timeline-row-height);
+  border-bottom: 1px solid var(--sic-color-border);
+}
+
+.sic-calendar-timeline__cell {
+  height: 100%;
+  border-inline-start: 1px solid var(--sic-color-border);
+}
+
+.sic-calendar-timeline__cell--weekend {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar-timeline__empty {
+  padding: var(--sic-space-4);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  text-align: center;
+}
+
+.sic-calendar-timeline__phase {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 2rem;
+  margin: 0 2px;
+  border-radius: var(--sic-radius-sm);
+  background: var(--sic-color-primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+.sic-calendar-timeline__phase-content {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  min-width: 0;
+  padding: 0 var(--sic-space-2);
+}
+
+.sic-calendar-timeline__phase-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.sic-calendar-timeline__phase-text strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-calendar-timeline__phase-text span {
+  overflow: hidden;
+  opacity: 0.85;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,98 @@
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sic-space-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.sic-space-bg__gradient {
+  position: absolute;
+  inset: 0;
+  background-size: 300% 300%;
+}
+
+.sic-space-bg--animated .sic-space-bg__gradient {
+  animation: sic-space-bg-gradient-shift var(--sic-space-bg-speed, 20s) ease infinite;
+}
+
+@keyframes sic-space-bg-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sic-space-bg__shape {
+  position: absolute;
+  transform: rotate(var(--sic-space-bg-rotate, 0deg));
+}
+
+.sic-space-bg__shape--circle {
+  border-radius: 50%;
+}
+
+.sic-space-bg__shape--square {
+  border-radius: var(--sic-radius-sm, 4px);
+}
+
+.sic-space-bg__shape--triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.sic-space-bg__shape--hexagon {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Float animation replaces the base `transform` entirely while playing, but matches it at the
+   0%/100% keyframes, so there's no visible snap when the loop restarts. */
+.sic-space-bg--animated .sic-space-bg__shape--circle,
+.sic-space-bg--animated .sic-space-bg__shape--square,
+.sic-space-bg--animated .sic-space-bg__shape--triangle,
+.sic-space-bg--animated .sic-space-bg__shape--hexagon {
+  animation-name: sic-space-bg-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes sic-space-bg-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--sic-space-bg-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-16px) rotate(var(--sic-space-bg-rotate, 0deg));
+  }
+}
+
+.sic-space-bg__shape--sparkle {
+  border-radius: 50%;
+}
+
+.sic-space-bg--animated .sic-space-bg__shape--sparkle {
+  animation-name: sic-space-bg-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes sic-space-bg-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}

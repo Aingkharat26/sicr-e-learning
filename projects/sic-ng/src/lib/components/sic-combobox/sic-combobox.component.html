@@ -1,0 +1,103 @@
+<div class="sic-field">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <div class="sic-combobox">
+    <input
+      #inputEl
+      type="text"
+      class="sic-control-field sic-combobox__input"
+      [class.sic-control-field--invalid]="showError"
+      [class.sic-combobox__input--overlaid]="showDisplayOverlay"
+      [class.sic-combobox__input--clearable]="showClear"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [readOnly]="readonly || !searchable"
+      [value]="fieldValue"
+      (focus)="handleFocus()"
+      (click)="handleFocus()"
+      (blur)="handleBlur()"
+      (input)="handleQuery($event)"
+      (keydown)="handleKeydown($event)"
+    />
+
+    @if (showDisplayOverlay) {
+      <div class="sic-combobox__display" [class.sic-combobox__display--clearable]="showClear">
+        <ng-container
+          *ngTemplateOutlet="displayTemplate!; context: { $implicit: selectedOptionsView, multi }"
+        ></ng-container>
+      </div>
+    }
+
+    @if (showClear) {
+      <button
+        type="button"
+        class="sic-field-clear-btn sic-combobox__clear"
+        tabindex="-1"
+        aria-label="Clear"
+        (mousedown)="$event.preventDefault()"
+        (click)="clear($event)"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
+    }
+
+    <span class="sic-combobox__caret" [class.sic-combobox__caret--open]="open">▾</span>
+
+    @if (open) {
+      <div
+        #panel
+        class="sic-combobox__panel"
+        [style.top.px]="panelTop"
+        [style.left.px]="panelLeft"
+        [style.width.px]="panelWidth">
+        <ul class="sic-combobox__options" (scroll)="onOptionsScroll($event)">
+          @for (option of filteredOptions; track $index; let i = $index) {
+            <li
+              class="sic-combobox__option"
+              [class.sic-combobox__option--selected]="isSelected(option)"
+              [class.sic-combobox__option--active]="i === activeIndex"
+              (mousedown)="$event.preventDefault()"
+              (mouseenter)="activeIndex = i"
+              (click)="selectOption(option)"
+            >
+              @if (optionTemplate) {
+                <ng-container
+                  *ngTemplateOutlet="
+                    optionTemplate;
+                    context: { $implicit: option, selected: isSelected(option), active: i === activeIndex }
+                  "
+                ></ng-container>
+              } @else {
+                {{ labelFor(option) }}
+              }
+            </li>
+          }
+          @if (!loadingMore && filteredOptions.length === 0) {
+            <li class="sic-combobox__empty">{{ noOptionsText }}</li>
+          }
+          @if (isPaging && loadingMore) {
+            <li class="sic-combobox__loading">
+              <sic-spinner size="sm" />
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</div>

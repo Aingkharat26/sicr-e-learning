@@ -1,0 +1,32 @@
+<div class="sic-masonry">
+  @for (column of columns; track $index) {
+    <div class="sic-masonry__column">
+      @for (entry of column; track trackByFn(entry.index, entry)) {
+        <div
+          #itemEl
+          class="sic-masonry__item"
+          [attr.data-index]="entry.index"
+          (click)="handleItemClick(entry)"
+        >
+          @if (itemTemplate) {
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: entry.item, index: entry.index }"></ng-container>
+          } @else {
+            <div class="sic-masonry__fallback">{{ entry.item }}</div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (dataset.length === 0 && !loadingMore) {
+  <div class="sic-masonry__empty">{{ noItemsText }}</div>
+}
+
+@if (isLazy) {
+  <div #sentinel class="sic-masonry__sentinel"></div>
+
+  @if (loadingMore) {
+    <div class="sic-masonry__loading">{{ loadingMoreText }}</div>
+  }
+}

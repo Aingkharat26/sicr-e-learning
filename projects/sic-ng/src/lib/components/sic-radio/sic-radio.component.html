@@ -1,0 +1,50 @@
+@if (options.length > 0) {
+  <div class="sic-field">
+    @if (label) {
+      <span class="sic-field__label">
+        {{ label }}
+        @if (isRequired) {
+          <span class="sic-field__required">*</span>
+        }
+      </span>
+    }
+
+    <div class="sic-radio-group__options" [class.sic-radio-group__options--row]="direction === 'row'">
+      @for (option of options; track option.value) {
+        <label class="sic-radio" [class.sic-radio--disabled]="disabled">
+          <input
+            type="radio"
+            class="sic-radio__input"
+            [name]="name"
+            [checked]="isChecked(option.value)"
+            [disabled]="disabled"
+            (change)="onRadioChange(option.value)"
+          />
+          <span class="sic-radio__dot" [class.sic-radio__dot--invalid]="showError"></span>
+          <span class="sic-radio__label">{{ option.name }}</span>
+        </label>
+      }
+    </div>
+
+    @if (showError && errorMessage) {
+      <span class="sic-field__error">{{ errorMessage }}</span>
+    } @else if (hint) {
+      <span class="sic-field__hint">{{ hint }}</span>
+    }
+  </div>
+} @else {
+  <label class="sic-radio" [class.sic-radio--disabled]="disabled">
+    <input
+      type="radio"
+      class="sic-radio__input"
+      [name]="name"
+      [checked]="checked"
+      [disabled]="disabled"
+      (change)="onRadioChange()"
+    />
+    <span class="sic-radio__dot" [class.sic-radio__dot--invalid]="showError"></span>
+    @if (label) {
+      <span class="sic-radio__label">{{ label }}</span>
+    }
+  </label>
+}

@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 3rem);
+  scroll-margin-top: 4rem;
+  font-family: var(--sic-font-sans);
+}
+
+:host(.sic-section--full-bleed) {
+  max-width: none;
+  padding: 0;
+}
+
+:host(.sic-section--bordered) {
+  border-top: 1px solid var(--sic-color-border);
+}
+
+:host(.sic-section--center) {
+  text-align: center;
+}
+
+.sic-section__title {
+  margin: 0 0 var(--sic-space-2);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  text-align: center;
+  color: var(--sic-color-text-active);
+}
+
+.sic-section__lead {
+  margin: 0 auto var(--sic-space-4);
+  max-width: 40rem;
+  text-align: center;
+  color: var(--sic-color-text-muted);
+}

@@ -1,0 +1,84 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-primary);
+  overflow: hidden;
+  font-family: var(--sic-font-sans);
+  cursor: pointer;
+}
+
+:host(.sic-size-sm) {
+  width: 2rem;
+  height: 2rem;
+}
+
+:host(.sic-size-lg) {
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
+:host(.sic-avatar-host--group) {
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  cursor: default;
+}
+
+.sic-avatar-stack__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-left: -0.75rem;
+  border-radius: var(--sic-radius-full);
+  border: 2px solid var(--sic-color-bg);
+  background: var(--sic-color-primary);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.sic-avatar-stack__item:first-child {
+  margin-left: 0;
+}
+
+/* Brings the hovered avatar above every neighbor that would otherwise clip
+   it, regardless of stacking order — !important is required because the
+   base z-index is set inline (per-item, for the left-to-right stack order),
+   and inline styles otherwise win over stylesheet rules of any specificity. */
+.sic-avatar-stack__item:hover {
+  z-index: 999 !important;
+  transform: scale(1.08);
+}
+
+:host(.sic-size-sm) .sic-avatar-stack__item {
+  width: 2rem;
+  height: 2rem;
+  margin-left: -0.6rem;
+}
+
+:host(.sic-size-lg) .sic-avatar-stack__item {
+  width: 3.4rem;
+  height: 3.4rem;
+  margin-left: -0.9rem;
+}
+
+.sic-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sic-avatar__initials {
+  color: var(--sic-color-primary-contrast);
+  font-weight: 700;
+  font-size: 0.9rem;
+}

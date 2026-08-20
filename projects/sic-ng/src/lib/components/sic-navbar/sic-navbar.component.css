@@ -1,0 +1,54 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-4);
+  min-height: 3.6rem;
+  padding: 0 var(--sic-space-4);
+  background: var(--sic-color-bg);
+  border-bottom: 1px solid var(--sic-color-border);
+  font-family: var(--sic-font-sans);
+}
+
+:host(.sic-navbar--sticky) {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+:host(.sic-navbar--fixed) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+}
+
+/* Pushes rightTemplate's whole content flush to the navbar's trailing edge and lays out its
+   top-level children (e.g. a links group, a popover, a theme toggle) in one row with a
+   consistent gap, so consumers never need their own margin-left:auto/flex CSS for this slot. */
+.sic-navbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-3);
+  margin-left: auto;
+}
+
+.sic-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  font-weight: 700;
+  color: var(--sic-color-text-active);
+}
+
+.sic-navbar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: none;
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  font-size: 1.1rem;
+}

@@ -1,0 +1,1101 @@
+<div class="tutorial-shell">
+  <sic-sidebar
+    class="tutorial-shell__sidebar"
+    logo="🐙"
+    brand="sic-ng"
+    [sections]="tocSections"
+    [activeLink]="tocActiveLink ?? undefined"
+    [collapsed]="tocCollapsed"
+    [showToggle]="false"
+    collapseMode="hidden"
+    (itemSelect)="handleTocSelect($event)"
+  />
+
+  <div class="tutorial-shell__main">
+    <sic-navbar
+      class="tutorial-shell__navbar"
+      [fixed]="true"
+      [style.left]="tocCollapsed ? '0' : '16rem'"
+      [showSidebarToggle]="true"
+    >
+      <ng-template sicNavbarHeader let-navbar>
+        <sic-button variant="ghost" size="sm" (click)="tocCollapsed = !tocCollapsed" aria-label="Toggle sidebar">
+          ☰
+        </sic-button>
+        <sic-button
+          variant="outline"
+          size="sm"
+          class="tutorial-shell__search-trigger"
+          (click)="componentSearchOpen = true"
+          aria-label="ค้นหา component"
+        >
+          🔍 <span>ค้นหา component...</span>
+        </sic-button>
+        <sic-search
+          [open]="componentSearchOpen"
+          [items]="componentSearchItems"
+          [optionLabel]="'label'"
+          [minWidth]="'26rem'"
+          placeholder="ค้นหา component เช่น button, calendar, card..."
+          (openChange)="componentSearchOpen = $event"
+          (itemSelect)="handleComponentSearchSelect($event)"
+        >
+          <ng-template #itemTemplate let-item>
+            <strong>{{ item.label }}</strong>
+            <span style="opacity: 0.6; margin-left: 0.5rem;">{{ item.selector }}</span>
+          </ng-template>
+        </sic-search>
+        <sic-tag class="tutorial-shell__version" color="neutral">v{{ libraryVersion }}</sic-tag>
+      </ng-template>
+
+      <ng-template sicNavbarRight let-navbar>
+        <sic-tag class="tutorial-shell__navbar-spacer" color="primary">{{ totalComponents }} components</sic-tag>
+        <sic-button
+          variant="outline"
+          (click)="toggleLanguage()"
+          [attr.aria-pressed]="uiLanguage === 'en'"
+          aria-label="Toggle Thai/English"
+        >
+          {{ uiLanguage === 'th' ? '🇹🇭 ไทย' : '🇬🇧 English' }}
+        </sic-button>
+
+        <sic-popover [items]="themeNames" (itemSelect)="setThemeName($event)">
+          <ng-template sicPopoverButton let-popover>
+            <sic-button variant="outline" (click)="popover.toggle()" [attr.aria-expanded]="popover.open" aria-label="Change theme">
+              🎨 {{ themeService.themeName() }}
+            </sic-button>
+          </ng-template>
+          <ng-template sicPopoverList let-item>
+            <span [class.tutorial-shell__theme-option--active]="themeService.themeName() === item">{{ item }}</span>
+          </ng-template>
+        </sic-popover>
+
+        <sic-button
+          variant="outline"
+          (click)="toggleTheme()"
+          [attr.aria-pressed]="themeService.isDark()"
+          aria-label="Toggle light/dark mode"
+        >
+          {{ themeService.isDark() ? '🌙 Dark' : '☀️ Light' }}
+        </sic-button>
+      </ng-template>
+    </sic-navbar>
+
+    <sic-breadcrumb class="tutorial-shell__breadcrumb" [items]="tocBreadcrumbItems" separator="/" />
+
+    <main class="tutorial">
+      <header>
+        <sic-card class="tutorial__hero" [elevated]="true">
+          <p class="tutorial__eyebrow">sic-ng component tutorial</p>
+          <h1>Component Tutorial</h1>
+          <p>
+            หน้าเดียวสำหรับดูตัวอย่างการใช้งาน component แบบแยกทีละตัว พร้อม code,
+            attributes และ events ที่ใช้บ่อย
+          </p>
+        </sic-card>
+      </header>
+
+      <section aria-labelledby="quickstart-title">
+        <sic-card class="tutorial__quickstart">
+          <div>
+            <p class="tutorial__eyebrow">How to read</p>
+            <h2 id="quickstart-title">โครงสร้างของแต่ละ component</h2>
+            <p>
+              ทุก card จะแบ่งเป็น Demo สำหรับลองดูหน้าตา, Code สำหรับ copy ไปใช้,
+              Attributes สำหรับ input ที่ส่งเข้า component และ Events สำหรับ output ที่ component emit ออกมา
+            </p>
+          </div>
+          <sic-code language="html" [showLineNumbers]="false" [showCopyButton]="false" [code]="quickstartSnippet" />
+        </sic-card>
+      </section>
+
+      <div class="tutorial__content">
+        @for (group of componentGroups; track group.title) {
+        <section class="tutorial__group" [attr.aria-labelledby]="group.id + '-title'">
+          <sic-card class="tutorial__group-header">
+            <p class="tutorial__eyebrow">{{ group.description }}</p>
+            <h2 [id]="group.id + '-title'">{{ group.title }}</h2>
+          </sic-card>
+
+          @for (doc of group.components; track doc.id) {
+            <sic-card class="component-card" [id]="doc.id" [bordered]="true" [elevated]="true">
+              <div sicCardHeader class="component-card__header">
+                <div>
+                  <p class="component-card__selector">{{ doc.selector }}</p>
+                  <h3>{{ doc.title }}</h3>
+                  <p>{{ doc.description }}</p>
+                </div>
+                <sic-tag color="neutral">{{ doc.category }}</sic-tag>
+              </div>
+
+              <div class="component-card__body">
+                @if (doc.hasDemo !== false) {
+                <sic-card class="doc-panel" aria-label="Demo">
+                  <div sicCardHeader class="doc-panel__title">Demo</div>
+                  <div class="demo-surface">
+                    @switch (doc.id) {
+                      @case ('theme-config') {
+                        <sic-flex direction="row" gap="0.5rem" wrap="wrap">
+                          @for (name of themeNames; track name) {
+                            <sic-button
+                              variant="outline"
+                              [class.demo-theme-btn--active]="themeService.themeName() === name"
+                              (click)="setThemeName(name)"
+                            >
+                              {{ name }}
+                            </sic-button>
+                          }
+                        </sic-flex>
+                      }
+                      @case ('custom-color') {
+                        <sic-flex direction="row" gap="0.75rem" align="end" wrap="wrap">
+                          <sic-colorpicker label="Primary color" [allowText]="true" [(ngModel)]="demoCustomColor" />
+                          <sic-button variant="solid" color="primary" (click)="applyCustomColor()">Apply ทั้งหน้า</sic-button>
+                        </sic-flex>
+                      }
+                      @case ('sic-navbar') {
+                        <div class="demo-navbar-shell">
+                          <sic-navbar
+                            [sticky]="false"
+                            [showSidebarToggle]="true"
+                            [(collapsed)]="navbarCollapsed"
+                            [darkMode]="navbarDarkMode"
+                            [notifications]="navbarNotifications"
+                            [user]="navbarUser"
+                            [menuItems]="navbarMenuItems"
+                            (darkModeChange)="navbarDarkMode = $event"
+                            (notificationClick)="handleNavbarNotification($event)"
+                            (viewAllNotifications)="handleNavbarViewAll()"
+                            (menuItemClick)="handleNavbarMenuItem($event)"
+                          >
+                            <ng-template sicNavbarHeader let-navbar>
+                              <div class="demo-navbar-brand">
+                                <span class="demo-navbar-logo">🐙</span>
+                                <span>sic-ng</span>
+                              </div>
+                            </ng-template>
+
+                            <!-- ไม่มี UI hamburger ให้แล้ว ประกอบเองจาก showSidebarToggle/collapsed -->
+                            <ng-template sicNavbarLeft let-navbar>
+                              <div class="demo-navbar-left">
+                                @if (navbar.showSidebarToggle) {
+                                  <button type="button" class="demo-navbar-icon-btn" (click)="navbar.toggleSidebar()" aria-label="Toggle sidebar">
+                                    ☰
+                                  </button>
+                                }
+                              </div>
+                            </ng-template>
+
+                            <!-- ไม่มี UI theme toggle/แจ้งเตือน/user menu ให้แล้ว ประกอบเองจาก darkMode/notifications/user -->
+                            <ng-template sicNavbarRight let-navbar>
+                              <div class="demo-navbar-right">
+                                <button type="button" class="demo-navbar-icon-btn" (click)="navbar.toggleDarkMode()" aria-label="Toggle theme">
+                                  {{ navbar.darkMode ? '🌙' : '☀️' }}
+                                </button>
+
+                                <div class="demo-navbar-popover-wrap">
+                                  <button type="button" class="demo-navbar-icon-btn" (click)="navbar.toggleNotifications($event)" aria-label="Notifications">
+                                    🔔
+                                    @if (navbar.hasUnread) {
+                                      <span class="demo-navbar-dot"></span>
+                                    }
+                                  </button>
+                                  @if (navbar.notificationsOpen) {
+                                    <div class="demo-navbar-panel">
+                                      <div class="demo-navbar-panel-header">
+                                        <span>Notification</span>
+                                        <button type="button" (click)="navbar.closeNotifications()" aria-label="Close">✕</button>
+                                      </div>
+                                      @if (!navbar.notifications.length) {
+                                        <div class="demo-navbar-empty">{{ navbar.noNotificationsText }}</div>
+                                      } @else {
+                                        @for (notification of navbar.notifications; track notification.id) {
+                                          <button type="button" class="demo-navbar-notification" (click)="navbar.selectNotification(notification)">
+                                            @if (notification.actor) { <b>{{ notification.actor }}</b> }
+                                            {{ notification.message }}
+                                            @if (notification.target) { <b>{{ notification.target }}</b> }
+                                            <span class="demo-navbar-notification-meta">{{ notification.time }}</span>
+                                          </button>
+                                        }
+                                      }
+                                      @if (navbar.notifications.length) {
+                                        <button type="button" class="demo-navbar-view-all" (click)="navbar.handleViewAllNotifications()">
+                                          {{ navbar.viewAllNotificationsText }}
+                                        </button>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+
+                                @if (navbar.user) {
+                                  <div class="demo-navbar-popover-wrap">
+                                    <button type="button" class="demo-navbar-user-trigger" (click)="navbar.toggleUserMenu($event)">
+                                      <span class="demo-navbar-avatar">{{ navbar.user.name.charAt(0) }}</span>
+                                      <span>{{ navbar.user.name }}</span>
+                                    </button>
+                                    @if (navbar.userMenuOpen) {
+                                      <div class="demo-navbar-panel demo-navbar-panel--user">
+                                        @for (item of navbar.menuItems; track item.label) {
+                                          <button type="button" class="demo-navbar-menu-item" (click)="navbar.selectMenuItem(item)">
+                                            @if (item.icon) { <span>{{ item.icon }}</span> }
+                                            <span>{{ item.label }}</span>
+                                          </button>
+                                        }
+                                      </div>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </ng-template>
+                          </sic-navbar>
+                        </div>
+                      }
+                      @case ('sic-breadcrumb') {
+                        <sic-breadcrumb [items]="breadcrumbItems" separator="/" />
+                      }
+                      @case ('sic-sidebar') {
+                        <div class="demo-sidebar-shell">
+                          <sic-sidebar
+                            [sections]="sidebarSections"
+                            [collapsed]="sidebarCollapsed"
+                            activeLink="/setting/general/language"
+                            logo="🐙"
+                            brand="Web Monster"
+                            [search]="sidebarSearch"
+                            [user]="sidebarUser"
+                            accentColor="#ef4444"
+                            (collapsedChange)="sidebarCollapsed = $event"
+                            (searchChange)="sidebarSearch = $event"
+                            (userAction)="handleSidebarUserAction($event)"
+                          >
+                            <ng-template sicSidebarSubheader let-sidebar let-expanded="expanded">
+                              <div class="demo-sidebar-search">
+                                🔍
+                                @if (expanded) {
+                                  <input
+                                    [value]="sidebar.search"
+                                    (input)="sidebar.handleSearchInput($any($event.target).value)"
+                                    placeholder="Search..."
+                                  />
+                                }
+                              </div>
+                            </ng-template>
+                            <ng-template sicSidebarFooter let-sidebar let-expanded="expanded">
+                              @if (sidebar.user) {
+                                <div class="demo-sidebar-footer">
+                                  <div class="demo-sidebar-user">
+                                    <span class="demo-sidebar-user-avatar">{{ sidebar.user.name.charAt(0) }}</span>
+                                    @if (expanded) {
+                                      <span class="demo-sidebar-user-name">{{ sidebar.user.name }}</span>
+                                    }
+                                  </div>
+                                  @if (expanded) {
+                                    <button
+                                      type="button"
+                                      class="demo-sidebar-logout-btn"
+                                      title="Logout"
+                                      aria-label="Logout"
+                                      (click)="sidebar.handleUserAction()"
+                                    >
+                                      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                        <polyline points="16 17 21 12 16 7" />
+                                        <line x1="21" y1="12" x2="9" y2="12" />
+                                      </svg>
+                                    </button>
+                                  }
+                                </div>
+                              }
+                            </ng-template>
+                          </sic-sidebar>
+                        </div>
+                      }
+                      @case ('sic-navbar-sidebar-breadcrumb-combo-v1') {
+                        <div class="demo-shell">
+                          <sic-navbar [sticky]="false" [showSidebarToggle]="true">
+                            <ng-template sicNavbarHeader let-navbar>
+                              <div class="demo-navbar-brand">
+                                <button type="button" class="demo-navbar-icon-btn" (click)="shellCollapsed = !shellCollapsed" aria-label="Toggle sidebar">
+                                  ☰
+                                </button>
+                                <span class="demo-navbar-logo">🐙</span>
+                                <span>sic-ng</span>
+                              </div>
+                            </ng-template>
+
+                            <ng-template sicNavbarRight let-navbar>
+                              <div class="demo-navbar-right">
+                                <button type="button" class="demo-navbar-icon-btn" (click)="shellDarkMode = !shellDarkMode" aria-label="Toggle theme">
+                                  {{ shellDarkMode ? '🌙' : '☀️' }}
+                                </button>
+
+                                <sic-popover [items]="navbarNotifications" (itemSelect)="handleNavbarNotification($event)">
+                                  <ng-template sicPopoverButton let-popover>
+                                    <button type="button" class="demo-navbar-icon-btn" (click)="popover.toggle()" aria-label="Notifications">
+                                      🔔
+                                      @if (shellHasUnreadNotifications) {
+                                        <span class="demo-navbar-dot"></span>
+                                      }
+                                    </button>
+                                  </ng-template>
+                                  <ng-template sicPopoverHeader>
+                                    <div class="demo-popover-header">Notifications</div>
+                                  </ng-template>
+                                  <ng-template sicPopoverList let-item>
+                                    <div class="demo-navbar-notification">
+                                      @if (item.actor) { <b>{{ item.actor }}</b> }
+                                      {{ item.message }}
+                                      <span class="demo-navbar-notification-meta">{{ item.time }}</span>
+                                    </div>
+                                  </ng-template>
+                                </sic-popover>
+
+                                <div class="demo-navbar-profile">
+                                  <span class="demo-navbar-avatar">{{ navbarUser.name.charAt(0) }}</span>
+                                  <span>{{ navbarUser.name }}</span>
+                                </div>
+                              </div>
+                            </ng-template>
+                          </sic-navbar>
+
+                          <div class="demo-shell-body">
+                            <sic-sidebar
+                              class="demo-shell-sidebar"
+                              [sections]="sidebarSections"
+                              [collapsed]="shellCollapsed"
+                              [showToggle]="false"
+                              collapseMode="hidden"
+                              [activeLink]="shellActiveLink"
+                              (itemSelect)="handleShellItemSelect($event)"
+                            />
+
+                            <div class="demo-shell-content">
+                              <sic-breadcrumb
+                                [items]="shellBreadcrumbItems"
+                                separator="/"
+                                (itemClick)="handleShellBreadcrumbClick($event)"
+                              />
+                              <p class="demo-shell-page">หน้า: {{ shellActiveLink }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      @case ('sic-navbar-sidebar-breadcrumb-combo-v2') {
+                        <div class="demo-shell demo-shell--v2">
+                          <sic-sidebar
+                            class="demo-shell-sidebar"
+                            [sections]="sidebarSections"
+                            [collapsed]="shellCollapsedV2"
+                            [showToggle]="false"
+                            collapseMode="hidden"
+                            logo="🐙"
+                            brand="sic-ng"
+                            [activeLink]="shellActiveLinkV2"
+                            (itemSelect)="handleShellItemSelectV2($event)"
+                          />
+
+                          <div class="demo-shell-main">
+                            <sic-navbar [sticky]="false" [showSidebarToggle]="true">
+                              <ng-template sicNavbarHeader let-navbar>
+                                <button type="button" class="demo-navbar-icon-btn" (click)="shellCollapsedV2 = !shellCollapsedV2" aria-label="Toggle sidebar">
+                                  ☰
+                                </button>
+                              </ng-template>
+
+                              <ng-template sicNavbarRight let-navbar>
+                                <div class="demo-navbar-right">
+                                  <button type="button" class="demo-navbar-icon-btn" (click)="shellDarkModeV2 = !shellDarkModeV2" aria-label="Toggle theme">
+                                    {{ shellDarkModeV2 ? '🌙' : '☀️' }}
+                                  </button>
+
+                                  <sic-popover [items]="navbarNotifications" (itemSelect)="handleNavbarNotification($event)">
+                                    <ng-template sicPopoverButton let-popover>
+                                      <button type="button" class="demo-navbar-icon-btn" (click)="popover.toggle()" aria-label="Notifications">
+                                        🔔
+                                        @if (shellHasUnreadNotifications) {
+                                          <span class="demo-navbar-dot"></span>
+                                        }
+                                      </button>
+                                    </ng-template>
+                                    <ng-template sicPopoverHeader>
+                                      <div class="demo-popover-header">Notifications</div>
+                                    </ng-template>
+                                    <ng-template sicPopoverList let-item>
+                                      <div class="demo-navbar-notification">
+                                        @if (item.actor) { <b>{{ item.actor }}</b> }
+                                        {{ item.message }}
+                                        <span class="demo-navbar-notification-meta">{{ item.time }}</span>
+                                      </div>
+                                    </ng-template>
+                                  </sic-popover>
+
+                                  <div class="demo-navbar-profile">
+                                    <span class="demo-navbar-avatar">{{ navbarUser.name.charAt(0) }}</span>
+                                    <span>{{ navbarUser.name }}</span>
+                                  </div>
+                                </div>
+                              </ng-template>
+                            </sic-navbar>
+
+                            <div class="demo-shell-content">
+                              <sic-breadcrumb
+                                [items]="shellBreadcrumbItemsV2"
+                                separator="/"
+                                (itemClick)="handleShellBreadcrumbClickV2($event)"
+                              />
+                              <p class="demo-shell-page">หน้า: {{ shellActiveLinkV2 }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      @case ('sic-tabs') {
+                        <sic-tabs
+                          [tabs]="tabs"
+                          [activeId]="activeTabId"
+                          (activeIdChange)="activeTabId = $event"
+                        />
+                      }
+                      @case ('sic-stepper') {
+                        <sic-stepper
+                          [steps]="wizardSteps"
+                          [(activeIndex)]="wizardStep"
+                          (skip)="onWizardSkip($event)"
+                          (finish)="onWizardFinish()"
+                        >
+                          @switch (wizardStep) {
+                            @case (0) {
+                              <p>กรอกบัญชีผู้ใช้...</p>
+                            }
+                            @case (1) {
+                              <p>กรอกโปรไฟล์ (ข้ามได้)...</p>
+                            }
+                            @case (2) {
+                              <p>ยืนยันข้อมูล...</p>
+                            }
+                          }
+                        </sic-stepper>
+                      }
+                      @case ('sic-timeline') {
+                        <div class="demo-timeline-controls">
+                          <label>
+                            <input type="checkbox" [(ngModel)]="timelineAlternate" [ngModelOptions]="{ standalone: true }" />
+                            Alternate
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              [ngModel]="timelineOrientation === 'horizontal'"
+                              [ngModelOptions]="{ standalone: true }"
+                              (ngModelChange)="timelineOrientation = $event ? 'horizontal' : 'vertical'"
+                            />
+                            Horizontal
+                          </label>
+                        </div>
+                        <sic-timeline [items]="companyHistory" [orientation]="timelineOrientation" [alternate]="timelineAlternate" />
+                      }
+                      @case ('sic-grid') {
+                        <sic-grid [cols]="12" gap="0.75rem" [colsBreakpoints]="{ sm: 12, md: 6, lg: 4 }">
+                          <div class="demo-box">A</div>
+                          <div class="demo-box">B</div>
+                          <div class="demo-box">C</div>
+                        </sic-grid>
+                      }
+                      @case ('sic-flex') {
+                        <sic-flex direction="row" gap="0.75rem" align="center" wrap="wrap">
+                          <sic-button variant="solid" color="primary">Primary</sic-button>
+                          <sic-button variant="outline" color="success">Success</sic-button>
+                          <sic-button variant="ghost" color="danger">Danger</sic-button>
+                        </sic-flex>
+                      }
+                      @case ('sic-card') {
+                        <sic-card title="Order #1024" [bordered]="true" [elevated]="true">
+                          <p>Order body content goes here.</p>
+                          <div sicCardFooter>
+                            <sic-button variant="ghost">Cancel</sic-button>
+                            <sic-button variant="solid" color="primary">Confirm</sic-button>
+                          </div>
+                        </sic-card>
+                      }
+                      @case ('sic-card-stack') {
+                        <sic-card-stack [items]="destinations" (activeIndexChange)="onCardStackActive($event)" />
+                      }
+                      @case ('sic-button') {
+                        <sic-flex direction="row" gap="0.75rem" align="center" wrap="wrap">
+                          <sic-button variant="solid" color="primary">Primary</sic-button>
+                          <sic-button variant="outline" color="success">Success</sic-button>
+                          <sic-button variant="ghost" color="danger" [loading]="false">Danger</sic-button>
+                        </sic-flex>
+                      }
+                      @case ('sic-button-group') {
+                        <sic-button-group [attached]="true" direction="row">
+                          <sic-button variant="outline">Day</sic-button>
+                          <sic-button variant="outline">Week</sic-button>
+                          <sic-button variant="outline">Month</sic-button>
+                        </sic-button-group>
+                      }
+                      @case ('sic-a-link') {
+                        <sic-flex direction="row" gap="0.75rem" align="center" wrap="wrap">
+                          <sic-a-link href="#sic-a-link" variant="solid" color="primary">Primary Link</sic-a-link>
+                          <sic-a-link href="https://example.com" target="_blank" variant="outline">เปิดแท็บใหม่</sic-a-link>
+                          <sic-a-link href="#" [disabled]="true" variant="ghost">Disabled</sic-a-link>
+                        </sic-flex>
+                      }
+                      @case ('sic-section') {
+                        <sic-section title="หัวข้อ Section" lead="คำอธิบายสั้นๆ ใต้หัวข้อ จัดกึ่งกลางเสมอ" [bordered]="true" [center]="true">
+                          <p>เนื้อหาภายใน section นี้จัดกึ่งกลางเพราะ [center]="true"</p>
+                        </sic-section>
+                      }
+                      @case ('sic-show') {
+                        <sic-flex direction="column" gap="0.5rem">
+                          <sic-show from="md">
+                            <div class="demo-box">มองเห็น (จอกว้าง ≥ 768px)</div>
+                          </sic-show>
+                          <sic-show upTo="md">
+                            <div class="demo-box">มองเห็น (จอแคบ &lt; 768px)</div>
+                          </sic-show>
+                          <p>ลองย่อ/ขยายหน้าต่างเบราว์เซอร์เพื่อดูผล</p>
+                        </sic-flex>
+                      }
+                      @case ('sic-text') {
+                        <sic-flex direction="column" gap="0.5rem">
+                          <sic-text size="lg" weight="bold" [block]="true">หัวข้อใหญ่</sic-text>
+                          <sic-text color="muted" [block]="true">ข้อความสีจางสำหรับคำอธิบาย</sic-text>
+                          <sic-text [eyebrow]="true" color="muted" size="sm" [block]="true">EYEBROW LABEL</sic-text>
+                          <sic-text color="success" size="sm">บันทึกสำเร็จแล้ว</sic-text>
+                        </sic-flex>
+                      }
+                      @case ('sic-icon-badge') {
+                        <sic-flex direction="row" gap="0.75rem" align="center">
+                          <sic-icon-badge>📍</sic-icon-badge>
+                          <sic-icon-badge>📞</sic-icon-badge>
+                          <sic-icon-badge>✉️</sic-icon-badge>
+                        </sic-flex>
+                      }
+                      @case ('sic-form-data') {
+                        <sic-flex direction="column" gap="0.75rem">
+                          <form [formGroup]="demoContactForm">
+                            <sic-input name="demoContactName" label="ชื่อ" formControlName="name" />
+                          </form>
+
+                          <sic-flex direction="row" gap="0.5rem" wrap="wrap" align="center">
+                            <sic-tag color="neutral">state: {{ demoContactData.state }}</sic-tag>
+                            <sic-tag [color]="demoContactData.isChanged ? 'warning' : 'success'">isChanged: {{ demoContactData.isChanged }}</sic-tag>
+                          </sic-flex>
+
+                          <sic-flex direction="row" gap="0.5rem" wrap="wrap">
+                            <sic-button variant="outline" color="danger" (click)="demoContactDelete()">delete()</sic-button>
+                            <sic-button variant="outline" (click)="demoContactRestore()">restore()</sic-button>
+                            <sic-button variant="outline" (click)="demoContactReset()">reset()</sic-button>
+                            <sic-button variant="outline" color="success" (click)="demoContactMarkAsPristine()">markAsPristine()</sic-button>
+                          </sic-flex>
+                        </sic-flex>
+                      }
+                      @case ('sic-form-combine') {
+                        <sic-flex direction="column" gap="0.75rem">
+                          <form [formGroup]="demoContactForm">
+                            <sic-input name="combineContactName" label="ชื่อผู้ติดต่อ" formControlName="name" />
+                          </form>
+
+                          <sic-gridpanel
+                            #combineItemsGrid
+                            [config]="combineItemsConfig"
+                            (loadData)="handleCombineItemsLoad($event, combineItemsGrid)"
+                          />
+
+                          <sic-gridpanel
+                            #combineExtrasGrid
+                            [config]="combineExtrasConfig"
+                            (loadData)="handleCombineExtrasLoad($event, combineExtrasGrid)"
+                          />
+
+                          <sic-flex direction="row" gap="0.5rem" wrap="wrap">
+                            <sic-button (click)="combineSubmit(combineItemsGrid, combineExtrasGrid)">รวมข้อมูล (markAllAsTouched + value)</sic-button>
+                            <sic-button variant="outline" (click)="combineRestore(combineItemsGrid, combineExtrasGrid)">restore()</sic-button>
+                            <sic-button variant="outline" color="danger" (click)="combineReset(combineItemsGrid, combineExtrasGrid)">reset()</sic-button>
+                          </sic-flex>
+
+                          @if (combineResult) {
+                            <pre style="white-space: pre-wrap; font-size: 0.8rem;">{{ combineResult }}</pre>
+                          }
+                        </sic-flex>
+                      }
+                      @case ('standard-search') {
+                        <sic-flex direction="column" gap="1rem">
+                          <sic-card [bordered]="true" title="เงื่อนไข">
+                            <form [formGroup]="standardSearchForm">
+                              <sic-grid [cols]="2" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                                <sic-input label="รหัสพนักงาน ตั้งแต่" formControlName="employeeCodeFrom" />
+                                <sic-input label="ถึง" formControlName="employeeCodeTo" />
+                                <sic-combobox label="แผนก" [options]="standardDepartmentOptions" optionLabel="label" optionValue="value" formControlName="department" />
+                                <sic-combobox label="ตำแหน่ง" [options]="standardPositionOptions" optionLabel="label" optionValue="value" formControlName="position" />
+                              </sic-grid>
+                            </form>
+
+                            <sic-flex sicCardFooter direction="row" justify="end" gap="0.5rem">
+                              <sic-button variant="outline" (click)="standardSearchClear()">ล้างข้อมูล</sic-button>
+                              <sic-button (click)="standardSearchSubmit(standardSearchGrid)">ค้นหา</sic-button>
+                            </sic-flex>
+                          </sic-card>
+
+                          <sic-card [bordered]="true" title="รายละเอียด">
+                            <sic-gridpanel
+                              #standardSearchGrid
+                              [config]="standardSearchGridConfig"
+                              (loadData)="handleStandardSearchLoad($event, standardSearchGrid)"
+                              (rowAction)="handleStandardSearchRowAction($event)"
+                            />
+                          </sic-card>
+                        </sic-flex>
+                      }
+                      @case ('file-naming-convention') {
+                        <sic-card [bordered]="true" title="ข้อมูลพนักงาน">
+                          <form [formGroup]="standardEmployeeForm">
+                            <sic-grid [cols]="2" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                              <sic-input label="รหัสพนักงาน" formControlName="employeeCode" />
+                              <sic-input label="ชื่อ" formControlName="employeeName" />
+                              <sic-input label="แผนก" formControlName="department" />
+                              <sic-input label="ตำแหน่ง" formControlName="position" />
+                              <sic-input-number label="เงินเดือน" [decimals]="0" formControlName="salary" />
+                            </sic-grid>
+                          </form>
+
+                          <sic-flex sicCardFooter direction="row" justify="end">
+                            <sic-button [disabled]="!standardEmployeeData.isChanged" (click)="standardSave()">บันทึก</sic-button>
+                          </sic-flex>
+                        </sic-card>
+                      }
+                      @case ('standard-transaction') {
+                        <sic-flex direction="column" gap="1rem">
+                          <sic-card [bordered]="true" title="ข้อมูลพนักงาน">
+                            <form [formGroup]="standardEmployeeForm">
+                              <sic-grid [cols]="2" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                                <sic-input label="รหัสพนักงาน" formControlName="employeeCode" />
+                                <sic-input label="ชื่อ" formControlName="employeeName" />
+                                <sic-input label="แผนก" formControlName="department" />
+                                <sic-input label="ตำแหน่ง" formControlName="position" />
+                                <sic-input-number label="เงินเดือน" [decimals]="0" formControlName="salary" />
+                              </sic-grid>
+                            </form>
+                          </sic-card>
+
+                          <sic-card [bordered]="true" title="ประวัติการเลื่อนขั้น/เงินเดือน">
+                            <sic-gridpanel
+                              #standardHistoryGrid
+                              [config]="standardHistoryGridConfig"
+                              (loadData)="handleStandardHistoryLoad($event, standardHistoryGrid)"
+                            />
+                          </sic-card>
+
+                          <sic-flex direction="row" justify="end">
+                            <sic-button (click)="standardTransactionSave(standardHistoryGrid)">บันทึก</sic-button>
+                          </sic-flex>
+                        </sic-flex>
+                      }
+                      @case ('sic-input') {
+                        <sic-input name="email" label="Email" placeholder="you@example.com" [(ngModel)]="email" />
+                      }
+                      @case ('sic-input-password') {
+                        <sic-input-password name="password" label="Password" [(ngModel)]="password" />
+                      }
+                      @case ('sic-input-number') {
+                        <sic-grid [cols]="2" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                          <sic-input-number name="age" label="Age" [min]="0" [max]="120" [decimals]="0" [(ngModel)]="age" />
+                          <sic-input-number label="Price" [decimals]="2" thousandSeparator="," suffix="THB" [(ngModel)]="price" />
+                        </sic-grid>
+                      }
+                      @case ('sic-input-area') {
+                        <sic-input-area name="bio" label="Bio" [rows]="4" [autoResize]="true" [(ngModel)]="bio" />
+                      }
+                      @case ('sic-input-comment') {
+                        <sic-input-comment
+                          label="Comment"
+                          placeholder="พิมพ์ข้อความ, @ เพื่อกล่าวถึง, # เพื่อแท็กหัวข้อ..."
+                          [mentionSearch]="searchMentions"
+                          [maxSizeMb]="5"
+                          [(ngModel)]="comment"
+                          (mentionClick)="onMentionClick($event)"
+                          (hashtagClick)="onHashtagClick($event)"
+                          (filesChange)="onCommentFilesChange($event)"
+                        />
+                      }
+                      @case ('sic-input-phone') {
+                        <sic-input-phone name="phone" label="Phone" [(ngModel)]="phone" />
+                      }
+                      @case ('sic-input-tag') {
+                        <sic-input-tag
+                          label="Keywords"
+                          placeholder="พิมพ์แล้วคั่นด้วย ,"
+                          [maxTagLength]="20"
+                          [maxTags]="5"
+                          tagColor="primary"
+                          [(ngModel)]="keywords"
+                        />
+                      }
+                      @case ('sic-combobox') {
+                        <sic-combobox
+                          label="Assignee"
+                          [options]="people"
+                          optionLabel="name"
+                          placeholder="Select a person…"
+                          [(ngModel)]="selectedPerson"
+                        />
+                      }
+                      @case ('sic-checkbox') {
+                        <sic-checkbox label="I agree to the terms" [(ngModel)]="agree" />
+                      }
+                      @case ('sic-radio') {
+                        <sic-flex direction="column" gap="1.25rem">
+                          <sic-flex direction="row" gap="1rem" align="center">
+                            <sic-radio name="notify" label="Email" radioValue="email" [(ngModel)]="notifyBy" />
+                            <sic-radio name="notify" label="SMS" radioValue="sms" [(ngModel)]="notifyBy" />
+                          </sic-flex>
+                          <sic-radio
+                            label="Shipping method"
+                            [options]="shippingOptions"
+                            direction="row"
+                            [(ngModel)]="shippingMethod"
+                          />
+                        </sic-flex>
+                      }
+                      @case ('sic-switch') {
+                        <sic-switch label="Dark mode" [(ngModel)]="darkMode" />
+                      }
+                      @case ('sic-range') {
+                        <sic-grid [cols]="2" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 4 }">
+                          <sic-range label="Volume" [min]="0" [max]="100" [(ngModel)]="volumeRange" />
+                          <sic-range label="Price range" [min]="0" [max]="100" [dual]="true" [(ngModel)]="priceRange" />
+                        </sic-grid>
+                      }
+                      @case ('sic-datepicker') {
+                        <sic-grid [cols]="1" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 3 }">
+                          <sic-datepicker label="Birthday" outputType="string" [(ngModel)]="birthday" />
+                          <sic-datepicker
+                            label="Event date"
+                            era="BE"
+                            locale="th"
+                            format="EEEE d MMMM yyyy"
+                            [(ngModel)]="eventDate"
+                          />
+                          <sic-datepicker label="Billing month" mode="month" format="MMMM yyyy" [(ngModel)]="billingMonth" />
+                        </sic-grid>
+                      }
+                      @case ('sic-timepicker') {
+                        <sic-grid [cols]="1" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                          <sic-timepicker label="Meeting time" [(ngModel)]="meetingTime" />
+                          <sic-timepicker
+                            label="Support window"
+                            [min]="supportWindowStart"
+                            [max]="supportWindowEnd"
+                            [(ngModel)]="supportTime"
+                          />
+                        </sic-grid>
+                      }
+                      @case ('sic-datepicker-timepicker-combo') {
+                        <sic-grid [cols]="1" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 4 }">
+                          <sic-datepicker label="วันที่เริ่มดำเนินการ" outputType="date" [formControl]="startDateTime" />
+                          <sic-timepicker label="เวลาเริ่มดำเนินการ" [formControl]="startDateTime" />
+                          <sic-datepicker label="วันที่สิ้นสุด" outputType="date" [min]="startDateTime.value" [formControl]="endDateTime" />
+                          <sic-timepicker label="เวลาสิ้นสุด" [min]="startDateTime.value" [formControl]="endDateTime" />
+                        </sic-grid>
+                      }
+                      @case ('sic-colorpicker') {
+                        <sic-colorpicker label="Brand color" [allowText]="true" [(ngModel)]="brandColor" />
+                      }
+                      @case ('sic-upload') {
+                        <sic-upload label="Attachments" [multiple]="true" [maxSizeMb]="10" [(ngModel)]="files" />
+                      }
+                      @case ('sic-rating') {
+                        <sic-rating label="Rate this" [max]="5" [allowHalf]="true" [(ngModel)]="rating" />
+                      }
+                      @case ('sic-validator') {
+                        <form class="demo-form" [formGroup]="form" (ngSubmit)="submit()">
+                          <sic-input
+                            label="Email"
+                            formControlName="email"
+                            [errorMessages]="{ required: 'กรุณากรอกอีเมล', email: 'รูปแบบอีเมลไม่ถูกต้อง' }"
+                          />
+                          <sic-button type="submit" [disabled]="form.invalid">Save</sic-button>
+                        </form>
+                      }
+                      @case ('sic-gridpanel') {
+                        <sic-gridpanel
+                          #grid
+                          [config]="gridConfig"
+                          (loadData)="handleGridLoad($event, grid)"
+                          (saveData)="handleGridSave($event, grid)"
+                          (rowAction)="handleGridRowAction($event)">
+                          <ng-template sicGridPanelTemplate="statusBadge" section="cell" let-row>
+                            <span style="margin-top: 5px;" class="status-badge" [class.status-badge--active]="row.active">
+                              {{ row.active ? 'Active' : 'Inactive' }}
+                            </span>
+                          </ng-template>
+                        </sic-gridpanel>
+                      }
+                      @case ('sic-calendar') {
+                        <sic-calendar
+                          [weekStartsOn]="1"
+                          locale="th"
+                          [tasks]="calendarTasks"
+                          [holidays]="calendarHolidays"
+                          [(era)]="calendarEra"
+                          [(view)]="calendarView"
+                          (dateClick)="handleCalendarDateClick($event)"
+                          (eventClick)="handleCalendarEventClick($event)"
+                          (holidayClick)="handleCalendarHolidayClick($event)"
+                          (monthChange)="handleCalendarMonthChange($event)"
+                        />
+                      }
+                      @case ('sic-calendar-timeline') {
+                        <sic-calendar-timeline
+                          [items]="ganttRows"
+                          startDate="2020-08-11"
+                          endDate="2020-08-22"
+                          [(viewMode)]="ganttViewMode"
+                          locale="th"
+                          era="BE"
+                          [(showLabelColumn)]="ganttShowLabels"
+                          (rowClick)="onGanttRowClick($event)"
+                          (phaseClick)="onGanttPhaseClick($event)"
+                        />
+                      }
+                      @case ('sic-code') {
+                        <sic-code language="typescript" [showLineNumbers]="true" [code]="codeSnippet" />
+                      }
+                      @case ('sic-image') {
+                        <sic-image src="https://picsum.photos/200" alt="Sample" fallback="https://picsum.photos/200" rounded="md" />
+                      }
+                      @case ('sic-image-slider') {
+                        <sic-image-slider
+                          [items]="slides"
+                          [autoSlide]="true"
+                          [autoSlideInterval]="4000"
+                          (slideChange)="onSlideChange($event)"
+                          (slideEnd)="onSlideEnd()"
+                        />
+                      }
+                      @case ('sic-video-player') {
+                        <sic-video-player src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" [muted]="true" />
+                      }
+                      @case ('sic-sound-player') {
+                        <sic-sound-player
+                          src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"
+                          title="My Delorean"
+                          subtitle="A Synthwave Mix"
+                          genre="Synthwave"
+                          plays="1.2M plays"
+                          (previousTrack)="onPreviousTrack()"
+                          (nextTrack)="onNextTrack()"
+                        />
+                      }
+                      @case ('sic-space-bg') {
+                        <div class="demo-space-bg-controls">
+                          @for (preset of spaceBgPresets; track preset.label; let i = $index) {
+                            <sic-button [variant]="spaceBgPresetIndex === i ? 'solid' : 'outline'" size="sm" (click)="spaceBgPresetIndex = i">{{ preset.label }}</sic-button>
+                          }
+                        </div>
+                        <div style="position: relative; height: 220px; border-radius: 0.75rem; overflow: hidden;">
+                          <sic-space-bg
+                            [variant]="spaceBgPreset.variant"
+                            [colors]="spaceBgPreset.colors ?? []"
+                            [colorMode]="spaceBgPreset.colorMode ?? 'auto'"
+                            [density]="spaceBgPreset.density ?? 24"
+                            [animationSpeed]="spaceBgPreset.animationSpeed ?? 20"
+                            [size]="spaceBgPreset.size ?? '2rem'"
+                            [opacity]="spaceBgPreset.opacity ?? 0.5"
+                            [blur]="spaceBgPreset.blur ?? '0px'"
+                            [gradientAngle]="spaceBgPreset.gradientAngle ?? 135"
+                            [backgroundColor]="spaceBgPreset.backgroundColor ?? 'transparent'"
+                            [animated]="spaceBgPreset.animated ?? true"
+                          />
+                        </div>
+                      }
+                      @case ('sic-masonry') {
+                        <sic-masonry
+                          [items]="masonryPhotos"
+                          [cols]="3"
+                          [colsBreakpoints]="{ sm: 1, md: 2, lg: 3 }"
+                          gap="0.75rem"
+                          (itemClick)="onMasonryItemClick($event)"
+                        >
+                          <ng-template #itemTemplate let-item let-index="index">
+                            <sic-card [style.height.px]="item.height" style="display: flex; align-items: center; justify-content: center;">
+                              {{ index }}: {{ item.title }}
+                            </sic-card>
+                          </ng-template>
+                        </sic-masonry>
+                      }
+                      @case ('sic-drag-drop') {
+                        <sic-drag-drop [lists]="kanbanLists" [showDragHandle]="true" (itemMoved)="onCardMoved($event)">
+                          <ng-template #columnHeaderTemplate let-list>
+                            <strong>{{ list.title }} ({{ list.items.length }})</strong>
+                          </ng-template>
+                          <ng-template #itemTemplate let-item>
+                            <sic-card style="width: 100%;">{{ item.title }}</sic-card>
+                          </ng-template>
+                        </sic-drag-drop>
+                      }
+                      @case ('sic-badge') {
+                        <sic-grid [cols]="1" gap="1rem" [colsBreakpoints]="{ sm: 1, md: 2, lg: 2 }">
+                          <sic-badge [count]="5" [max]="99" color="primary">
+                            <sic-button variant="ghost">Inbox</sic-button>
+                          </sic-badge>
+                          <sic-badge [dot]="true" color="danger" position="bottom-left">
+                            <sic-button variant="ghost">Profile</sic-button>
+                          </sic-badge>
+                        </sic-grid>
+                      }
+                      @case ('sic-tag') {
+                        <sic-flex direction="column" gap="0.75rem">
+                          <sic-tag color="primary" [closable]="true" (closed)="onTagClosed()">Beta</sic-tag>
+                          <sic-tag [items]="skillTags" [closable]="true" (itemClosed)="onSkillTagClosed($event)" />
+                        </sic-flex>
+                      }
+                      @case ('sic-avatar') {
+                        <sic-flex direction="column" gap="0.75rem">
+                          <sic-avatar name="Ada Lovelace" size="md" (avatarClick)="onAvatarClick()" />
+                          <sic-avatar [items]="teamAvatars" (itemClick)="onTeamAvatarClick($event)" />
+                        </sic-flex>
+                      }
+                      @case ('sic-accordion') {
+                        <sic-accordion [multi]="false">
+                          <sic-collapse label="Section A">Content A</sic-collapse>
+                          <sic-collapse label="Section B">Content B</sic-collapse>
+                        </sic-accordion>
+                      }
+                      @case ('sic-dialog') {
+                        <sic-button (click)="dialogOpen = true">Open dialog</sic-button>
+                        <sic-dialog
+                          [open]="dialogOpen"
+                          title="Confirm"
+                          [disableClose]="false"
+                          width="28rem"
+                          (openChange)="dialogOpen = $event"
+                        >
+                          Are you sure you want to continue?
+                          <div sicDialogFooter>
+                            <sic-button variant="ghost" (click)="dialogOpen = false">Cancel</sic-button>
+                            <sic-button variant="solid" (click)="dialogOpen = false">Confirm</sic-button>
+                          </div>
+                        </sic-dialog>
+                      }
+                      @case ('sic-dialog-service') {
+                        <sic-button (click)="openServiceDialog()">Open dialog via service</sic-button>
+                      }
+                      @case ('sic-dialog-common') {
+                        <sic-flex gap="0.5rem" wrap="wrap">
+                          <sic-button color="primary" (click)="openCommonDialog('info')">Info</sic-button>
+                          <sic-button color="success" (click)="openCommonDialog('success')">Success</sic-button>
+                          <sic-button color="danger" (click)="openCommonDialog('danger')">Danger</sic-button>
+                          <sic-button color="warning" (click)="openCommonDialog('warning')">Warning</sic-button>
+                          <sic-button variant="outline" (click)="openConfirmDialog()">Confirm</sic-button>
+                        </sic-flex>
+                      }
+                      @case ('sic-search') {
+                        <sic-button variant="outline" (click)="searchOpen = true">Open search</sic-button>
+                        <sic-search
+                          [open]="searchOpen"
+                          [items]="searchPages"
+                          [optionLabel]="'label'"
+                          placeholder="Search pages..."
+                          (openChange)="searchOpen = $event"
+                          (itemSelect)="onSearchSelect($event)"
+                        >
+                          <ng-template #itemTemplate let-item let-active="active">
+                            <strong>{{ item.label }}</strong>
+                            <span style="opacity: 0.6; margin-left: 0.5rem;">{{ item.path }}</span>
+                          </ng-template>
+                        </sic-search>
+                      }
+                      @case ('sic-popover') {
+                        <sic-popover [items]="menuActions" (itemSelect)="onMenuActionSelect($event)">
+                          <ng-template sicPopoverButton let-popover>
+                            <sic-button variant="ghost" (click)="popover.toggle()">⋮</sic-button>
+                          </ng-template>
+                          <ng-template sicPopoverHeader>
+                            <div class="demo-popover-header">Actions</div>
+                          </ng-template>
+                          <ng-template sicPopoverList let-item>
+                            <span>{{ item.icon }} {{ item.label }}</span>
+                          </ng-template>
+                          <ng-template sicPopoverFooter>
+                            <div class="demo-popover-footer">v1.0</div>
+                          </ng-template>
+                        </sic-popover>
+                      }
+                      @case ('sic-toast') {
+                        <sic-button variant="outline" (click)="notify()">Show toast</sic-button>
+                        <sic-toast position="top-right" />
+                      }
+                      @case ('sic-toast-service') {
+                        <sic-button variant="outline" (click)="notifyCustomToasts()">Show custom toasts</sic-button>
+                        <sic-toast position="top-right" />
+                      }
+                      @case ('sic-tooltip') {
+                        <sic-button [sicTooltip]="'Save changes'" sicTooltipPlacement="bottom">Hover me</sic-button>
+                      }
+                      @case ('sic-spinner') {
+                        <sic-spinner size="md" />
+                      }
+                      @case ('sic-loading-service') {
+                        <sic-flex gap="0.5rem" wrap="wrap">
+                          <sic-button (click)="showSpinnerLoading()">Show loading (spinner)</sic-button>
+                          <sic-button variant="outline" (click)="showImageLoading()">Show loading (custom image)</sic-button>
+                        </sic-flex>
+                      }
+                      @case ('sic-skeleton') {
+                        <sic-flex direction="row" gap="1rem" align="center">
+                          <sic-skeleton variant="text" width="200px" />
+                          <sic-skeleton variant="circle" width="48px" height="48px" />
+                        </sic-flex>
+                      }
+                      @case ('sic-progress-bar') {
+                        <sic-flex direction="column" gap="1rem">
+                          <sic-progress-bar [value]="progressValue" color="primary" />
+                          <sic-progress-bar [indeterminate]="true" color="success" />
+                        </sic-flex>
+                      }
+                    }
+                  </div>
+                </sic-card>
+                }
+
+                <sic-card class="doc-panel" aria-label="Code example">
+                  <div sicCardHeader class="doc-panel__title-row">
+                    <div class="doc-panel__title">Code</div>
+                    @if (blocksFor(doc).length > 1) {
+                      <sic-tabs class="doc-panel__code-tabs" [tabs]="codeTabsFor(doc)" [activeId]="codeTab" (activeIdChange)="codeTab = $event" />
+                    }
+                  </div>
+                  <sic-code [language]="activeBlockFor(doc).lang" [code]="activeBlockFor(doc).code" />
+                </sic-card>
+
+                @if (doc.attributes.length > 0) {
+                  <sic-card class="doc-panel" aria-label="Attributes">
+                    <div sicCardHeader class="doc-panel__title">Attributes</div>
+                    <sic-gridpanel #attrGrid class="doc-panel__grid" [config]="attributesGridConfigFor(doc)" (loadData)="attrGrid.setRows(doc.attributes)">
+                      <ng-template sicGridPanelTemplate="name" section="cell" let-row>
+                        <code class="doc-panel__code-cell">{{ row.name }}</code>
+                      </ng-template>
+                    </sic-gridpanel>
+                  </sic-card>
+                }
+
+                @if (doc.events.length > 0) {
+                  <sic-card class="doc-panel" aria-label="Events">
+                    <div sicCardHeader class="doc-panel__title">Events</div>
+                    <sic-gridpanel #eventsGrid class="doc-panel__grid" [config]="eventsGridConfig" (loadData)="eventsGrid.setRows(doc.events)">
+                      <ng-template sicGridPanelTemplate="name" section="cell" let-row>
+                        <code class="doc-panel__code-cell">{{ row.name }}</code>
+                      </ng-template>
+                    </sic-gridpanel>
+                  </sic-card>
+                }
+              </div>
+            </sic-card>
+          }
+        </section>
+      }
+    </div>
+    </main>
+  </div>
+</div>

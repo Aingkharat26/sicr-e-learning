@@ -1,0 +1,47 @@
+<div class="sic-card-stack" [class.sic-card-stack--expanded]="isExpanded" [style.--sic-card-stack-count]="items.length">
+  @if (!items.length) {
+    <div class="sic-card-stack__empty">{{ noItemsText }}</div>
+  }
+
+  @for (item of items; track trackByFn($index, item); let i = $index) {
+    <div
+      class="sic-card-stack__card"
+      [style.--sic-card-stack-pos]="positionOf(i)"
+      [style.z-index]="zIndexOf(i)"
+      (click)="selectCard(i)"
+    >
+      @if (cardTemplate) {
+        <ng-container
+          *ngTemplateOutlet="cardTemplate; context: { $implicit: item, index: i, position: positionOf(i) }"
+        ></ng-container>
+      } @else {
+        <div class="sic-card-stack__media">
+          @if (item.imageUrl) {
+            <img class="sic-card-stack__image" [src]="item.imageUrl" [alt]="item.title ?? ''" />
+          }
+          @if (item.label) {
+            <span class="sic-card-stack__label">{{ item.label }}</span>
+          }
+          @if (item.meta) {
+            <span class="sic-card-stack__meta">{{ item.meta }}</span>
+          }
+        </div>
+
+        <div class="sic-card-stack__body">
+          <div class="sic-card-stack__text">
+            @if (item.title) {
+              <h3 class="sic-card-stack__title">{{ item.title }}</h3>
+            }
+            @if (item.description) {
+              <p class="sic-card-stack__description">{{ item.description }}</p>
+            }
+            @if (item.location) {
+              <span class="sic-card-stack__location">📍 {{ item.location }}</span>
+            }
+          </div>
+          <span class="sic-card-stack__arrow">→</span>
+        </div>
+      }
+    </div>
+  }
+</div>

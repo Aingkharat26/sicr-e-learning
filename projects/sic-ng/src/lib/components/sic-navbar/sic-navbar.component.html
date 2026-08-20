@@ -1,0 +1,22 @@
+@if (headerTemplate) {
+  <ng-container *ngTemplateOutlet="headerTemplate; context: templateContext"></ng-container>
+} @else if (brand || logo) {
+  <div class="sic-navbar__brand">
+    @if (logo) {
+      <span class="sic-navbar__logo">{{ logo }}</span>
+    }
+    @if (brand) {
+      <span>{{ brand }}</span>
+    }
+  </div>
+}
+
+@if (leftTemplate) {
+  <ng-container *ngTemplateOutlet="leftTemplate; context: templateContext"></ng-container>
+}
+
+@if (rightTemplate) {
+  <div class="sic-navbar__right">
+    <ng-container *ngTemplateOutlet="rightTemplate; context: templateContext"></ng-container>
+  </div>
+}

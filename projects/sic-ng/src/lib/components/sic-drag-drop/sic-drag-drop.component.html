@@ -1,0 +1,41 @@
+<div class="sic-drag-drop" cdkDropListGroup>
+  @for (list of resolvedLists; track list.id) {
+    <div class="sic-drag-drop__list">
+      @if (columnHeaderTemplate) {
+        <ng-container *ngTemplateOutlet="columnHeaderTemplate; context: { $implicit: list }"></ng-container>
+      } @else if (list.title) {
+        <div class="sic-drag-drop__list-title">{{ list.title }}</div>
+      }
+
+      <div
+        class="sic-drag-drop__drop-zone"
+        cdkDropList
+        [id]="list.id"
+        [cdkDropListData]="list.items"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (item of list.items; track trackByFn($index, item); let i = $index) {
+          <div class="sic-drag-drop__item" cdkDrag>
+            @if (showDragHandle) {
+              <span class="sic-drag-drop__handle" cdkDragHandle>⠿</span>
+            }
+
+            @if (itemTemplate) {
+              <ng-container
+                *ngTemplateOutlet="itemTemplate; context: { $implicit: item, index: i, listId: list.id }"
+              ></ng-container>
+            } @else {
+              <div class="sic-drag-drop__fallback">{{ item }}</div>
+            }
+
+            <div class="sic-drag-drop__placeholder" *cdkDragPlaceholder></div>
+          </div>
+        }
+
+        @if (list.items.length === 0) {
+          <div class="sic-drag-drop__empty">{{ emptyListText }}</div>
+        }
+      </div>
+    </div>
+  }
+</div>

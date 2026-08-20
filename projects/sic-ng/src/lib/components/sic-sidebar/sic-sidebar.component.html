@@ -1,0 +1,83 @@
+<div class="sic-sidebar__body">
+  @if (headerTemplate) {
+    <ng-container *ngTemplateOutlet="headerTemplate; context: templateContext"></ng-container>
+  } @else if (logo || brand) {
+    <div class="sic-sidebar__header">
+      @if (logo) {
+        <span class="sic-sidebar__logo">{{ logo }}</span>
+      }
+      @if (brand && expanded) {
+        <span class="sic-sidebar__brand">{{ brand }}</span>
+      }
+    </div>
+  }
+
+  @if (subheaderTemplate) {
+    <ng-container *ngTemplateOutlet="subheaderTemplate; context: templateContext"></ng-container>
+  }
+
+  @if (menuTemplate) {
+    <ng-container *ngTemplateOutlet="menuTemplate; context: templateContext"></ng-container>
+  } @else {
+    <nav class="sic-sidebar__nav">
+      @for (section of resolvedSections; track section.title ?? $index) {
+        <div class="sic-sidebar__section">
+          @if (section.title && expanded) {
+            <div class="sic-sidebar__section-title">{{ section.title }}</div>
+          }
+          <ng-container
+            *ngTemplateOutlet="itemList; context: { $implicit: section.items, variant: section.variant ?? 'menu' }"
+          ></ng-container>
+        </div>
+      }
+    </nav>
+  }
+
+  <ng-template #itemList let-list let-variant="variant">
+    <ul class="sic-sidebar__list">
+      @for (item of list; track item.label) {
+        <li>
+          <a
+            class="sic-sidebar__link"
+            [class.sic-sidebar__link--active]="item.link && item.link === activeLink"
+            [attr.title]="!expanded ? item.label : null"
+            (click)="selectItem(item)"
+          >
+            @if (variant === 'list' && item.color) {
+              <span class="sic-sidebar__dot" [style.background]="item.color"></span>
+            } @else if (item.icon) {
+              <span class="sic-sidebar__icon">{{ item.icon }}</span>
+            }
+
+            @if (expanded) {
+              <span class="sic-sidebar__label">{{ item.label }}</span>
+
+              @if (item.badge !== undefined && item.badge !== null) {
+                <span class="sic-sidebar__badge" [style.background]="item.badgeColor ?? null">{{ item.badge }}</span>
+              } @else if (item.children?.length) {
+                <span class="sic-sidebar__caret">{{ isExpanded(item) ? '▾' : '▸' }}</span>
+              } @else if (variant === 'list') {
+                <span class="sic-sidebar__chevron">›</span>
+              }
+            }
+          </a>
+          @if (item.children?.length && isExpanded(item) && expanded) {
+            <div class="sic-sidebar__children">
+              <ng-container *ngTemplateOutlet="itemList; context: { $implicit: item.children, variant: variant }"></ng-container>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  </ng-template>
+
+  @if (footerTemplate) {
+    <ng-container *ngTemplateOutlet="footerTemplate; context: templateContext"></ng-container>
+  }
+</div>
+
+@if (showToggle) {
+  <button type="button" class="sic-sidebar__toggle" (click)="toggleCollapsed()" aria-label="Toggle sidebar">
+    {{ collapsed ? '›' : '‹' }}
+  </button>
+}

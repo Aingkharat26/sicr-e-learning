@@ -1,0 +1,19 @@
+@if (items) {
+  @for (item of items; track (item.name ?? '') + '|' + $index; let i = $index) {
+    <span
+      class="sic-avatar-stack__item"
+      [style.z-index]="i + 1"
+      (click)="handleItemClick(item, i, $event)"
+    >
+      @if (itemHasImage(item, i)) {
+        <img class="sic-avatar__img" [src]="item.src" [alt]="item.name ?? ''" (error)="handleItemError(i)" />
+      } @else {
+        <span class="sic-avatar__initials">{{ itemInitials(item) }}</span>
+      }
+    </span>
+  }
+} @else if (src && !errored) {
+  <img class="sic-avatar__img" [src]="src" [alt]="name" (error)="handleError()" />
+} @else {
+  <span class="sic-avatar__initials">{{ initials }}</span>
+}

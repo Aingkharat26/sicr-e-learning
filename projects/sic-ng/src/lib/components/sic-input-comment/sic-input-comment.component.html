@@ -1,0 +1,140 @@
+<label class="sic-field" [attr.for]="fieldId">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <div
+    #wrapperEl
+    class="sic-input-comment"
+    [class.sic-input-comment--drag-over]="dragOver"
+    (drop)="handleDrop($event)"
+    (dragenter)="handleDragOver($event)"
+    (dragover)="handleDragOver($event)"
+    (dragleave)="handleDragLeave()"
+  >
+    <div class="sic-input-comment__editor" [class.sic-input-comment__editor--with-attach]="enableUpload">
+      <div #highlightEl class="sic-input-comment__highlight" aria-hidden="true">
+        @for (part of highlightParts; track $index) {
+          @switch (part.type) {
+            @case ('mention') {
+              <span class="sic-input-comment__hl-mention">{{ part.text }}</span>
+            }
+            @case ('hashtag') {
+              <span class="sic-input-comment__hl-hashtag">{{ part.text }}</span>
+            }
+            @default {
+              <span>{{ part.text }}</span>
+            }
+          }
+        }
+      </div>
+
+      <textarea
+        #textareaEl
+        [id]="fieldId"
+        class="sic-input-comment__field"
+        [class.sic-input-comment__field--invalid]="showError"
+        [name]="name"
+        [placeholder]="placeholder"
+        [rows]="rows"
+        [attr.maxlength]="maxlength ?? null"
+        [readOnly]="readonly"
+        [disabled]="disabled"
+        [value]="displayValue"
+        (input)="handleInput($event)"
+        (keydown)="handleKeydown($event)"
+        (blur)="handleBlur()"
+        (scroll)="handleScroll()"
+      ></textarea>
+
+      @if (enableUpload) {
+        <button
+          type="button"
+          class="sic-input-comment__attach-btn"
+          [disabled]="disabled || readonly"
+          (click)="openFilePicker()"
+          [attr.aria-label]="attachFileLabel"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 11.5V7a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8" />
+            <path d="M8 12h8M8 16h5" />
+          </svg>
+        </button>
+
+        <input
+          #fileInput
+          type="file"
+          class="sic-input-comment__file-input"
+          [accept]="accept"
+          [multiple]="multiple"
+          [disabled]="disabled || readonly"
+          (change)="handleFileInput($event)"
+        />
+      }
+    </div>
+
+    <ng-template #mentionsTemplate>
+      <div class="sic-input-comment__mentions" role="listbox">
+        @if (mentionLoading) {
+          <div class="sic-input-comment__mentions-status">{{ loadingText }}</div>
+        } @else if (!mentionOptions.length) {
+          <div class="sic-input-comment__mentions-status">{{ noMatchesText }}</div>
+        } @else {
+          @for (option of mentionOptions; track option.id; let i = $index) {
+            <button
+              type="button"
+              class="sic-input-comment__mention-option"
+              [class.sic-input-comment__mention-option--active]="i === activeMentionIndex"
+              role="option"
+              tabindex="-1"
+              (mousedown)="$event.preventDefault()"
+              (click)="selectMention(option)"
+            >
+              {{ option.label }}
+            </button>
+          }
+        }
+      </div>
+    </ng-template>
+
+    @if (enableUpload) {
+      @if (files.length) {
+        <ul class="sic-input-comment__files">
+          @for (file of files; track file) {
+            <li class="sic-input-comment__file">
+              @if (previewUrlFor(file); as url) {
+                <img class="sic-input-comment__file-preview" [src]="url" [alt]="file.name" />
+              } @else {
+                <svg class="sic-input-comment__file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                </svg>
+              }
+              <span class="sic-input-comment__file-name">{{ file.name }}</span>
+              <button
+                type="button"
+                class="sic-input-comment__file-remove"
+                [disabled]="disabled || readonly"
+                (click)="removeFile(file)"
+                [attr.aria-label]="removeFileLabel"
+              >
+                ✕
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</label>

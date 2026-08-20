@@ -1,0 +1,164 @@
+:host {
+  display: block;
+  font-family: var(--sic-font-sans);
+}
+
+.sic-stepper__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sic-space-4);
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__body {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--sic-space-6, 2rem);
+}
+
+.sic-stepper__list {
+  display: flex;
+  align-items: center;
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__list {
+  flex: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sic-stepper__step {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__step {
+  flex: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sic-stepper__indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sic-space-2);
+  border: none;
+  background: none;
+  padding: var(--sic-space-1) 0;
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__indicator {
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+}
+
+.sic-stepper__indicator:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.sic-stepper__circle {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-full);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  font-weight: 700;
+  transition: background var(--sic-transition-fast), border-color var(--sic-transition-fast), color var(--sic-transition-fast);
+}
+
+.sic-stepper__indicator--active .sic-stepper__circle {
+  border-color: var(--sic-color-primary);
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+}
+
+.sic-stepper__indicator--complete .sic-stepper__circle {
+  border-color: var(--sic-color-primary);
+  color: var(--sic-color-primary);
+}
+
+.sic-stepper__labels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  text-align: center;
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__labels {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.sic-stepper__label {
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sic-stepper__indicator--active .sic-stepper__label,
+.sic-stepper__indicator--complete .sic-stepper__label {
+  color: var(--sic-color-text-active);
+}
+
+.sic-stepper__description {
+  overflow: hidden;
+  color: var(--sic-color-text-muted);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-stepper__connector {
+  flex: 1;
+  height: 1.5px;
+  /* The step row is top-aligned (circle-then-label stacks, and label height varies), so the
+     connector needs an explicit top offset instead of the vertical centering a row layout would
+     give for free — this lines it up with the circle's own vertical center (indicator's top
+     padding + half the circle's 2rem height). */
+  margin: calc(var(--sic-space-1) + 1rem) var(--sic-space-3) 0;
+  background: var(--sic-color-border);
+  transition: background var(--sic-transition-fast);
+}
+
+.sic-stepper__connector--complete {
+  background: var(--sic-color-primary);
+}
+
+:host(.sic-stepper--vertical) .sic-stepper__connector {
+  flex: none;
+  width: 1.5px;
+  height: 1.5rem;
+  margin: 0.1rem 0 0.1rem 1rem;
+}
+
+.sic-stepper__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.sic-stepper__nav {
+  display: flex;
+  align-items: center;
+  margin-top: var(--sic-space-4);
+}
+
+.sic-stepper__nav-spacer {
+  flex: 1;
+}
+
+.sic-stepper__nav sic-button + sic-button {
+  margin-inline-start: var(--sic-space-2);
+}

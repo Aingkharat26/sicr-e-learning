@@ -1,0 +1,74 @@
+/**
+ * sic-ng design tokens — "Glass" theme, standalone (applies unconditionally, no class needed).
+ * Import this on its own when the app only ever uses one named theme.
+ * For runtime switching between multiple named themes, import all-themes.css instead
+ * and use SicThemeService.setThemeName('glass').
+ *
+ * Looks best over a colorful or gradient page background — blur has nothing
+ * to pick up over a flat canvas. Backdrop blur is applied to the library's
+ * main floating/panel surfaces (card, dialog, sidebar, nav-admin + its
+ * dropdowns, and the combobox/datepicker/timepicker/phone/mention popovers).
+ */
+@import './_tokens.css';
+@import './_tokens.dark.css';
+
+:root {
+  --sic-color-bg: rgba(255, 255, 255, 0.55);
+  --sic-color-surface: rgba(255, 255, 255, 0.35);
+  --sic-color-border: rgba(255, 255, 255, 0.4);
+  --sic-color-text: #1e2330;
+  --sic-color-text-muted: rgba(30, 35, 48, 0.62);
+  --sic-color-text-active: #0b0e14;
+
+  --sic-color-primary: #0ea5e9;
+  --sic-color-primary-contrast: #ffffff;
+  --sic-color-success: #22c55e;
+  --sic-color-danger: #f43f5e;
+  --sic-color-warning: #f59e0b;
+
+  --sic-radius-sm: 0.75rem;
+  --sic-radius-md: 1.25rem;
+  --sic-radius-lg: 1.75rem;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #0f172a 10%, transparent);
+  --sic-shadow-md:
+    0 8px 32px color-mix(in srgb, #0f172a 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  --sic-glass-blur: 18px;
+  --sic-glass-saturate: 1.6;
+}
+
+:root.dark {
+  --sic-color-bg: rgba(20, 22, 30, 0.55);
+  --sic-color-surface: rgba(32, 35, 46, 0.45);
+  --sic-color-border: rgba(255, 255, 255, 0.12);
+  --sic-color-text: #e7e9ee;
+  --sic-color-text-muted: rgba(231, 233, 238, 0.62);
+  --sic-color-text-active: #ffffff;
+
+  --sic-color-primary: #38bdf8;
+  --sic-color-primary-contrast: #0b0e14;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 40%, transparent);
+  --sic-shadow-md:
+    0 8px 32px color-mix(in srgb, #000 50%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  --sic-glass-blur: 20px;
+  --sic-glass-saturate: 1.8;
+}
+
+sic-card,
+sic-dialog-panel,
+sic-sidebar,
+sic-navbar,
+.sic-navbar__panel,
+.sic-combobox__panel,
+.sic-datepicker__panel,
+.sic-timepicker__panel,
+.sic-input-phone__panel,
+.sic-input-comment__mentions {
+  backdrop-filter: blur(var(--sic-glass-blur)) saturate(var(--sic-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--sic-glass-blur)) saturate(var(--sic-glass-saturate));
+}

@@ -1,0 +1,668 @@
+:host {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--sic-space-4);
+}
+
+.sic-gridpanel {
+  width: 100%;
+  --sic-gridpanel-cell-padding-block: 0.55rem;
+  --sic-gridpanel-cell-padding-inline: 0.75rem;
+  --sic-gridpanel-field-height: var(--sic-control-height-sm);
+  --sic-gridpanel-row-height: calc(var(--sic-gridpanel-field-height) + (var(--sic-gridpanel-cell-padding-block) * 2));
+}
+
+.sic-gridpanel__surface {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-lg);
+  background: var(--sic-color-bg);
+  box-shadow: var(--sic-shadow-sm);
+}
+
+.sic-gridpanel__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--sic-space-3);
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border-bottom: 1px solid var(--sic-color-border);
+}
+
+.sic-gridpanel__toolbar-start {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  flex-wrap: wrap;
+}
+
+.sic-gridpanel__toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-active);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--sic-transition-fast), background var(--sic-transition-fast);
+}
+
+.sic-gridpanel__toolbar-button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 30%, var(--sic-color-border));
+}
+
+.sic-gridpanel__toolbar-button--icon {
+  width: 2.15rem;
+  min-width: 2.15rem;
+  padding: 0;
+}
+
+.sic-gridpanel__toolbar-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sic-gridpanel__toolbar-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sic-gridpanel__toolbar-button--danger {
+  border-color: color-mix(in srgb, var(--sic-color-danger) 36%, var(--sic-color-border));
+  color: var(--sic-color-danger);
+}
+
+.sic-gridpanel__toolbar-button--primary {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 32%, var(--sic-color-border));
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__toolbar-button--active {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 38%, var(--sic-color-border));
+  background: color-mix(in srgb, var(--sic-color-primary) 10%, var(--sic-color-bg));
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__table {
+  overflow-x: auto;
+  overflow-y: clip;
+  /* Some host apps set `touch-action: pan-y` (or similar) on a page-level
+     ancestor to suppress iOS/Android edge-swipe-back gestures — since
+     touch-action is the intersection of an element's value with every
+     ancestor's, that silently blocks horizontal swipe-scrolling here too
+     unless we explicitly reclaim it on our own scroll container. */
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  padding-bottom: var(--sic-space-3);
+  background: color-mix(in srgb, var(--sic-color-surface) 45%, transparent);
+}
+
+.sic-gridpanel__table::-webkit-scrollbar {
+  height: 0.7rem;
+}
+
+.sic-gridpanel__table::-webkit-scrollbar-track {
+  background: var(--sic-color-surface);
+}
+
+.sic-gridpanel__table::-webkit-scrollbar-thumb {
+  border: 2px solid var(--sic-color-surface);
+  border-radius: var(--sic-radius-full);
+  background: color-mix(in srgb, var(--sic-color-primary) 38%, var(--sic-color-border));
+}
+
+.sic-gridpanel__table::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--sic-color-primary) 52%, var(--sic-color-border));
+}
+
+.sic-gridpanel__header,
+.sic-gridpanel__row,
+.sic-gridpanel__footer {
+  display: grid;
+  min-width: 100%;
+  width: 100%;
+}
+
+/* Only switch to max-content when columns are fixed pixel widths that may exceed the host
+   (needs horizontal scroll). Mixing max-content with the default's percentage-based tracks would
+   make each row's rendered column widths follow that row's own content instead of a shared width,
+   desyncing header and body columns whenever a cell holds long unbroken text. */
+.sic-gridpanel__header--fixed-width,
+.sic-gridpanel__row--fixed-width,
+.sic-gridpanel__footer--fixed-width {
+  width: max-content;
+}
+
+.sic-gridpanel__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid var(--sic-color-border);
+  background: var(--sic-color-surface);
+}
+
+.sic-gridpanel__header-cell,
+.sic-gridpanel__cell,
+.sic-gridpanel__footer-cell {
+  min-width: 0;
+  padding: var(--sic-gridpanel-cell-padding-block) var(--sic-gridpanel-cell-padding-inline);
+  display: flex;
+  align-items: center;
+  min-height: var(--sic-gridpanel-row-height);
+  box-sizing: border-box;
+  color: var(--sic-color-text-active);
+  font-size: 0.82rem;
+  font-family: var(--sic-font-sans);
+}
+
+.sic-gridpanel__header-cell {
+  justify-content: center;
+  font-weight: 700;
+}
+
+.sic-gridpanel__header--grouped {
+  align-items: stretch;
+}
+
+.sic-gridpanel__header-group-cell {
+  border-bottom: 1px solid var(--sic-color-border);
+}
+
+.sic-gridpanel__header-group-cell:first-child {
+  border-left: none;
+}
+
+.sic-gridpanel__header-cell--right {
+  justify-content: flex-end;
+}
+
+.sic-gridpanel__header-cell--left {
+  justify-content: flex-start;
+}
+
+.sic-gridpanel__header-cell--selection,
+.sic-gridpanel__cell--selection,
+.sic-gridpanel__footer-cell--selection {
+  justify-content: center;
+  padding-inline: 0.45rem;
+}
+
+.sic-gridpanel__reset-row-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid color-mix(in srgb, var(--sic-color-warning) 38%, var(--sic-color-border));
+  border-radius: var(--sic-radius-full);
+  background: color-mix(in srgb, var(--sic-color-warning) 10%, var(--sic-color-bg));
+  color: color-mix(in srgb, var(--sic-color-warning) 72%, var(--sic-color-text-active));
+  cursor: pointer;
+}
+
+.sic-gridpanel__reset-row-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sic-gridpanel__reset-row-button:hover {
+  background: color-mix(in srgb, var(--sic-color-warning) 16%, var(--sic-color-bg));
+}
+
+.sic-gridpanel__row {
+  align-items: stretch;
+  min-height: var(--sic-gridpanel-row-height);
+  border-bottom: 1px solid color-mix(in srgb, var(--sic-color-border) 72%, transparent);
+}
+
+.sic-gridpanel__row:nth-child(odd):not(.sic-gridpanel__row--new):not(.sic-gridpanel__row--updated):not(.sic-gridpanel__row--deleted):not(.sic-gridpanel__row--disabled) {
+  background: color-mix(in srgb, var(--sic-color-surface) 55%, transparent);
+}
+
+.sic-gridpanel__row--new {
+  background: color-mix(in srgb, var(--sic-color-success) 14%, transparent);
+}
+
+.sic-gridpanel__row--updated {
+  background: color-mix(in srgb, var(--sic-color-warning) 16%, transparent);
+}
+
+.sic-gridpanel__row--deleted {
+  opacity: 0.6;
+  background: color-mix(in srgb, var(--sic-color-danger) 14%, transparent);
+}
+
+.sic-gridpanel__row--disabled,
+.sic-gridpanel__row--deleted {
+  pointer-events: none;
+}
+
+.sic-gridpanel__row--disabled .sic-gridpanel__reset-row-button,
+.sic-gridpanel__row--deleted .sic-gridpanel__reset-row-button {
+  pointer-events: auto;
+}
+
+.sic-gridpanel__cell {
+  position: relative;
+  align-items: flex-start;
+}
+
+/* Every sic-ng form control shares these classes for its label/hint/error.
+   Let them flow normally (instead of overlaying past the row) so a row with
+   a validation message grows via min-height rather than bleeding into the
+   next row's background. */
+.sic-gridpanel__cell ::ng-deep .sic-field__hint,
+.sic-gridpanel__cell ::ng-deep .sic-field__error {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-gridpanel__cell--number {
+  justify-content: flex-end;
+}
+
+.sic-gridpanel__cell--selection,
+.sic-gridpanel__cell--checkbox,
+.sic-gridpanel__cell--radio,
+.sic-gridpanel__cell--switch,
+.sic-gridpanel__cell--button {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Top-aligned like every other field, but the checkbox/radio glyph and
+   switch track (both 1.2rem) and button (min-height 1.9rem) are shorter than
+   a sic-control-field (--sic-gridpanel-field-height, 2.2rem sm) — nudge them
+   down so they land vertically centered within that same field band instead
+   of hugging the cell's top padding. */
+.sic-gridpanel__cell--selection sic-checkbox,
+.sic-gridpanel__cell--checkbox sic-checkbox,
+.sic-gridpanel__cell--radio sic-radio {
+  margin-top: 0.5rem;
+}
+
+.sic-gridpanel__cell--switch sic-switch {
+  margin-top: 0.4rem;
+}
+
+.sic-gridpanel__cell--selection .sic-gridpanel__reset-row-button {
+  margin-top: 0.15rem;
+}
+
+.sic-gridpanel__cell--button .sic-gridpanel__button {
+  margin-top: 0.15rem;
+}
+
+.sic-gridpanel__cell--upload {
+  align-items: stretch;
+}
+
+.sic-gridpanel__display {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-gridpanel__display--with-icon {
+  gap: var(--sic-space-2);
+}
+
+.sic-gridpanel__display--number {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.sic-gridpanel__display--checkbox {
+  justify-content: center;
+  text-align: center;
+}
+
+.sic-gridpanel__display-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--sic-color-text-muted);
+}
+
+.sic-gridpanel__display-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.sic-gridpanel__display-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-gridpanel__display--area {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.sic-gridpanel__row-state,
+.sic-gridpanel__summary-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--sic-radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sic-gridpanel__row-state--new {
+  background: color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__row-state--updated {
+  background: color-mix(in srgb, var(--sic-color-warning) 20%, transparent);
+  color: var(--sic-color-warning);
+}
+
+.sic-gridpanel__row-state--deleted {
+  background: color-mix(in srgb, var(--sic-color-danger) 14%, transparent);
+  color: var(--sic-color-danger);
+}
+
+.sic-gridpanel__sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sic-space-2);
+  width: 100%;
+  min-height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-align: center;
+  cursor: default;
+}
+
+.sic-gridpanel__sort--enabled {
+  cursor: pointer;
+}
+
+.sic-gridpanel__sort-icons {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  color: var(--sic-color-text-muted);
+  font-size: 0.55rem;
+  line-height: 1;
+}
+
+.sic-gridpanel__sort-icon--active {
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.9rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-active);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sic-gridpanel__state {
+  padding: var(--sic-space-4) var(--sic-space-3);
+  color: var(--sic-color-text-muted);
+  font-size: 0.85rem;
+}
+
+.sic-gridpanel__state--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sic-space-2);
+  padding: calc(var(--sic-space-4) * 2) var(--sic-space-3);
+  text-align: center;
+}
+
+.sic-gridpanel__state-visual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid color-mix(in srgb, var(--sic-color-primary) 24%, var(--sic-color-border));
+  border-radius: var(--sic-radius-full);
+  background: color-mix(in srgb, var(--sic-color-primary) 10%, var(--sic-color-bg));
+  color: color-mix(in srgb, var(--sic-color-primary) 72%, var(--sic-color-text-active));
+}
+
+.sic-gridpanel__state-visual svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.sic-gridpanel__state-title {
+  color: var(--sic-color-text-active);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.sic-gridpanel__state-subtitle {
+  max-width: 22rem;
+  color: var(--sic-color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.sic-gridpanel__footer {
+  border-top: 1px solid var(--sic-color-border);
+  background: color-mix(in srgb, var(--sic-color-surface) 60%, transparent);
+}
+
+.sic-gridpanel__footer--grand {
+  background: color-mix(in srgb, var(--sic-color-primary) 8%, transparent);
+}
+
+.sic-gridpanel__footer-cell {
+  font-weight: 700;
+}
+
+.sic-gridpanel__footer-summary {
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__footer-cell--right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.sic-gridpanel__footer-cell--center {
+  justify-content: center;
+  text-align: center;
+}
+
+.sic-gridpanel__footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sic-space-3);
+  padding: var(--sic-space-3);
+  border-top: 1px solid var(--sic-color-border);
+}
+
+.sic-gridpanel__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  color: var(--sic-color-text-active);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sic-gridpanel__page-size-select {
+  width: 6.5rem;
+  flex: none;
+}
+
+.sic-gridpanel__pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sic-space-2);
+  flex-wrap: wrap;
+}
+
+.sic-gridpanel__pager-group--nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-full);
+}
+
+.sic-gridpanel__pager-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.9rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: var(--sic-radius-full);
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sic-gridpanel__pager-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.sic-gridpanel__pager-pages {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sic-gridpanel__pager-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9rem;
+  height: 1.9rem;
+  padding: 0 0.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--sic-radius-full);
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sic-gridpanel__pager-page:disabled {
+  cursor: not-allowed;
+}
+
+.sic-gridpanel__pager-page--active {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 40%, var(--sic-color-border));
+  background: color-mix(in srgb, var(--sic-color-primary) 12%, var(--sic-color-bg));
+  color: var(--sic-color-primary);
+}
+
+.sic-gridpanel__pager-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  color: var(--sic-color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.sic-gridpanel__loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sic-space-2);
+  background: color-mix(in srgb, var(--sic-color-bg) 55%, transparent);
+  backdrop-filter: blur(1px);
+}
+
+.sic-gridpanel__loading-spinner {
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 2px solid color-mix(in srgb, var(--sic-color-primary) 24%, var(--sic-color-border));
+  border-top-color: var(--sic-color-primary);
+  border-radius: var(--sic-radius-full);
+  animation: sic-gridpanel-spin 0.8s linear infinite;
+}
+
+.sic-gridpanel__loading-text {
+  color: var(--sic-color-text-active);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@keyframes sic-gridpanel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .sic-gridpanel__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sic-gridpanel__footer-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sic-gridpanel__summary {
+    display: none;
+  }
+
+  .sic-gridpanel__pager {
+    justify-content: space-between;
+  }
+}

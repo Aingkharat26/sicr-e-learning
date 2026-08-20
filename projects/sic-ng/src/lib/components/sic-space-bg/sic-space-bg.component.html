@@ -1,0 +1,58 @@
+<div
+  class="sic-space-bg"
+  [class.sic-space-bg--animated]="animated"
+  [style.opacity]="opacity"
+  [style.filter]="'blur(' + blur + ')'"
+>
+  @switch (variant) {
+    @case ('gradient') {
+      <div class="sic-space-bg__gradient" [style.background]="gradientBackground"></div>
+    }
+    @case ('hexagon') {
+      @for (shape of shapes; track trackByFn($index, shape)) {
+        <div
+          class="sic-space-bg__shape sic-space-bg__shape--hexagon"
+          [style.left.%]="shape.left"
+          [style.top.%]="shape.top"
+          [style.width]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.height]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.background]="shape.color"
+          [style.opacity]="shape.opacity"
+          [style.animation-delay.s]="shape.delay"
+          [style.animation-duration.s]="shape.duration"
+          [style.--sic-space-bg-rotate]="shape.rotate + 'deg'"
+        ></div>
+      }
+    }
+    @case ('geometric') {
+      @for (shape of shapes; track trackByFn($index, shape)) {
+        <div
+          class="sic-space-bg__shape sic-space-bg__shape--{{ shape.kind }}"
+          [style.left.%]="shape.left"
+          [style.top.%]="shape.top"
+          [style.width]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.height]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.background]="shape.color"
+          [style.opacity]="shape.opacity"
+          [style.animation-delay.s]="shape.delay"
+          [style.animation-duration.s]="shape.duration"
+          [style.--sic-space-bg-rotate]="shape.rotate + 'deg'"
+        ></div>
+      }
+    }
+    @case ('sparkle') {
+      @for (shape of shapes; track trackByFn($index, shape)) {
+        <div
+          class="sic-space-bg__shape sic-space-bg__shape--sparkle"
+          [style.left.%]="shape.left"
+          [style.top.%]="shape.top"
+          [style.width]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.height]="'calc(' + size + ' * ' + shape.size + ')'"
+          [style.background]="shape.color"
+          [style.animation-delay.s]="shape.delay"
+          [style.animation-duration.s]="shape.duration"
+        ></div>
+      }
+    }
+  }
+</div>

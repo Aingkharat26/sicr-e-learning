@@ -1,0 +1,45 @@
+:host {
+  display: inline;
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+  color: var(--sic-color-text);
+  overflow-wrap: anywhere;
+}
+
+:host(.sic-text--sm) {
+  font-size: var(--sic-font-size-sm);
+}
+
+:host(.sic-text--lg) {
+  font-size: var(--sic-font-size-lg);
+}
+
+:host(.sic-text--semibold) {
+  font-weight: 600;
+}
+
+:host(.sic-text--bold) {
+  font-weight: 700;
+}
+
+:host(.sic-text--muted) {
+  color: var(--sic-color-text-muted);
+}
+
+:host(.sic-text--active) {
+  color: var(--sic-color-text-active);
+}
+
+:host(.sic-text--success) {
+  color: var(--sic-color-success);
+}
+
+:host(.sic-text--block) {
+  display: block;
+}
+
+:host(.sic-text--eyebrow) {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

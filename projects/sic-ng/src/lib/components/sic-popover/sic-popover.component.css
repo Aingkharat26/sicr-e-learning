@@ -1,0 +1,68 @@
+/* Must NOT be display:contents — :host is what the overlay's flexibleConnectedTo() anchors to
+   (see the component), and a display:contents element has no box of its own
+   (getBoundingClientRect() returns a zero-size rect at the origin), which sent the panel to the
+   top-left of the page instead of next to the trigger. inline-flex keeps it sized to its
+   (projected or default) button content without otherwise disturbing surrounding flex/grid
+   layouts it's dropped into. */
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sic-popover__default-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: var(--sic-radius-full);
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.sic-popover__default-trigger:hover {
+  background: color-mix(in srgb, var(--sic-color-primary) 10%, var(--sic-color-surface));
+}
+
+.sic-popover__panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 12rem;
+  max-width: 24rem;
+  max-height: calc(100vh - 8rem);
+  overflow: hidden;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  box-shadow: var(--sic-shadow-md);
+  font-family: var(--sic-font-sans);
+}
+
+.sic-popover__list {
+  overflow-y: auto;
+  padding: var(--sic-space-2);
+}
+
+.sic-popover__list-item {
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border-radius: var(--sic-radius-md);
+  color: var(--sic-color-text-active);
+  cursor: pointer;
+  font-size: var(--sic-font-size-md);
+}
+
+.sic-popover__list-item:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-popover__empty {
+  padding: var(--sic-space-3);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  text-align: center;
+}

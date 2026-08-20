@@ -1,0 +1,40 @@
+/**
+ * sic-ng design tokens — "Violet" theme (playful, creative, glowy).
+ * Apply the `theme-violet` class alongside the base tokens (see violet-theme.css).
+ */
+:root.theme-violet {
+  --sic-color-bg: #fbfaff;
+  --sic-color-surface: #f2eefc;
+  --sic-color-border: #e1d8f7;
+  --sic-color-text: #1e1533;
+  --sic-color-text-muted: #7a6f96;
+  --sic-color-text-active: #120b26;
+
+  --sic-color-primary: #7c3aed;
+  --sic-color-primary-contrast: #ffffff;
+  --sic-color-success: #10b981;
+  --sic-color-danger: #e11d48;
+  --sic-color-warning: #f59e0b;
+
+  --sic-radius-sm: 0.75rem;
+  --sic-radius-md: 1.25rem;
+  --sic-radius-lg: 2rem;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #4c1d95 12%, transparent);
+  --sic-shadow-md: 0 10px 28px color-mix(in srgb, #7c3aed 22%, transparent);
+}
+
+:root.theme-violet.dark {
+  --sic-color-bg: #120c1f;
+  --sic-color-surface: #1a1330;
+  --sic-color-border: #2e2350;
+  --sic-color-text: #efeafc;
+  --sic-color-text-muted: #a99bd1;
+  --sic-color-text-active: #ffffff;
+
+  --sic-color-primary: #a78bfa;
+  --sic-color-primary-contrast: #1a1030;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 40%, transparent);
+  --sic-shadow-md: 0 10px 28px color-mix(in srgb, #a78bfa 20%, transparent);
+}

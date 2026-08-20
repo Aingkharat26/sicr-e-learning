@@ -1,0 +1,244 @@
+@import '../../tokens/_field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-input-comment {
+  position: relative;
+}
+
+.sic-input-comment--drag-over .sic-input-comment__field {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 45%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+}
+
+/**
+ * A <textarea> can't color part of its own text, so @mention/#hashtag
+ * highlighting is a same-sized layer drawn behind an otherwise-transparent
+ * textarea. Stacking both in the same CSS Grid cell keeps them the exact
+ * same size automatically — including with autoResize, since the grid row
+ * just tracks whichever child is taller — with no manual height-sync JS.
+ * The textarea's own text is fully transparent (only its caret/selection
+ * show); what you actually see is the highlight layer underneath.
+ */
+.sic-input-comment__editor {
+  position: relative;
+  display: grid;
+}
+
+.sic-input-comment__editor > * {
+  grid-area: 1 / 1;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--sic-space-3);
+  border: 1px solid transparent;
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* Reserves room for the attach button in the bottom-right corner — applied to
+   both the textarea and the highlight layer (not just the button's own
+   corner) so their text still wraps identically and stays aligned. */
+.sic-input-comment__editor--with-attach > .sic-input-comment__field,
+.sic-input-comment__editor--with-attach > .sic-input-comment__highlight {
+  padding-right: 2.25rem;
+}
+
+:host(.sic-size-sm) .sic-input-comment__editor > * {
+  font-size: var(--sic-font-size-sm);
+}
+
+:host(.sic-size-lg) .sic-input-comment__editor > * {
+  font-size: var(--sic-font-size-lg);
+}
+
+.sic-input-comment__highlight {
+  overflow: hidden;
+  border-color: var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-active);
+  pointer-events: none;
+}
+
+.sic-input-comment__hl-mention {
+  color: var(--sic-color-primary);
+  font-weight: 600;
+}
+
+.sic-input-comment__hl-hashtag {
+  color: var(--sic-color-warning);
+  font-weight: 600;
+}
+
+.sic-input-comment__field {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--sic-color-text-active);
+  transition: border-color var(--sic-transition-fast), box-shadow var(--sic-transition-fast);
+}
+
+.sic-input-comment__field:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--sic-color-primary) 45%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+}
+
+.sic-input-comment__field:disabled {
+  cursor: not-allowed;
+}
+
+.sic-input-comment__editor:has(.sic-input-comment__field:disabled) .sic-input-comment__highlight {
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-muted);
+}
+
+.sic-input-comment__field--invalid {
+  border-color: color-mix(in srgb, var(--sic-color-danger) 46%, var(--sic-color-border));
+}
+
+:host(.sic-align-center) .sic-input-comment__field {
+  text-align: center;
+}
+
+:host(.sic-align-right) .sic-input-comment__field {
+  text-align: right;
+}
+
+.sic-input-comment__mentions {
+  width: 100%;
+  max-height: 12rem;
+  overflow-y: auto;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  box-shadow: var(--sic-shadow-md, 0 4px 16px rgba(0, 0, 0, 0.12));
+}
+
+.sic-input-comment__mentions-status {
+  padding: var(--sic-space-2) var(--sic-space-3);
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-input-comment__mention-option {
+  display: block;
+  width: 100%;
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border: none;
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font: inherit;
+  font-size: var(--sic-font-size-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sic-input-comment__mention-option:hover,
+.sic-input-comment__mention-option--active {
+  background: var(--sic-color-surface);
+}
+
+.sic-input-comment__attach-btn {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-muted);
+  cursor: pointer;
+  transition: background var(--sic-transition-fast), color var(--sic-transition-fast);
+}
+
+.sic-input-comment__attach-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.sic-input-comment__attach-btn:hover:not(:disabled) {
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+}
+
+.sic-input-comment__attach-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.sic-input-comment__file-input {
+  display: none;
+}
+
+.sic-input-comment__files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: var(--sic-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sic-input-comment__file {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  font-size: var(--sic-font-size-sm);
+  max-width: 100%;
+}
+
+.sic-input-comment__file-preview {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: var(--sic-radius-sm);
+  object-fit: cover;
+  flex: none;
+}
+
+.sic-input-comment__file-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: none;
+  color: var(--sic-color-text-muted);
+}
+
+.sic-input-comment__file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 10rem;
+}
+
+.sic-input-comment__file-remove {
+  flex: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.65rem;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.sic-input-comment__file-remove:hover {
+  opacity: 1;
+}

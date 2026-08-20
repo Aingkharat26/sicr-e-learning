@@ -1,0 +1,15 @@
+@if (items) {
+  @for (item of items; track item.text + '|' + $index; let i = $index) {
+    <span class="sic-tag__pill sic-tag__pill--{{ item.color ?? 'neutral' }}">
+      <span class="sic-tag__label">{{ item.text }}</span>
+      @if (isItemClosable(item)) {
+        <button type="button" class="sic-tag__close" (click)="removeItem(item, i, $event)" aria-label="Remove tag">✕</button>
+      }
+    </span>
+  }
+} @else {
+  <span class="sic-tag__label"><ng-content></ng-content></span>
+  @if (closable) {
+    <button type="button" class="sic-tag__close" (click)="closed.emit()" aria-label="Remove tag">✕</button>
+  }
+}

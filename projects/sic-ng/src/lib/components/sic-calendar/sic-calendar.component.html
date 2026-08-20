@@ -1,0 +1,230 @@
+<div class="sic-calendar__toolbar">
+  <div class="sic-calendar__nav">
+    <button type="button" class="sic-calendar__nav-btn" (click)="prevMonth()" aria-label="Previous month">‹</button>
+
+    <div class="sic-calendar__title-wrap">
+      <button type="button" class="sic-calendar__title" (click)="toggleMonthYearPicker($event)">{{ monthLabel }}</button>
+
+      @if (monthYearPickerOpen) {
+        <div class="sic-calendar__month-year-picker" (click)="$event.stopPropagation()">
+          <div class="sic-calendar__picker-months">
+            @for (m of monthOptions; track m.value) {
+              <button
+                type="button"
+                class="sic-calendar__picker-month"
+                [class.sic-calendar__picker-month--active]="m.value === viewDate.month()"
+                (click)="selectPickerMonth(m.value)"
+              >
+                {{ m.label }}
+              </button>
+            }
+          </div>
+          <div class="sic-calendar__picker-years">
+            @for (y of yearOptions; track y) {
+              <button
+                type="button"
+                class="sic-calendar__picker-year"
+                [class.sic-calendar__picker-year--active]="y === viewDate.year()"
+                (click)="selectPickerYear(y)"
+              >
+                {{ yearOptionLabel(y) }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <button type="button" class="sic-calendar__nav-btn" (click)="nextMonth()" aria-label="Next month">›</button>
+    <button type="button" class="sic-calendar__today-btn" (click)="goToToday()">Today</button>
+  </div>
+
+  <div class="sic-calendar__controls">
+    @if (eraSwitcher) {
+      <button type="button" class="sic-calendar__era-btn" (click)="toggleEra()" [sicTooltip]="'Switch to ' + (era === 'BE' ? 'ค.ศ.' : 'พ.ศ.')">
+        {{ era === 'BE' ? 'พ.ศ.' : 'ค.ศ.' }}
+      </button>
+    }
+
+    <div class="sic-calendar__view-switch" role="group" aria-label="Calendar view">
+      <button
+        type="button"
+        class="sic-calendar__view-btn"
+        [class.sic-calendar__view-btn--active]="view === 'grid'"
+        (click)="setView('grid')"
+        aria-label="Grid view"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="sic-calendar__view-btn"
+        [class.sic-calendar__view-btn--active]="view === 'list'"
+        (click)="setView('list')"
+        aria-label="List view"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="sic-calendar__body">
+  @if (view === 'grid') {
+    <div class="sic-calendar__weekdays">
+      @for (day of orderedWeekdayLabels; track day; let i = $index) {
+        <span>{{ compact ? day : orderedWeekdayFullLabels[i] }}</span>
+      }
+    </div>
+
+    <div class="sic-calendar__grid">
+      @for (cell of dayCells; track cell.date.valueOf()) {
+        <button
+          type="button"
+          class="sic-calendar__cell"
+          [class.sic-calendar__cell--muted]="!cell.inMonth"
+          [class.sic-calendar__cell--today]="cell.isToday"
+          [class.sic-calendar__cell--selected]="cell.isSelected"
+          (click)="selectDate(cell)"
+        >
+          <div class="sic-calendar__cell-head">
+            <span class="sic-calendar__cell-date">{{ cell.date.date() }}</span>
+
+            @if (cell.holidays.length > 0) {
+              <div class="sic-calendar__holiday-stack" [sicTooltip]="cell.holidays.length + ' วันหยุด'" (click)="openHolidaySidebar($event, cell.date, cell.holidays)">
+                @for (h of visibleHolidayBadges(cell.holidays); track h.id ?? h.title) {
+                  <span class="sic-calendar__holiday-badge" [style.background]="holidayColor(h)">{{ holidayIcon(h) }}</span>
+                }
+                @if (hiddenHolidayCount(cell.holidays) > 0) {
+                  <span class="sic-calendar__holiday-badge sic-calendar__holiday-badge--more">+{{ hiddenHolidayCount(cell.holidays) }}</span>
+                }
+              </div>
+            }
+          </div>
+
+          @if (cell.tasks.length > 0) {
+            <div class="sic-calendar__cell-tasks">
+              @for (line of getTaskLines(cell.tasks); track line.task?.id ?? line.task?.title ?? 'more') {
+                @if (line.task; as task) {
+                  <div
+                    class="sic-calendar__task-line"
+                    [style.color]="task.color || 'var(--sic-color-primary)'"
+                    [sicTooltip]="eventTooltip(task)"
+                    (click)="handleEventClick($event, task)"
+                  >
+                    <span class="sic-calendar__task-line-icon">{{ task.icon }}</span>
+                    <span class="sic-calendar__task-line-text">{{ task.title }}</span>
+                  </div>
+                } @else {
+                  <div class="sic-calendar__task-line sic-calendar__task-line--more" (click)="openTaskSidebar($event, cell.date, cell.tasks)">
+                    ดูเพิ่มเติม (+{{ line.moreCount }})
+                  </div>
+                }
+              }
+            </div>
+          }
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="sic-calendar__agenda">
+      @for (day of agendaDays; track day.date.valueOf()) {
+        <div
+          class="sic-calendar__agenda-row"
+          [class.sic-calendar__agenda-row--today]="day.isToday"
+          [class.sic-calendar__agenda-row--selected]="day.isSelected"
+          (click)="selectDate(day)"
+        >
+          <div class="sic-calendar__agenda-date">
+            <span class="sic-calendar__agenda-weekday">{{ day.date.locale(locale).format('ddd') }}</span>
+            <span class="sic-calendar__agenda-day">{{ day.date.date() }}</span>
+          </div>
+
+          <div class="sic-calendar__agenda-body">
+            @if (day.holidays.length > 0) {
+              <div class="sic-calendar__holiday-stack" [sicTooltip]="day.holidays.length + ' วันหยุด'" (click)="openHolidaySidebar($event, day.date, day.holidays)">
+                @for (h of visibleHolidayBadges(day.holidays); track h.id ?? h.title) {
+                  <span class="sic-calendar__holiday-badge" [style.background]="holidayColor(h)">{{ holidayIcon(h) }}</span>
+                }
+                @if (hiddenHolidayCount(day.holidays) > 0) {
+                  <span class="sic-calendar__holiday-badge sic-calendar__holiday-badge--more">+{{ hiddenHolidayCount(day.holidays) }}</span>
+                }
+              </div>
+            }
+
+            <div class="sic-calendar__agenda-tasks">
+              @if (day.tasks.length === 0) {
+                @if (day.holidays.length === 0) {
+                  <span class="sic-calendar__agenda-empty">{{ noEventsText }}</span>
+                }
+              } @else {
+                @for (task of day.tasks; track task.id ?? task.title) {
+                  <button
+                    type="button"
+                    class="sic-calendar__task"
+                    [style.borderColor]="task.color || 'var(--sic-color-primary)'"
+                    (click)="handleEventClick($event, task)"
+                  >
+                    <span class="sic-calendar__task-dot" [style.background]="task.color || 'var(--sic-color-primary)'">{{ task.icon }}</span>
+                    <span class="sic-calendar__task-body">
+                      <span class="sic-calendar__task-title">{{ task.title }}</span>
+                      @if (task.description) {
+                        <span class="sic-calendar__task-desc">{{ task.description }}</span>
+                      }
+                    </span>
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (sidebarOpen) {
+  <div class="sic-calendar__sidebar-backdrop" (click)="closeSidebar()"></div>
+}
+
+<div class="sic-calendar__sidebar" [class.sic-calendar__sidebar--open]="sidebarOpen">
+  <div class="sic-calendar__sidebar-header">
+    <span class="sic-calendar__sidebar-title">{{ sidebarTitle }}</span>
+    <button type="button" class="sic-calendar__sidebar-close" (click)="closeSidebar()" aria-label="Close">✕</button>
+  </div>
+
+  <div class="sic-calendar__sidebar-list">
+    @if (sidebarKind === 'holiday') {
+      @for (h of sidebarHolidays; track h.id ?? h.title) {
+        <button type="button" class="sic-calendar__sidebar-item" (click)="handleHolidayClick(h)">
+          <span class="sic-calendar__sidebar-item-icon" [style.background]="holidayColor(h)">{{ holidayIcon(h) }}</span>
+          <span class="sic-calendar__sidebar-item-body">
+            <span class="sic-calendar__sidebar-item-title">{{ h.title }}</span>
+            <span class="sic-calendar__sidebar-item-sub">{{ holidaySourceLabel(h) }}</span>
+          </span>
+        </button>
+      }
+    } @else {
+      @for (task of sidebarTasks; track task.id ?? task.title) {
+        <button type="button" class="sic-calendar__sidebar-item" (click)="handleEventClick($event, task)">
+          <span class="sic-calendar__sidebar-item-icon" [style.background]="task.color || 'var(--sic-color-primary)'">{{ task.icon }}</span>
+          <span class="sic-calendar__sidebar-item-body">
+            <span class="sic-calendar__sidebar-item-title">{{ task.title }}</span>
+            @if (task.description) {
+              <span class="sic-calendar__sidebar-item-sub">{{ task.description }}</span>
+            }
+          </span>
+        </button>
+      }
+    }
+  </div>
+</div>

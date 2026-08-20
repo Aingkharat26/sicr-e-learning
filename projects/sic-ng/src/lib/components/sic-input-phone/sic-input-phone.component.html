@@ -1,0 +1,69 @@
+<label class="sic-field" [attr.for]="fieldId">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <span class="sic-input-phone__wrap" [class.sic-input-phone__wrap--invalid]="showError">
+    <span #dialWrapEl class="sic-input-phone__dial">
+      <button
+        #dialTrigger
+        type="button"
+        class="sic-input-phone__dial-trigger"
+        [disabled]="disabled"
+        (click)="handleTriggerClick($event)"
+        (keydown)="handleDialKeydown($event)"
+        [attr.aria-expanded]="open"
+        aria-haspopup="listbox"
+      >
+        <span class="sic-input-phone__dial-code">{{ selectedCountry?.dialCode }}</span>
+        <span class="sic-input-phone__caret" [class.sic-input-phone__caret--open]="open">▾</span>
+      </button>
+
+      <ng-template #panelTemplate>
+        <div class="sic-input-phone__panel">
+          <ul #optionsList class="sic-input-phone__options" role="listbox">
+            @for (country of countries; track country.code; let i = $index) {
+              <li
+                class="sic-input-phone__option"
+                [class.sic-input-phone__option--selected]="country.code === selectedCountryCode"
+                [class.sic-input-phone__option--active]="i === activeIndex"
+                role="option"
+                [attr.aria-label]="country.name + ' ' + country.dialCode"
+                (mousedown)="$event.preventDefault()"
+                (mouseenter)="activeIndex = i"
+                (click)="selectCountry($event, country)"
+              >
+                <span class="sic-input-phone__option-dial">{{ country.dialCode }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </ng-template>
+    </span>
+
+    <input
+      #phoneField
+      [id]="fieldId"
+      class="sic-input-phone__field"
+      type="tel"
+      [name]="name"
+      [placeholder]="placeholder"
+      [readOnly]="readonly"
+      [disabled]="disabled"
+      [value]="value"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
+    />
+  </span>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</label>

@@ -1,0 +1,44 @@
+@import '../../tokens/_field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-range__wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-3);
+}
+
+.sic-range__input {
+  flex: 1;
+  accent-color: var(--sic-color-primary);
+  outline: none;
+}
+
+.sic-range__input::-webkit-slider-thumb {
+  border-radius: var(--sic-radius-full);
+  transition: box-shadow var(--sic-transition-fast);
+}
+
+.sic-range__input::-moz-range-thumb {
+  border-radius: var(--sic-radius-full);
+  transition: box-shadow var(--sic-transition-fast);
+}
+
+.sic-range__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--sic-color-primary) 30%, transparent);
+}
+
+.sic-range__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--sic-color-primary) 30%, transparent);
+}
+
+.sic-range__value {
+  min-width: 3rem;
+  text-align: right;
+  color: var(--sic-color-text-muted);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-sm);
+}

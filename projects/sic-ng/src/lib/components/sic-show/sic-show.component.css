@@ -1,0 +1,43 @@
+:host {
+  display: contents;
+}
+
+.sic-show--from-md {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sic-show--from-md {
+    display: contents;
+  }
+}
+
+.sic-show--from-lg {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sic-show--from-lg {
+    display: contents;
+  }
+}
+
+.sic-show--upto-md {
+  display: contents;
+}
+
+@media (min-width: 768px) {
+  .sic-show--upto-md {
+    display: none;
+  }
+}
+
+.sic-show--upto-lg {
+  display: contents;
+}
+
+@media (min-width: 1024px) {
+  .sic-show--upto-lg {
+    display: none;
+  }
+}

@@ -1,0 +1,694 @@
+:host {
+  display: block;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30rem),
+    var(--sic-color-bg, #f6f8fb);
+}
+
+/* Real usage of sic-navbar + sic-sidebar + sic-breadcrumb as the page's own chrome
+   (the "v2" combo: sidebar spans full height as a sibling of the navbar+content column). */
+.tutorial-shell {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.tutorial-shell__sidebar {
+  flex: none;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.tutorial-shell__main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  /* Some demo below can render something wider than the viewport (a long code line, a wide
+     grid/table, etc.) — without this, that overflow bleeds past .tutorial-shell__main and forces a
+     horizontal scrollbar on the whole page. Contained here instead: this pane scrolls on its own
+     (matching .tutorial-shell__sidebar, which already scrolls its own nav list internally), and the
+     sticky navbar/breadcrumb above keep working exactly the same since they're direct children of
+     this now-scrolling element. */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.tutorial-shell__search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--sic-color-text-muted, #6b7280);
+  font-weight: 500;
+}
+
+.tutorial-shell__version {
+  font-family: var(--sic-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.72rem;
+}
+
+/* sic-navbar lays its header/left/right slot content out as one plain flex row with no built-in
+   spacer — this pushes everything from here on (this tag + the buttons after it) to the right edge. */
+.tutorial-shell__navbar-spacer {
+  margin-inline-start: auto;
+}
+
+.tutorial-shell__theme-option--active {
+  color: var(--sic-color-primary, #2563eb);
+  font-weight: 700;
+}
+
+.tutorial-shell__breadcrumb {
+  /* [fixed] takes .tutorial-shell__navbar out of document flow entirely, so this — the next
+     element in .tutorial-shell__main's scrolling column — needs its own top margin reserving the
+     navbar's height, or it renders underneath the now-floating navbar instead of below it. */
+  margin-top: 3.6rem;
+  padding: 0.6rem clamp(1rem, 2vw, 1rem) 0;
+}
+
+.tutorial {
+  margin: 0 auto;
+  padding: clamp(1rem, 2vw, 2rem);
+  font-family: var(--sic-font-sans, system-ui, sans-serif);
+  color: var(--sic-color-text, #16181d);
+}
+
+.tutorial__hero {
+  border-radius: 1.5rem;
+}
+
+.tutorial__hero ::ng-deep .sic-card__content {
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.tutorial__hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.tutorial__hero p {
+  max-width: 740px;
+  margin: 0.75rem 0 0;
+  color: var(--sic-color-text-muted, #64748b);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.tutorial__eyebrow {
+  margin: 0 0 0.4rem !important;
+  color: var(--sic-color-primary, #2563eb) !important;
+  font-size: 0.78rem !important;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tutorial__quickstart {
+  margin-top: 1rem;
+}
+
+.tutorial__quickstart ::ng-deep .sic-card__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 34rem);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.tutorial__quickstart h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tutorial__quickstart p {
+  margin: 0.5rem 0 0;
+  color: var(--sic-color-text-muted, #64748b);
+  line-height: 1.7;
+}
+
+.tutorial__content {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.tutorial__group {
+  display: grid;
+  gap: 1rem;
+}
+
+.tutorial__group-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+.component-card {
+  scroll-margin-top: 1rem;
+}
+
+.component-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.component-card__header h3 {
+  margin: 0.1rem 0 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.component-card__header p:last-child {
+  margin: 0.55rem 0 0;
+  color: var(--sic-color-text-muted, #64748b);
+  line-height: 1.65;
+}
+
+.component-card__selector {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  color: var(--sic-color-primary, #2563eb);
+  background: rgba(37, 99, 235, 0.09);
+  font-family: var(--sic-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.component-card__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.doc-panel {
+  min-width: 0;
+}
+
+.doc-panel__title {
+  color: var(--sic-color-text-muted, #64748b);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.doc-panel__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Re-skins the projected <sic-tabs> as a compact pill toggle instead of its default underline style. */
+.doc-panel__code-tabs {
+  display: inline-block;
+  padding: 0.2rem;
+  border: 1px solid var(--sic-color-border, #e2e5ea);
+  border-radius: 999px;
+  background: var(--sic-color-surface, #fff);
+}
+
+.doc-panel__code-tabs ::ng-deep .sic-tabs__list {
+  gap: 0.25rem;
+  border-bottom: none;
+}
+
+.doc-panel__code-tabs ::ng-deep .sic-tabs__tab {
+  padding: 0.3rem 0.75rem;
+  border-bottom: none !important;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.doc-panel__code-tabs ::ng-deep .sic-tabs__tab--active {
+  background: var(--sic-color-primary, #2563eb);
+  color: var(--sic-color-primary-contrast, #fff);
+}
+
+.doc-panel__code-tabs ::ng-deep .sic-tabs__panel {
+  display: none;
+}
+
+.demo-surface {
+  padding: 1rem;
+  border: 1px dashed var(--sic-color-border, #d7dce5);
+  border-radius: 0.85rem;
+  background: var(--sic-color-surface, #fff);
+}
+
+.demo-sidebar-shell {
+  max-width: 18rem;
+  min-height: 12rem;
+  overflow: hidden;
+  border: 1px solid var(--sic-color-border, #e2e5ea);
+  border-radius: 0.85rem;
+}
+
+.demo-sidebar-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0.75rem 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  background: var(--sic-color-surface, #f3f4f6);
+}
+
+.demo-sidebar-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+}
+
+.demo-sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid var(--sic-color-border, #e2e5ea);
+  padding: 0.75rem;
+}
+
+.demo-sidebar-logout-btn {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-inline-start: auto;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sic-color-text-muted, #6b7280);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.demo-sidebar-logout-btn:hover {
+  background: color-mix(in srgb, #ef4444 12%, transparent);
+  color: #ef4444;
+}
+
+.demo-sidebar-user {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-sidebar-user-avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--sic-color-primary, #6366f1);
+  color: #fff;
+  font-weight: 700;
+}
+
+.demo-sidebar-user-name {
+  flex: 1;
+  overflow: hidden;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.demo-navbar-shell {
+  border: 1px solid var(--sic-color-border, #e2e5ea);
+  border-radius: 0.85rem;
+}
+
+.demo-navbar-shell sic-navbar {
+  border-radius: 0.85rem;
+}
+
+.demo-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+.demo-navbar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.6rem;
+  background: var(--sic-color-surface, #f3f4f6);
+  font-size: 1.1rem;
+}
+
+.demo-navbar-left,
+.demo-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.demo-navbar-left {
+  flex: 1;
+}
+
+.demo-navbar-right {
+  margin-inline-start: auto;
+}
+
+.demo-navbar-icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: none;
+  border: none;
+  border-radius: 999px;
+  background: var(--sic-color-surface, #f3f4f6);
+  cursor: pointer;
+  font-size: 1.05rem;
+}
+
+.demo-navbar-dot {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.35rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--sic-color-warning, #f59e0b);
+}
+
+.demo-navbar-popover-wrap {
+  position: relative;
+}
+
+.demo-navbar-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 30;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 16rem;
+  max-width: 20rem;
+  border-radius: 0.6rem;
+  background: var(--sic-color-bg, #fff);
+  box-shadow: var(--sic-shadow-md, 0 8px 24px rgba(0, 0, 0, 0.12));
+  border: 1px solid var(--sic-color-border, #e2e5ea);
+}
+
+.demo-navbar-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--sic-color-border, #e2e5ea);
+  font-weight: 700;
+}
+
+.demo-navbar-panel-header button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.demo-navbar-empty {
+  padding: 1rem;
+  color: var(--sic-color-text-muted, #6b7280);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.demo-navbar-notification {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: none;
+  border-bottom: 1px solid var(--sic-color-border, #e2e5ea);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.demo-navbar-notification-meta {
+  flex-basis: 100%;
+  color: var(--sic-color-text-muted, #6b7280);
+  font-size: 0.75rem;
+}
+
+.demo-navbar-view-all {
+  padding: 0.6rem;
+  border: none;
+  border-top: 1px solid var(--sic-color-border, #e2e5ea);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.demo-navbar-user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.demo-navbar-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: var(--sic-color-primary, #6366f1);
+  color: #fff;
+  font-weight: 700;
+}
+
+.demo-navbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.6rem 0.2rem 0.2rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.demo-navbar-panel--user {
+  padding: 0.4rem;
+}
+
+.demo-navbar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border: none;
+  border-radius: 0.4rem;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.demo-navbar-menu-item:hover {
+  background: var(--sic-color-surface, #f3f4f6);
+}
+
+.demo-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 32rem;
+}
+
+.demo-box {
+  min-height: 4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--sic-color-primary, #2563eb);
+  font-weight: 800;
+}
+
+.doc-panel__grid {
+  display: block;
+  min-width: 0;
+}
+
+/* Attributes/Events cells (type/description especially) commonly run longer than a column's width
+   — wrap onto extra lines instead of the gridpanel's default ellipsis+horizontal-scroll behavior,
+   which suits its usual editable-spreadsheet use case but not a fixed-width doc table. Cells are
+   already top-aligned with a min-height (not a fixed height), so wrapped text grows the row
+   naturally instead of clipping or overflowing it. */
+.doc-panel__grid ::ng-deep .sic-gridpanel__display,
+.doc-panel__grid ::ng-deep .sic-gridpanel__display-value {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  word-break: break-word;
+}
+
+.doc-panel__code-cell {
+  color: var(--sic-color-primary, #2563eb);
+  font-family: var(--sic-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-weight: 800;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--sic-radius-full, 999px);
+  background: color-mix(in srgb, var(--sic-color-danger, #dc2626) 14%, transparent);
+  color: var(--sic-color-danger, #dc2626);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge--active {
+  background: color-mix(in srgb, var(--sic-color-success, #16a34a) 14%, transparent);
+  color: var(--sic-color-success, #16a34a);
+}
+
+@media (max-width: 760px) {
+  .tutorial {
+    padding: 0.75rem;
+  }
+
+  .tutorial__quickstart ::ng-deep .sic-card__content,
+  .component-card__header {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-panel ::ng-deep .sic-card__content,
+  .doc-panel ::ng-deep .sic-card__header,
+  .demo-surface {
+    padding: 0.75rem;
+  }
+}
+
+.demo-shell {
+  overflow: hidden;
+  border: 1px solid var(--sic-color-border, #e2e5ea);
+  border-radius: 0.85rem;
+}
+
+.demo-shell sic-navbar {
+  border-radius: 0.85rem 0.85rem 0 0;
+}
+
+.demo-shell-body {
+  display: flex;
+  min-height: 16rem;
+}
+
+.demo-shell-sidebar {
+  flex: none;
+}
+
+.demo-shell-content {
+  flex: 1;
+  min-width: 0;
+  padding: 1rem;
+}
+
+.demo-shell-page {
+  margin-top: 0.75rem;
+  color: var(--sic-color-text-muted, #6b7280);
+  font-size: 0.9rem;
+}
+
+/* v2: sidebar is a full-height sibling of the navbar+content column, instead of sitting below the navbar. */
+.demo-shell--v2 {
+  display: flex;
+  align-items: stretch;
+  min-height: 20rem;
+}
+
+.demo-shell--v2 sic-navbar {
+  border-radius: 0;
+}
+
+.demo-shell-main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.demo-popover-header {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--sic-color-border, #e2e5ea);
+  font-weight: 700;
+}
+
+.demo-popover-footer {
+  padding: 0.5rem 0.85rem;
+  border-top: 1px solid var(--sic-color-border, #e2e5ea);
+  color: var(--sic-color-text-muted, #6b7280);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.demo-timeline-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.demo-timeline-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.demo-theme-btn--active {
+  outline: 2px solid var(--sic-color-primary, #2563eb);
+  outline-offset: 2px;
+}
+
+.demo-space-bg-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}

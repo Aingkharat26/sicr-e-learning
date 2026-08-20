@@ -1,0 +1,61 @@
+@import '../../tokens/_field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-input-number__wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--sic-control-height-md);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  padding: 0 var(--sic-space-3);
+  gap: var(--sic-space-2);
+  transition: border-color var(--sic-transition-fast), box-shadow var(--sic-transition-fast);
+}
+
+:host(.sic-size-sm) .sic-input-number__wrap {
+  min-height: var(--sic-control-height-sm);
+}
+
+:host(.sic-size-lg) .sic-input-number__wrap {
+  min-height: var(--sic-control-height-lg);
+}
+
+.sic-input-number__wrap:focus-within {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 45%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+}
+
+.sic-input-number__field {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+}
+
+.sic-input-number__affix {
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  white-space: nowrap;
+}
+
+.sic-input-number__field--invalid {
+  color: var(--sic-color-danger);
+}
+
+:host(.sic-align-center) .sic-input-number__field {
+  text-align: center;
+}
+
+:host(.sic-align-right) .sic-input-number__field {
+  text-align: right;
+}

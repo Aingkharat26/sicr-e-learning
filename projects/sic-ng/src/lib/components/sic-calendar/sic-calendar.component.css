@@ -1,0 +1,558 @@
+:host {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: var(--sic-space-4);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-lg);
+  background: var(--sic-color-bg);
+  font-family: var(--sic-font-sans);
+}
+
+.sic-calendar__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sic-space-3);
+  margin-bottom: var(--sic-space-4);
+}
+
+.sic-calendar__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+}
+
+.sic-calendar__nav-btn,
+.sic-calendar__today-btn,
+.sic-calendar__era-btn {
+  border: 1px solid var(--sic-color-border);
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+  border-radius: var(--sic-radius-md);
+  cursor: pointer;
+  font-size: var(--sic-font-size-sm);
+  line-height: 1;
+}
+
+.sic-calendar__nav-btn {
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1rem;
+}
+
+.sic-calendar__today-btn,
+.sic-calendar__era-btn {
+  padding: 0.4rem 0.75rem;
+  font-weight: 600;
+}
+
+.sic-calendar__nav-btn:hover,
+.sic-calendar__today-btn:hover,
+.sic-calendar__era-btn:hover {
+  background: var(--sic-color-primary-soft, var(--sic-color-surface));
+  border-color: var(--sic-color-primary);
+}
+
+.sic-calendar__title-wrap {
+  position: relative;
+}
+
+.sic-calendar__title {
+  min-width: 9rem;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--sic-font-size-md, 1rem);
+  color: var(--sic-color-text-active);
+  cursor: pointer;
+  border-radius: var(--sic-radius-md);
+  padding: 0.2rem 0.5rem;
+}
+
+.sic-calendar__title:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar__month-year-picker {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-2);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  z-index: 8;
+}
+
+.sic-calendar__picker-months {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.15rem;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.sic-calendar__picker-years {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 12rem;
+  overflow-y: auto;
+  border-left: 1px solid var(--sic-color-border);
+  padding-left: var(--sic-space-2);
+}
+
+.sic-calendar__picker-month,
+.sic-calendar__picker-year {
+  border: none;
+  background: transparent;
+  color: var(--sic-color-text-active);
+  border-radius: var(--sic-radius-sm);
+  padding: 0.3rem 0.6rem;
+  font-size: var(--sic-font-size-sm);
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sic-calendar__picker-month:hover,
+.sic-calendar__picker-year:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-calendar__picker-month--active,
+.sic-calendar__picker-year--active {
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+}
+
+.sic-calendar__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+}
+
+.sic-calendar__view-switch {
+  display: flex;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  overflow: hidden;
+}
+
+.sic-calendar__view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2rem;
+  border: none;
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-muted);
+  cursor: pointer;
+}
+
+.sic-calendar__view-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sic-calendar__view-btn + .sic-calendar__view-btn {
+  border-left: 1px solid var(--sic-color-border);
+}
+
+.sic-calendar__view-btn--active {
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+}
+
+.sic-calendar__body {
+  position: relative;
+}
+
+.sic-calendar__weekdays,
+.sic-calendar__grid {
+  display: grid;
+  /* minmax(0, 1fr) — plain 1fr has an implicit `auto` minimum, so a day with
+     unbreakable long text (e.g. a task title) would stretch its whole column
+     wider than the rest instead of letting the ellipsis rules below kick in. */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+.sic-calendar__weekdays span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sic-color-text-muted);
+  padding-bottom: var(--sic-space-2);
+}
+
+.sic-calendar__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  min-width: 0;
+  min-height: 6.5rem;
+  padding: 0.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--sic-radius-sm);
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+  cursor: pointer;
+  font-size: var(--sic-font-size-sm);
+  text-align: left;
+}
+
+.sic-calendar__cell:hover {
+  border-color: var(--sic-color-primary);
+}
+
+.sic-calendar__cell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+/* Grid-view cells are too narrow on mobile/tablet to fit the holiday badges
+   next to the date number on the same line — drop them to their own line
+   below it instead of hiding them (list/agenda view has its own room and is
+   unaffected, since its holiday stack lives outside `.sic-calendar__cell-head`).
+   `.sic-calendar-host--compact` is set from a `ResizeObserver` on the host in
+   the component, which reflects the calendar's own rendered width reliably
+   (a `@container`/`@media` breakpoint here would depend on container-query
+   browser support and can end up not matching at all). */
+:host(.sic-calendar-host--compact) .sic-calendar__cell-head {
+  flex-wrap: wrap;
+}
+
+:host(.sic-calendar-host--compact) .sic-calendar__cell-head .sic-calendar__holiday-stack {
+  flex-basis: 100%;
+  justify-content: center;
+}
+
+.sic-calendar__cell-date {
+  font-weight: 600;
+}
+
+.sic-calendar__cell--muted {
+  color: var(--sic-color-text-muted);
+  opacity: 0.55;
+}
+
+.sic-calendar__cell--today .sic-calendar__cell-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--sic-color-primary);
+  color: var(--sic-color-primary-contrast);
+}
+
+.sic-calendar__cell--selected {
+  border-color: var(--sic-color-primary);
+  background: var(--sic-color-primary-soft, var(--sic-color-surface));
+}
+
+/* Overlapping circular holiday badges — office/government/bank/other. */
+.sic-calendar__holiday-stack {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.sic-calendar__holiday-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--sic-color-surface);
+  color: #fff;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.sic-calendar__holiday-badge + .sic-calendar__holiday-badge {
+  margin-left: -0.45rem;
+}
+
+.sic-calendar__holiday-badge--more {
+  background: var(--sic-color-text-muted);
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+.sic-calendar__cell-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.sic-calendar__task-line {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sic-calendar__task-line-icon {
+  flex: none;
+}
+
+.sic-calendar__task-line-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sic-calendar__task-line--more {
+  color: var(--sic-color-text-muted);
+  font-weight: 600;
+}
+
+.sic-calendar__agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 32rem;
+  overflow-y: auto;
+}
+
+.sic-calendar__agenda-row {
+  display: flex;
+  gap: var(--sic-space-3);
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  cursor: pointer;
+}
+
+.sic-calendar__agenda-row--today {
+  border-color: var(--sic-color-primary);
+}
+
+.sic-calendar__agenda-row--selected {
+  background: var(--sic-color-primary-soft, var(--sic-color-surface));
+}
+
+.sic-calendar__agenda-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  color: var(--sic-color-text-active);
+}
+
+.sic-calendar__agenda-weekday {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--sic-color-text-muted);
+}
+
+.sic-calendar__agenda-day {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sic-calendar__agenda-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.sic-calendar__agenda-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.sic-calendar__agenda-empty {
+  align-self: center;
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-calendar__task {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: 0.35rem var(--sic-space-2);
+  border: 1px solid var(--sic-color-border);
+  border-left-width: 3px;
+  border-radius: var(--sic-radius-sm);
+  background: var(--sic-color-bg);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sic-calendar__task-dot {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.sic-calendar__task-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sic-calendar__task-title {
+  font-weight: 600;
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-calendar__task-desc {
+  font-size: 0.75rem;
+  color: var(--sic-color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right-hand sidebar — slides out from the calendar's own right edge. */
+.sic-calendar__sidebar-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 5;
+}
+
+.sic-calendar__sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(20rem, 90%);
+  display: flex;
+  flex-direction: column;
+  background: var(--sic-color-bg);
+  border-left: 1px solid var(--sic-color-border);
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.12);
+  transform: translateX(100%);
+  transition: transform 0.22s ease;
+  z-index: 6;
+}
+
+.sic-calendar__sidebar--open {
+  transform: translateX(0);
+}
+
+.sic-calendar__sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sic-space-3) var(--sic-space-4);
+  border-bottom: 1px solid var(--sic-color-border);
+}
+
+.sic-calendar__sidebar-title {
+  font-weight: 700;
+  color: var(--sic-color-text-active);
+}
+
+.sic-calendar__sidebar-close {
+  border: none;
+  background: transparent;
+  color: var(--sic-color-text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.sic-calendar__sidebar-close:hover {
+  color: var(--sic-color-text-active);
+}
+
+.sic-calendar__sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-3) var(--sic-space-4);
+}
+
+.sic-calendar__sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: 0.5rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-surface);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sic-calendar__sidebar-item-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.sic-calendar__sidebar-item-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sic-calendar__sidebar-item-title {
+  font-weight: 600;
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-sm);
+}
+
+.sic-calendar__sidebar-item-sub {
+  font-size: 0.75rem;
+  color: var(--sic-color-text-muted);
+}
+
+@media (max-width: 560px) {
+  .sic-calendar__cell {
+    min-height: 4.5rem;
+  }
+}

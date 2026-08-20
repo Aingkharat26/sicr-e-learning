@@ -1,0 +1,11 @@
+<div class="sic-loading-overlay">
+  @if (state().image) {
+    <img class="sic-loading-overlay__image" [src]="state().image" alt="" />
+  } @else {
+    <sic-spinner [size]="state().spinnerSize" />
+  }
+
+  @if (state().message) {
+    <p class="sic-loading-overlay__message">{{ state().message }}</p>
+  }
+</div>

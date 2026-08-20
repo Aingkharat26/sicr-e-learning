@@ -1,0 +1,58 @@
+@import '../../tokens/_field.css';
+@import '../../tokens/_control-field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-colorpicker__wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+}
+
+.sic-colorpicker__swatch {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: none;
+  border: none;
+  border-radius: var(--sic-radius-sm);
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+:host(.sic-size-sm) .sic-colorpicker__swatch {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+:host(.sic-size-lg) .sic-colorpicker__swatch {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.sic-colorpicker__swatch--empty {
+  box-shadow: inset 0 0 0 1px var(--sic-color-border);
+  opacity: 0.5;
+}
+
+.sic-colorpicker__hex {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sic-color-text-active);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+:host(.sic-align-center) .sic-colorpicker__hex {
+  text-align: center;
+}
+
+:host(.sic-align-right) .sic-colorpicker__hex {
+  text-align: right;
+}

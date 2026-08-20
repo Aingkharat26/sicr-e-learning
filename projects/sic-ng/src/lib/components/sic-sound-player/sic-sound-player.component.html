@@ -1,0 +1,65 @@
+<div class="sic-sound-player__card">
+  <div class="sic-sound-player__art-col">
+    <div class="sic-sound-player__art-ring">
+      <div class="sic-sound-player__art" [style.background-image]="coverUrl ? 'url(' + coverUrl + ')' : null">
+        @if (!coverUrl) {
+          <span class="sic-sound-player__art-icon">♪</span>
+        }
+      </div>
+    </div>
+
+    @if (genre) {
+      <span class="sic-sound-player__genre">{{ genre }}</span>
+    }
+    @if (plays) {
+      <span class="sic-sound-player__plays">{{ plays }}</span>
+    }
+  </div>
+
+  <div class="sic-sound-player__main">
+    <div class="sic-sound-player__header">
+      <div class="sic-sound-player__title">{{ title }}</div>
+      @if (subtitle) {
+        <div class="sic-sound-player__subtitle">{{ subtitle }}</div>
+      }
+    </div>
+
+    <div #waveform class="sic-sound-player__waveform" (click)="onWaveformClick($event)">
+      @for (bar of bars; track $index) {
+        <span class="sic-sound-player__bar" [class.sic-sound-player__bar--active]="$index < activeBarCount" [style.height.%]="bar"></span>
+      }
+    </div>
+
+    <div class="sic-sound-player__time-row">
+      <span>{{ formattedCurrentTime }}</span>
+      <span>{{ formattedDuration }}</span>
+    </div>
+
+    <div class="sic-sound-player__controls">
+      <button type="button" class="sic-sound-player__control" (click)="previousTrack.emit()" aria-label="Previous track">⏮</button>
+      <button
+        type="button"
+        class="sic-sound-player__control sic-sound-player__control--play"
+        (click)="togglePlay()"
+        [attr.aria-pressed]="playing"
+        aria-label="Play/pause"
+      >
+        {{ playing ? '⏸' : '▶' }}
+      </button>
+      <button type="button" class="sic-sound-player__control" (click)="nextTrack.emit()" aria-label="Next track">⏭</button>
+    </div>
+  </div>
+
+  <audio
+    #audio
+    [src]="src"
+    [autoplay]="autoplay"
+    [loop]="loop"
+    [muted]="muted"
+    (play)="onPlay()"
+    (pause)="onPause()"
+    (ended)="onEnded()"
+    (loadedmetadata)="onLoadedMetadata()"
+    (timeupdate)="onTimeUpdate()"
+  ></audio>
+</div>

@@ -1,0 +1,15 @@
+@if (showCopyButton || language !== 'plaintext') {
+  <div class="sic-code__toolbar">
+    @if (language !== 'plaintext') {
+      <span class="sic-code__lang">{{ language }}</span>
+    }
+    <span class="sic-code__spacer"></span>
+    @if (showCopyButton) {
+      <button type="button" class="sic-code__copy-btn" (click)="copy()">
+        {{ justCopied ? copiedText : copyText }}
+      </button>
+    }
+  </div>
+}
+
+<pre class="sic-code__pre"><code class="sic-code__code">@for (line of lines; track $index; let i = $index) {<div class="sic-code__line">@if (showLineNumbers) {<span class="sic-code__line-number">{{ i + 1 }}</span>}<span class="sic-code__line-content">@for (token of line; track $index) {<span class="sic-code__tok sic-code__tok--{{ token.type }}">{{ token.text }}</span>}</span></div>}</code></pre>

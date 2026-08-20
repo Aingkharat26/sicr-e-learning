@@ -1,0 +1,10 @@
+# sic-ng component reference index
+
+- **Getting Started** (`references/getting-started.md`): npm install sic-ng, provideSicTheme(config), applySicThemeConfig(config, element), provideSicConfig(config)
+- **Project Structure** (`references/project-structure.md`): standard search, standard form, standard transaction
+- **Navigation** (`references/navigation.md`): sic-navbar, sic-breadcrumb, sic-sidebar, sic-navbar + sic-sidebar + sic-breadcrumb, sic-sidebar + sic-navbar + sic-breadcrumb, sic-tabs, sic-stepper, sic-timeline
+- **Layout & General** (`references/layout-general.md`): sic-grid, sic-flex, sic-card, sic-card-stack, sic-button, sic-button-group, sic-a-link, sic-section, sic-show, sic-text, sic-icon-badge
+- **Forms & Inputs** (`references/forms-inputs.md`): new SicFormData(formGroup, model?), sicFormCombine(sources), sic-input, sic-input-password, sic-input-number, sic-input-area, sic-input-comment, resolveMentionDisplay(text, resolve), sic-input-phone, sic-input-tag, sic-combobox, sic-checkbox, sic-radio, sic-switch, sic-range, sic-datepicker, sic-timepicker, sic-datepicker + sic-timepicker, sic-colorpicker, sic-upload, sic-rating, Reactive form + SicValidator
+- **Data Display & Media** (`references/display-media.md`): sic-gridpanel, sic-calendar, sic-calendar-timeline, sic-code, sic-image, sic-image-slider, sic-video-player, sic-sound-player, sic-space-bg, sic-masonry, sic-drag-drop, sic-badge, sic-tag, sic-avatar, sic-accordion / sic-collapse
+- **Overlays & Feedback** (`references/feedback-overlays.md`): sic-dialog, SicDialogService, SicDialogService.info/success/danger/warning/confirm, sic-search, sic-popover, sic-toast, SicToastService.show(options), sicTooltip
+- **Loading & Indicators** (`references/loading-indicators.md`): sic-spinner, SicLoadingService, sic-skeleton, sic-progress-bar

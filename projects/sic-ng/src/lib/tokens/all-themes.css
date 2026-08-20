@@ -1,0 +1,11 @@
+/**
+ * sic-ng design tokens — all named themes bundled together.
+ * Import this once to allow runtime switching between themes via
+ * SicThemeService.setThemeName() (adds/removes a `theme-*` class on <html>).
+ */
+@import './default-theme.css';
+@import './_theme-sunset.css';
+@import './_theme-forest.css';
+@import './_theme-violet.css';
+@import './_theme-slate.css';
+@import './_theme-glass.css';

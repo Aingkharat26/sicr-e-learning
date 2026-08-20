@@ -1,0 +1,14 @@
+<a
+  class="sic-button sic-button--{{ variant }} sic-button--{{ color }} sic-button--{{ size }}"
+  [attr.href]="resolvedHref"
+  [attr.target]="target ?? null"
+  [attr.rel]="resolvedRel"
+  [attr.download]="resolvedDownload"
+  [attr.aria-disabled]="disabled ? 'true' : null"
+  [attr.tabindex]="disabled ? -1 : null"
+  (click)="handleClick($event)"
+>
+  <ng-content select="[sicIconLeft]"></ng-content>
+  <span class="sic-button__label"><ng-content></ng-content></span>
+  <ng-content select="[sicIconRight]"></ng-content>
+</a>

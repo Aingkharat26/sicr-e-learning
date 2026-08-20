@@ -1,0 +1,170 @@
+:host {
+  --sic-sound-player-bg: linear-gradient(160deg, #241b3a 0%, #1a1430 55%, #120e24 100%);
+  --sic-sound-player-accent-start: #f472b6;
+  --sic-sound-player-accent-mid: #c084fc;
+  --sic-sound-player-accent-end: #fb923c;
+  --sic-sound-player-fg: #f3e8ff;
+  --sic-sound-player-fg-muted: #a89dc4;
+
+  display: block;
+  width: 100%;
+  font-family: var(--sic-font-sans);
+}
+
+.sic-sound-player__card {
+  display: flex;
+  gap: var(--sic-space-3, 0.75rem);
+  padding: var(--sic-space-3, 0.75rem);
+  border-radius: var(--sic-radius-lg);
+  background: var(--sic-sound-player-bg);
+  color: var(--sic-sound-player-fg);
+  overflow: hidden;
+}
+
+.sic-sound-player__art-col {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sic-space-2, 0.5rem);
+}
+
+.sic-sound-player__art-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border: 2px dashed rgba(240, 171, 252, 0.45);
+  border-radius: var(--sic-radius-full);
+  padding: 0.25rem;
+}
+
+.sic-sound-player__art {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--sic-radius-full);
+  background: conic-gradient(
+    from 200deg,
+    var(--sic-sound-player-accent-start),
+    var(--sic-sound-player-accent-mid),
+    var(--sic-sound-player-accent-end),
+    var(--sic-sound-player-accent-start)
+  );
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 0.75rem rgba(192, 132, 252, 0.5);
+}
+
+.sic-sound-player__art-icon {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sic-sound-player__genre {
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--sic-radius-full);
+  background: rgba(244, 114, 182, 0.18);
+  color: var(--sic-sound-player-accent-start);
+  font-size: var(--sic-font-size-xs, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sic-sound-player__plays {
+  color: var(--sic-sound-player-fg-muted);
+  font-size: var(--sic-font-size-xs, 0.7rem);
+}
+
+.sic-sound-player__main {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--sic-space-1, 0.25rem);
+}
+
+.sic-sound-player__title {
+  font-size: var(--sic-font-size-md, 0.95rem);
+  font-weight: 700;
+}
+
+.sic-sound-player__subtitle {
+  color: var(--sic-sound-player-fg-muted);
+  font-size: var(--sic-font-size-sm, 0.85rem);
+}
+
+.sic-sound-player__waveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 2rem;
+  margin-top: var(--sic-space-1, 0.25rem);
+  cursor: pointer;
+}
+
+.sic-sound-player__bar {
+  flex: 1 1 0;
+  min-width: 2px;
+  border-radius: 1px;
+  background: rgba(168, 157, 196, 0.35);
+  transition: background 0.15s ease;
+}
+
+.sic-sound-player__bar--active {
+  background: linear-gradient(to top, var(--sic-sound-player-accent-start), var(--sic-sound-player-accent-mid));
+}
+
+.sic-sound-player__time-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--sic-sound-player-fg-muted);
+  font-size: var(--sic-font-size-xs, 0.7rem);
+}
+
+.sic-sound-player__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sic-space-3, 0.75rem);
+  margin-top: 0;
+}
+
+.sic-sound-player__control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: none;
+  border-radius: var(--sic-radius-full);
+  background: transparent;
+  color: var(--sic-sound-player-fg-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.sic-sound-player__control:hover {
+  color: var(--sic-sound-player-fg);
+}
+
+.sic-sound-player__control--play {
+  width: 2.1rem;
+  height: 2.1rem;
+  background: linear-gradient(135deg, var(--sic-sound-player-accent-start), var(--sic-sound-player-accent-mid));
+  color: #fff;
+  font-size: 0.95rem;
+  box-shadow: 0 0 0.9rem rgba(244, 114, 182, 0.55);
+}
+
+.sic-sound-player__control--play:hover {
+  color: #fff;
+  transform: scale(1.05);
+}
+

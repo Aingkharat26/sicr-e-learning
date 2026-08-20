@@ -1,0 +1,117 @@
+/**
+ * Shared single-line control chrome (text/date/time/color inputs, combobox trigger).
+ * Import with: @import '../../tokens/_control-field.css';
+ * Apply class="sic-control-field" to the focusable element/wrapper.
+ */
+.sic-control-field {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--sic-control-height-md);
+  padding: 0 var(--sic-space-3);
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text-active);
+  font-family: var(--sic-font-sans);
+  font-size: var(--sic-font-size-md);
+  transition: border-color var(--sic-transition-fast), box-shadow var(--sic-transition-fast);
+}
+
+:host(.sic-size-sm) .sic-control-field {
+  min-height: var(--sic-control-height-sm);
+  font-size: var(--sic-font-size-sm);
+}
+
+:host(.sic-size-lg) .sic-control-field {
+  min-height: var(--sic-control-height-lg);
+  font-size: var(--sic-font-size-lg);
+}
+
+.sic-control-field:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--sic-color-primary) 22%, var(--sic-color-border));
+}
+
+.sic-control-field:focus,
+.sic-control-field:focus-within {
+  outline: none;
+  border-color: color-mix(in srgb, var(--sic-color-primary) 45%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-primary) 14%, transparent);
+}
+
+.sic-control-field:disabled,
+.sic-control-field:has(:disabled) {
+  cursor: not-allowed;
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-muted);
+}
+
+.sic-control-field--invalid,
+.sic-control-field--invalid:focus {
+  border-color: color-mix(in srgb, var(--sic-color-danger) 46%, var(--sic-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sic-color-danger) 12%, transparent);
+}
+
+:host(.sic-align-center) .sic-control-field {
+  text-align: center;
+}
+
+:host(.sic-align-right) .sic-control-field {
+  text-align: right;
+}
+
+/**
+ * Trailing "clear" button (shown when a field has a value and [clearable]
+ * is on) — used by sic-combobox, sic-datepicker, sic-timepicker, sic-colorpicker.
+ */
+.sic-field-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--sic-radius-full);
+  background: transparent;
+  color: var(--sic-color-text-muted);
+  cursor: pointer;
+  transition: background var(--sic-transition-fast), color var(--sic-transition-fast);
+}
+
+.sic-field-clear-btn:hover {
+  background: var(--sic-color-surface);
+  color: var(--sic-color-text-active);
+}
+
+.sic-field-clear-btn svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+/**
+ * Resets a <button> nested inside a `.sic-control-field` wrapper so it blends
+ * in as plain clickable text (used where a trailing clear/icon button must
+ * sit beside the "open panel" trigger — buttons can't nest, so the outer
+ * element becomes a plain div carrying `.sic-control-field` and this class
+ * resets the inner trigger <button> to look like part of the same field).
+ */
+.sic-control-field__reset-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.sic-control-field__reset-btn:disabled {
+  cursor: not-allowed;
+}

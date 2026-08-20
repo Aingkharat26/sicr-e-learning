@@ -1,0 +1,10 @@
+@import 'sic-ng/theme/all-themes.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--sic-font-sans, 'Inter', 'Prompt', system-ui, sans-serif);
+  background-color: var(--sic-color-bg, #ffffff);
+  color: var(--sic-color-text, #16181d);
+}

@@ -1,0 +1,45 @@
+/**
+ * sic-ng design tokens — "Forest" theme, standalone (applies unconditionally, no class needed).
+ * Import this on its own when the app only ever uses one named theme.
+ * For runtime switching between multiple named themes, import all-themes.css instead
+ * and use SicThemeService.setThemeName('forest').
+ */
+@import './_tokens.css';
+@import './_tokens.dark.css';
+
+:root {
+  --sic-color-bg: #f7faf7;
+  --sic-color-surface: #eef4ee;
+  --sic-color-border: #d8e3d6;
+  --sic-color-text: #16211a;
+  --sic-color-text-muted: #5c6d61;
+  --sic-color-text-active: #0c140f;
+
+  --sic-color-primary: #15803d;
+  --sic-color-primary-contrast: #ffffff;
+  --sic-color-success: #059669;
+  --sic-color-danger: #b91c1c;
+  --sic-color-warning: #b45309;
+
+  --sic-radius-sm: 0.4rem;
+  --sic-radius-md: 0.7rem;
+  --sic-radius-lg: 1.1rem;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #14532d 10%, transparent);
+  --sic-shadow-md: 0 8px 22px color-mix(in srgb, #14532d 16%, transparent);
+}
+
+:root.dark {
+  --sic-color-bg: #0e1712;
+  --sic-color-surface: #14201a;
+  --sic-color-border: #24352b;
+  --sic-color-text: #e7f1ea;
+  --sic-color-text-muted: #93a89b;
+  --sic-color-text-active: #ffffff;
+
+  --sic-color-primary: #4ade80;
+  --sic-color-primary-contrast: #0c1f14;
+
+  --sic-shadow-sm: 0 1px 2px color-mix(in srgb, #000 40%, transparent);
+  --sic-shadow-md: 0 8px 22px color-mix(in srgb, #000 46%, transparent);
+}

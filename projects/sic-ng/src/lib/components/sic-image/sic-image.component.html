@@ -1,0 +1,36 @@
+@if (mode === 'sync') {
+  <img
+    class="sic-image__img sic-image__img--{{ rounded }}"
+    [src]="resolvedSrc"
+    [alt]="alt"
+    [loading]="loading"
+    [style.width]="hostWidthStyle"
+    [style.height]="hostHeightStyle"
+    (error)="handleError()"
+  />
+} @else {
+  <div class="sic-image__async" [style.width]="hostWidthStyle" [style.height]="hostHeightStyle">
+    @if (asyncStrategy === 'progressive') {
+      @if (!loaded) {
+        <img
+          class="sic-image__img sic-image__img--placeholder sic-image__img--{{ rounded }}"
+          [src]="resolvedLowResSrc"
+          [alt]="alt"
+          (error)="handleLowResError()"
+        />
+      }
+    } @else if (!loaded) {
+      <sic-skeleton class="sic-image__skeleton" variant="rect" width="100%" height="100%" />
+    }
+
+    <img
+      class="sic-image__img sic-image__img--{{ rounded }}"
+      [class.sic-image__img--hidden]="!loaded"
+      [src]="resolvedSrc"
+      [alt]="alt"
+      [loading]="loading"
+      (load)="handleLoad()"
+      (error)="handleError()"
+    />
+  </div>
+}

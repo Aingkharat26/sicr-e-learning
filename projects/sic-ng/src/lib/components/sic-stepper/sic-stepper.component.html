@@ -1,0 +1,55 @@
+<div class="sic-stepper__body">
+  <div class="sic-stepper__list" role="tablist">
+    @for (step of steps; track step.label; let i = $index) {
+      <div class="sic-stepper__step" [class.sic-stepper__step--last]="i === steps.length - 1">
+        <button
+          type="button"
+          class="sic-stepper__indicator"
+          [class.sic-stepper__indicator--complete]="stepState(i) === 'complete'"
+          [class.sic-stepper__indicator--active]="stepState(i) === 'active'"
+          [disabled]="step.disabled"
+          role="tab"
+          [attr.aria-selected]="i === activeIndex"
+          (click)="goTo(i)"
+        >
+          <span class="sic-stepper__circle">
+            @if (stepState(i) === 'complete') {
+              ✓
+            } @else {
+              {{ i + 1 }}
+            }
+          </span>
+          <span class="sic-stepper__labels">
+            <span class="sic-stepper__label">{{ step.label }}</span>
+            @if (step.description) {
+              <span class="sic-stepper__description">{{ step.description }}</span>
+            }
+          </span>
+        </button>
+
+        @if (i < steps.length - 1) {
+          <span class="sic-stepper__connector" [class.sic-stepper__connector--complete]="stepState(i) === 'complete'"></span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="sic-stepper__content">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+@if (showNav) {
+  <div class="sic-stepper__nav">
+    <sic-button variant="outline" [disabled]="isFirst" (click)="goToPrevious()">{{ previousText }}</sic-button>
+    <span class="sic-stepper__nav-spacer"></span>
+    @if (currentStep?.optional && !isLast) {
+      <sic-button variant="ghost" (click)="skipStep()">{{ skipText }}</sic-button>
+    }
+    @if (isLast) {
+      <sic-button variant="solid" color="success" (click)="finishStepper()">{{ finishText }}</sic-button>
+    } @else {
+      <sic-button variant="solid" (click)="goToNext()">{{ nextText }}</sic-button>
+    }
+  </div>
+}

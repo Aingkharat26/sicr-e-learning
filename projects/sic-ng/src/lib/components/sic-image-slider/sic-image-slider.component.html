@@ -1,0 +1,47 @@
+@if (!items.length) {
+  <div class="sic-image-slider__empty sic-image-slider__empty--{{ rounded }}">{{ noItemsText }}</div>
+} @else {
+  <div class="sic-image-slider__viewport sic-image-slider__viewport--{{ rounded }}">
+    <div class="sic-image-slider__track" [style.transform]="'translateX(' + -activeIndex * 100 + '%)'">
+      @for (item of items; track trackByFn($index, item); let i = $index) {
+        <div class="sic-image-slider__slide">
+          <img class="sic-image-slider__image" [src]="item.imageUrl" [alt]="item.alt ?? ''" />
+
+          @if (slideTemplate && overlay) {
+            <div class="sic-image-slider__overlay">
+              <ng-container *ngTemplateOutlet="slideTemplate; context: { $implicit: item, index: i }"></ng-container>
+            </div>
+          } @else if (slideTemplate) {
+            <ng-container *ngTemplateOutlet="slideTemplate; context: { $implicit: item, index: i }"></ng-container>
+          } @else if (item.caption) {
+            <div class="sic-image-slider__caption">{{ item.caption }}</div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (showArrows && items.length > 1) {
+      <button type="button" class="sic-image-slider__arrow sic-image-slider__arrow--prev" (click)="prev()" aria-label="Previous slide">
+        ‹
+      </button>
+      <button type="button" class="sic-image-slider__arrow sic-image-slider__arrow--next" (click)="next()" aria-label="Next slide">
+        ›
+      </button>
+    }
+  </div>
+
+  @if (showDots && items.length > 1) {
+    <div class="sic-image-slider__dots">
+      @for (item of items; track trackByFn($index, item); let i = $index) {
+        <button
+          type="button"
+          class="sic-image-slider__dot"
+          [class.sic-image-slider__dot--active]="i === activeIndex"
+          (click)="goTo(i)"
+          [attr.aria-label]="'Go to slide ' + (i + 1)"
+          [attr.aria-current]="i === activeIndex ? 'true' : null"
+        ></button>
+      }
+    </div>
+  }
+}

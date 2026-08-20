@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: var(--sic-radius-full);
+  background: color-mix(in srgb, var(--sic-color-primary) 12%, transparent);
+  font-size: 1.15rem;
+}

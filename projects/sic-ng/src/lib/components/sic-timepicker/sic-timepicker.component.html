@@ -1,0 +1,134 @@
+<label class="sic-field" [attr.for]="fieldId">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <div class="sic-timepicker" (focusout)="handleFocusOut($event)">
+    <div #fieldWrap class="sic-control-field sic-timepicker__trigger" [class.sic-control-field--invalid]="showError">
+      <button
+        #trigger
+        [id]="fieldId"
+        type="button"
+        class="sic-control-field__reset-btn"
+        [disabled]="disabled"
+        (click)="handleTriggerClick($event)"
+        (focus)="handleTriggerFocus()"
+        (keydown)="handleKeydown($event)"
+        [attr.aria-expanded]="open"
+        aria-haspopup="dialog"
+      >
+        <span class="sic-timepicker__value" [class.sic-timepicker__value--placeholder]="!displayValue">
+          {{ displayValue || placeholder }}
+        </span>
+      </button>
+
+      @if (showClear) {
+        <button
+          type="button"
+          class="sic-field-clear-btn"
+          tabindex="-1"
+          aria-label="Clear"
+          (mousedown)="$event.preventDefault()"
+          (click)="clearValue($event)"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="18" y1="6" x2="6" y2="18" />
+          </svg>
+        </button>
+      }
+
+      <svg class="sic-timepicker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3.5 2" />
+      </svg>
+    </div>
+
+    @if (open) {
+      <div #panel class="sic-timepicker__panel" role="dialog" aria-label="Choose time" [style.top.px]="panelTop" [style.left.px]="panelLeft">
+        <div class="sic-timepicker__digital">
+          <button
+            type="button"
+            class="sic-timepicker__segment"
+            [class.sic-timepicker__segment--active]="segment === 'hour'"
+            tabindex="-1"
+            (mousedown)="$event.preventDefault()"
+            (click)="setSegment('hour', $event)"
+          >
+            {{ hour | number: '2.0-0' }}
+          </button>
+          <span class="sic-timepicker__colon">:</span>
+          <button
+            type="button"
+            class="sic-timepicker__segment"
+            [class.sic-timepicker__segment--active]="segment === 'minute'"
+            tabindex="-1"
+            (mousedown)="$event.preventDefault()"
+            (click)="setSegment('minute', $event)"
+          >
+            {{ minute | number: '2.0-0' }}
+          </button>
+        </div>
+
+        <div #face class="sic-timepicker__face" (pointerdown)="handleFacePointerDown($event)">
+          <div class="sic-timepicker__hand" [style.width.px]="handLength" [style.transform]="'rotate(' + handAngle + 'deg)'"></div>
+          <div class="sic-timepicker__center"></div>
+
+          @if (segment === 'hour') {
+            @for (n of hourOuterNumbers; track n.value) {
+              <button
+                type="button"
+                class="sic-timepicker__num"
+                [class.sic-timepicker__num--selected]="hour === n.value"
+                [style.transform]="n.transform"
+                [disabled]="isHourDisabled(n.value)"
+                tabindex="-1"
+                (mousedown)="$event.preventDefault()"
+              >
+                {{ n.label }}
+              </button>
+            }
+            @for (n of hourInnerNumbers; track n.value) {
+              <button
+                type="button"
+                class="sic-timepicker__num sic-timepicker__num--inner"
+                [class.sic-timepicker__num--selected]="hour === n.value"
+                [style.transform]="n.transform"
+                [disabled]="isHourDisabled(n.value)"
+                tabindex="-1"
+                (mousedown)="$event.preventDefault()"
+              >
+                {{ n.label }}
+              </button>
+            }
+          } @else {
+            @for (n of minuteNumbers; track n.value) {
+              <button
+                type="button"
+                class="sic-timepicker__num"
+                [class.sic-timepicker__num--selected]="minute === n.value"
+                [style.transform]="n.transform"
+                [disabled]="isMinuteDisabled(n.value)"
+                tabindex="-1"
+                (mousedown)="$event.preventDefault()"
+              >
+                {{ n.label }}
+              </button>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</label>

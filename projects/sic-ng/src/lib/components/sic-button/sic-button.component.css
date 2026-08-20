@@ -1,0 +1,16 @@
+@import '../../tokens/_button-base.css';
+
+:host {
+  display: inline-flex;
+}
+
+:host(.sic-button--block) {
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  :host(.sic-button--compact-mobile) {
+    transform: scale(0.85);
+  }
+}

@@ -1,0 +1,161 @@
+<label class="sic-field" [attr.for]="fieldId">
+  @if (label) {
+    <span class="sic-field__label">
+      {{ label }}
+      @if (isRequired) {
+        <span class="sic-field__required">*</span>
+      }
+    </span>
+  }
+
+  <div class="sic-datepicker" (focusout)="handleFocusOut($event)">
+    <div #fieldWrap class="sic-control-field sic-datepicker__trigger" [class.sic-control-field--invalid]="showError">
+      <button
+        #trigger
+        [id]="fieldId"
+        type="button"
+        class="sic-control-field__reset-btn"
+        [disabled]="disabled"
+        (click)="handleTriggerClick($event)"
+        (focus)="handleTriggerFocus()"
+        (keydown)="handleTriggerKeydown($event)"
+        [attr.aria-expanded]="open"
+        aria-haspopup="dialog"
+      >
+        <span class="sic-datepicker__value" [class.sic-datepicker__value--placeholder]="!displayValue">
+          {{ displayValue || placeholder }}
+        </span>
+      </button>
+
+      @if (showClear) {
+        <button
+          type="button"
+          class="sic-field-clear-btn"
+          tabindex="-1"
+          aria-label="Clear"
+          (mousedown)="$event.preventDefault()"
+          (click)="clearValue($event)"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="18" y1="6" x2="6" y2="18" />
+          </svg>
+        </button>
+      }
+
+      <svg class="sic-datepicker__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+        <line x1="8" y1="3" x2="8" y2="7" />
+        <line x1="16" y1="3" x2="16" y2="7" />
+      </svg>
+    </div>
+
+    @if (open) {
+      <div #panel class="sic-datepicker__panel" role="dialog" aria-label="Choose date" [style.top.px]="panelTop" [style.left.px]="panelLeft">
+        <div class="sic-datepicker__header">
+          <button
+            type="button"
+            class="sic-datepicker__nav"
+            tabindex="-1"
+            aria-label="Previous"
+            (mousedown)="$event.preventDefault()"
+            (click)="$event.preventDefault(); stepPrimary(-1)"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            class="sic-datepicker__header-label"
+            tabindex="-1"
+            [disabled]="view === 'year'"
+            (mousedown)="$event.preventDefault()"
+            (click)="$event.preventDefault(); drillUp()"
+          >
+            {{ headerLabel }}
+          </button>
+          <button
+            type="button"
+            class="sic-datepicker__nav"
+            tabindex="-1"
+            aria-label="Next"
+            (mousedown)="$event.preventDefault()"
+            (click)="$event.preventDefault(); stepPrimary(1)"
+          >
+            ›
+          </button>
+        </div>
+
+        @switch (view) {
+          @case ('day') {
+            <div class="sic-datepicker__weekdays">
+              @for (wd of weekdayLabels; track $index) {
+                <span>{{ wd }}</span>
+              }
+            </div>
+            <div class="sic-datepicker__days" role="grid">
+              @for (cell of dayCells; track cell.date.valueOf()) {
+                <button
+                  type="button"
+                  class="sic-datepicker__day"
+                  [class.sic-datepicker__day--outside]="!cell.inMonth"
+                  [class.sic-datepicker__day--today]="cell.isToday"
+                  [class.sic-datepicker__day--selected]="cell.isSelected"
+                  [class.sic-datepicker__day--cursor]="keyboardActive && cell.isCursor"
+                  [disabled]="cell.disabled"
+                  tabindex="-1"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="selectDay(cell, $event)"
+                >
+                  {{ cell.label }}
+                </button>
+              }
+            </div>
+          }
+          @case ('month') {
+            <div class="sic-datepicker__grid sic-datepicker__grid--month">
+              @for (cell of monthCells; track cell.month) {
+                <button
+                  type="button"
+                  class="sic-datepicker__cell"
+                  [class.sic-datepicker__cell--selected]="cell.isSelected"
+                  [class.sic-datepicker__cell--cursor]="keyboardActive && cell.isCursor"
+                  [disabled]="cell.disabled"
+                  tabindex="-1"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="selectMonth(cell, $event)"
+                >
+                  {{ cell.label }}
+                </button>
+              }
+            </div>
+          }
+          @case ('year') {
+            <div class="sic-datepicker__grid sic-datepicker__grid--year">
+              @for (cell of yearCells; track cell.year) {
+                <button
+                  type="button"
+                  class="sic-datepicker__cell"
+                  [class.sic-datepicker__cell--selected]="cell.isSelected"
+                  [class.sic-datepicker__cell--cursor]="keyboardActive && cell.isCursor"
+                  [disabled]="cell.disabled"
+                  tabindex="-1"
+                  (mousedown)="$event.preventDefault()"
+                  (click)="selectYear(cell, $event)"
+                >
+                  {{ cell.label }}
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  @if (showError && errorMessage) {
+    <span class="sic-field__error">{{ errorMessage }}</span>
+  } @else if (hint) {
+    <span class="sic-field__hint">{{ hint }}</span>
+  }
+</label>

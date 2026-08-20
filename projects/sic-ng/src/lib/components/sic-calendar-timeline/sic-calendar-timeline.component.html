@@ -1,0 +1,142 @@
+@if (showViewModeToggle) {
+  <div class="sic-calendar-timeline__toolbar">
+    <span class="sic-calendar-timeline__toolbar-label">{{ viewModeLabelText }}:</span>
+    <sic-popover [items]="viewModeItems" (itemSelect)="selectViewMode($event)">
+      <ng-template sicPopoverButton let-popover>
+        <button
+          type="button"
+          class="sic-calendar-timeline__view-btn"
+          (click)="popover.toggle()"
+          [attr.aria-expanded]="popover.open"
+        >
+          <span>{{ activeViewModeLabel }}</span>
+          <span class="sic-calendar-timeline__view-chevron">▾</span>
+        </button>
+      </ng-template>
+      <ng-template sicPopoverList let-item>
+        <span [class.sic-calendar-timeline__view-option--active]="item.value === viewMode">{{ item.label }}</span>
+      </ng-template>
+    </sic-popover>
+  </div>
+}
+
+<div class="sic-calendar-timeline__body">
+  @if (showLabelColumn) {
+    <div #labelsPane class="sic-calendar-timeline__labels" [style.max-height]="maxHeight" (scroll)="onLabelsScroll()">
+      <div class="sic-calendar-timeline__labels-header" [class.sic-calendar-timeline__labels-header--compact]="!groups.length">
+        <span class="sic-calendar-timeline__labels-header-cell">Label</span>
+        <span class="sic-calendar-timeline__labels-header-progress">Progress</span>
+      </div>
+
+      @for (row of items; track trackByFn($index, row); let i = $index) {
+        <div class="sic-calendar-timeline__label-row" (click)="handleRowClick(row)">
+          @if (labelTemplate) {
+            <ng-container *ngTemplateOutlet="labelTemplate; context: { $implicit: row, index: i }"></ng-container>
+          } @else {
+            <div class="sic-calendar-timeline__label-cell">
+              @if (row.avatarUrl) {
+                <img class="sic-calendar-timeline__avatar" [src]="row.avatarUrl" [alt]="row.label" />
+              }
+              <span class="sic-calendar-timeline__label-text">{{ row.label }}</span>
+            </div>
+            <span class="sic-calendar-timeline__progress">
+              @if (row.progress !== undefined && row.progress !== null) {
+                {{ row.progress }}
+              }
+            </span>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <button
+    type="button"
+    class="sic-calendar-timeline__toggle"
+    [style.top]="
+      groups.length
+        ? 'calc(var(--sic-calendar-timeline-group-height) + (var(--sic-calendar-timeline-header-height) / 2))'
+        : 'calc(var(--sic-calendar-timeline-header-height) / 2)'
+    "
+    (click)="toggleLabelColumn()"
+    [attr.aria-label]="showLabelColumn ? 'Collapse label column' : 'Expand label column'"
+  >
+    {{ showLabelColumn ? '‹' : '›' }}
+  </button>
+
+  <div #gridPane class="sic-calendar-timeline__scroll" [style.max-height]="maxHeight" (scroll)="onGridScroll()">
+    <div class="sic-calendar-timeline__grid">
+      @if (groups.length) {
+        <div class="sic-calendar-timeline__groups" [style.grid-template-columns]="gridTemplateColumns">
+          @for (group of groups; track $index) {
+            <div class="sic-calendar-timeline__group" [style.grid-column]="'span ' + group.span">{{ group.label }}</div>
+          }
+        </div>
+      }
+
+      <div
+        class="sic-calendar-timeline__header"
+        [class.sic-calendar-timeline__header--with-groups]="groups.length > 0"
+        [style.grid-template-columns]="gridTemplateColumns"
+      >
+        @for (col of columns; track $index) {
+          <div
+            class="sic-calendar-timeline__header-cell"
+            [class.sic-calendar-timeline__header-cell--weekend]="col.isWeekend"
+            [class.sic-calendar-timeline__header-cell--today]="col.isToday"
+          >
+            <span class="sic-calendar-timeline__header-label">{{ col.label }}</span>
+            @if (col.sublabel) {
+              <span class="sic-calendar-timeline__header-sublabel">{{ col.sublabel }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      @if (!items.length) {
+        <div class="sic-calendar-timeline__empty">{{ noItemsText }}</div>
+      }
+
+      @for (row of items; track trackByFn($index, row); let i = $index) {
+        <div class="sic-calendar-timeline__row" [style.grid-template-columns]="gridTemplateColumns">
+          @for (col of columns; track $index) {
+            <div
+              class="sic-calendar-timeline__cell"
+              [class.sic-calendar-timeline__cell--weekend]="col.isWeekend"
+              [style.grid-column]="$index + 1"
+            ></div>
+          }
+
+          @for (pos of phasePositions(row); track pos.phase.id ?? $index) {
+            <div
+              class="sic-calendar-timeline__phase"
+              [style.grid-column]="pos.colStart + ' / span ' + pos.colSpan"
+              [style.background]="pos.phase.color"
+              (click)="handlePhaseClick(row, pos.phase)"
+            >
+              @if (phaseTemplate) {
+                <ng-container
+                  *ngTemplateOutlet="phaseTemplate; context: { $implicit: pos.phase, row: row, index: i }"
+                ></ng-container>
+              } @else {
+                <div class="sic-calendar-timeline__phase-content">
+                  @if (pos.phase.avatarUrl) {
+                    <img class="sic-calendar-timeline__avatar" [src]="pos.phase.avatarUrl" [alt]="pos.phase.label ?? ''" />
+                  }
+                  <span class="sic-calendar-timeline__phase-text">
+                    @if (pos.phase.label) {
+                      <strong>{{ pos.phase.label }}</strong>
+                    }
+                    @if (pos.phase.description) {
+                      <span>{{ pos.phase.description }}</span>
+                    }
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

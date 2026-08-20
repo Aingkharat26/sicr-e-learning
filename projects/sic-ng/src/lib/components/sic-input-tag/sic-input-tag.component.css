@@ -1,0 +1,45 @@
+@import '../../tokens/_field.css';
+@import '../../tokens/_control-field.css';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-input-tag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  height: auto;
+  min-height: var(--sic-control-height-md);
+  padding: 0.3rem var(--sic-space-3);
+  cursor: text;
+}
+
+:host(.sic-size-sm) .sic-input-tag {
+  min-height: var(--sic-control-height-sm);
+}
+
+:host(.sic-size-lg) .sic-input-tag {
+  min-height: var(--sic-control-height-lg);
+}
+
+.sic-input-tag__input {
+  flex: 1 1 6rem;
+  min-width: 6rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0.15rem 0;
+}
+
+.sic-input-tag__input::placeholder {
+  color: var(--sic-color-text-muted);
+}
+
+.sic-input-tag__input:disabled {
+  cursor: not-allowed;
+}

@@ -1,0 +1,51 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sic-video-player__wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--sic-video-player-aspect-ratio, 16 / 9);
+  border-radius: var(--sic-radius-lg);
+  overflow: hidden;
+  background: #000;
+}
+
+.sic-video-player__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* letterboxes without distortion when the video's natural ratio doesn't match [aspectRatio] */
+  object-fit: contain;
+}
+
+/* Centered over the poster image until playback starts — sits above the video but never
+   conflicts with the native control bar, which only occupies a strip at the very bottom. */
+.sic-video-player__play-btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--sic-radius-full);
+  background: color-mix(in srgb, #000 45%, transparent);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--sic-transition-fast);
+}
+
+.sic-video-player__play-btn:hover {
+  background: color-mix(in srgb, #000 60%, transparent);
+}
+
+.sic-video-player__play-btn svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  /* optically center the play triangle — its own bounding box has more visual weight on the left */
+  margin-left: 0.15rem;
+}

@@ -1,0 +1,148 @@
+:host {
+  /* Syntax palette — deliberately fixed (not themed via --sic-color-*) like any code-editor
+     theme, but still light/dark aware via the :host-context(.dark) override below. Loosely
+     modeled on the "One Light"/"One Dark" palettes most Prettier + VSCode setups use. */
+  --sic-code-bg: #fafafa;
+  --sic-code-text: #383a42;
+  --sic-code-line-number: #9d9d9f;
+  --sic-code-keyword: #a626a4;
+  --sic-code-string: #50a14f;
+  --sic-code-comment: #a0a1a7;
+  --sic-code-number: #986801;
+  --sic-code-boolean: #986801;
+  --sic-code-function: #4078f2;
+  --sic-code-property: #e45649;
+  --sic-code-tag: #e45649;
+  --sic-code-attr: #986801;
+  --sic-code-punctuation: #383a42;
+
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-md);
+  background: var(--sic-code-bg);
+  font-family: var(--sic-font-sans);
+}
+
+:host-context(.dark) {
+  --sic-code-bg: #282c34;
+  --sic-code-text: #abb2bf;
+  --sic-code-line-number: #636d83;
+  --sic-code-keyword: #c678dd;
+  --sic-code-string: #98c379;
+  --sic-code-comment: #7f848e;
+  --sic-code-number: #d19a66;
+  --sic-code-boolean: #d19a66;
+  --sic-code-function: #61afef;
+  --sic-code-property: #e06c75;
+  --sic-code-tag: #e06c75;
+  --sic-code-attr: #d19a66;
+  --sic-code-punctuation: #abb2bf;
+}
+
+.sic-code__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sic-space-2);
+  padding: var(--sic-space-2) var(--sic-space-3);
+  border-bottom: 1px solid var(--sic-color-border);
+  background: var(--sic-color-surface);
+}
+
+.sic-code__lang {
+  color: var(--sic-color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sic-code__spacer {
+  flex: 1;
+}
+
+.sic-code__copy-btn {
+  flex: none;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--sic-color-border);
+  border-radius: var(--sic-radius-sm);
+  background: var(--sic-color-bg);
+  color: var(--sic-color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+}
+
+.sic-code__copy-btn:hover {
+  background: var(--sic-color-surface);
+}
+
+.sic-code__pre {
+  margin: 0;
+  overflow-x: auto;
+}
+
+.sic-code__code {
+  display: block;
+  padding: var(--sic-space-3) 0;
+  color: var(--sic-code-text);
+  font-family: 'Fira Code', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.sic-code__line {
+  display: flex;
+}
+
+.sic-code__line-number {
+  flex: none;
+  min-width: 2.5rem;
+  padding: 0 var(--sic-space-3);
+  color: var(--sic-code-line-number);
+  text-align: right;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sic-code__line-content {
+  flex: 1;
+  min-width: 0;
+  padding-inline: var(--sic-space-3) var(--sic-space-4);
+  white-space: pre;
+}
+
+.sic-code__tok--keyword {
+  color: var(--sic-code-keyword);
+}
+
+.sic-code__tok--string {
+  color: var(--sic-code-string);
+}
+
+.sic-code__tok--comment {
+  color: var(--sic-code-comment);
+  font-style: italic;
+}
+
+.sic-code__tok--number,
+.sic-code__tok--boolean {
+  color: var(--sic-code-number);
+}
+
+.sic-code__tok--function {
+  color: var(--sic-code-function);
+}
+
+.sic-code__tok--property,
+.sic-code__tok--tag {
+  color: var(--sic-code-property);
+}
+
+.sic-code__tok--attr {
+  color: var(--sic-code-attr);
+}
+
+.sic-code__tok--punctuation {
+  color: var(--sic-code-punctuation);
+}

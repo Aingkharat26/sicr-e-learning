@@ -1,0 +1,54 @@
+.sic-common-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sic-space-3);
+  min-width: 22rem;
+  max-width: 28rem;
+  padding: var(--sic-space-5, 2rem) var(--sic-space-4);
+  text-align: center;
+  font-family: var(--sic-font-sans);
+  box-sizing: border-box;
+}
+
+.sic-common-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--sic-radius-full);
+  color: #fff;
+}
+
+.sic-common-dialog__icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.sic-common-dialog__icon--info,
+.sic-common-dialog__icon--confirm { background: var(--sic-color-primary); }
+.sic-common-dialog__icon--success { background: var(--sic-color-success); }
+.sic-common-dialog__icon--danger { background: var(--sic-color-danger); }
+.sic-common-dialog__icon--warning { background: var(--sic-color-warning); }
+
+.sic-common-dialog__title {
+  margin: 0;
+  color: var(--sic-color-text-active);
+  font-size: var(--sic-font-size-lg);
+  font-weight: 700;
+}
+
+.sic-common-dialog__description {
+  margin: 0;
+  color: var(--sic-color-text-muted);
+  font-size: var(--sic-font-size-sm);
+  line-height: 1.5;
+}
+
+.sic-common-dialog__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--sic-space-2);
+  margin-top: var(--sic-space-2);
+}

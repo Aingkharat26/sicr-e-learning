@@ -1,0 +1,470 @@
+<div class="sic-gridpanel" [class.sic-gridpanel--busy]="isBusy">
+  <div #surface class="sic-gridpanel__surface">
+    @if (hasVisibleToolbarButtons) {
+      <div class="sic-gridpanel__toolbar">
+        <div class="sic-gridpanel__toolbar-start">
+          @if (showSaveButton) {
+            <button
+              type="button"
+              class="sic-gridpanel__toolbar-button sic-gridpanel__toolbar-button--primary sic-gridpanel__toolbar-button--icon"
+              [disabled]="!canSaveChanges"
+              (click)="saveChanges()"
+              aria-label="Save changes"
+              [sicTooltip]="saving ? 'Saving...' : 'Save changes'">
+              <svg class="sic-gridpanel__toolbar-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 4h11l3 3v13H5z"></path>
+                <path d="M8 4v6h8"></path>
+                <path d="M8 18v-5h8v5"></path>
+              </svg>
+            </button>
+          }
+          @if (showAddButton) {
+            <button
+              type="button"
+              class="sic-gridpanel__toolbar-button sic-gridpanel__toolbar-button--icon"
+              [disabled]="isBusy"
+              (click)="addRow()"
+              aria-label="Add row"
+              [sicTooltip]="!isBusy ? 'Add row' : ''">
+              <svg class="sic-gridpanel__toolbar-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+          }
+          @if (showDeleteButton) {
+            <button
+              type="button"
+              class="sic-gridpanel__toolbar-button sic-gridpanel__toolbar-button--danger sic-gridpanel__toolbar-button--icon"
+              [disabled]="isBusy || !canDeleteSelected"
+              (click)="deleteSelectedRows()"
+              aria-label="Delete selected rows"
+              [sicTooltip]="!isBusy && canDeleteSelected ? 'Delete selected rows' : ''">
+              <svg class="sic-gridpanel__toolbar-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M8 6V4h8v2"></path>
+                <path d="M19 6l-1 14H6L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+              </svg>
+            </button>
+          }
+          @if (showReviewButton) {
+            <button
+              type="button"
+              class="sic-gridpanel__toolbar-button sic-gridpanel__toolbar-button--icon"
+              [class.sic-gridpanel__toolbar-button--active]="reviewChangesOnly"
+              [disabled]="isBusy || !canReviewChanges"
+              (click)="toggleReviewChanges()"
+              aria-label="Review changed rows"
+              [sicTooltip]="!isBusy && canReviewChanges ? (reviewChangesOnly ? 'Show all rows' : 'Review ' + changedRowsCount + ' changed row(s)') : ''">
+              <svg class="sic-gridpanel__toolbar-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12c2.6-4.2 5.6-6.3 9-6.3s6.4 2.1 9 6.3c-2.6 4.2-5.6 6.3-9 6.3S5.6 16.2 3 12"></path>
+                <circle cx="12" cy="12" r="2.8"></circle>
+              </svg>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="sic-gridpanel__table">
+      <div class="sic-gridpanel__header" [class.sic-gridpanel__header--grouped]="hasColumnGroups" [class.sic-gridpanel__header--fixed-width]="gridColumnsFixedWidth" [style.gridTemplateColumns]="gridTemplateColumns" [style.gridTemplateRows]="hasColumnGroups ? 'auto auto' : null">
+        <div class="sic-gridpanel__header-cell sic-gridpanel__header-cell--selection" [style.gridRow]="hasColumnGroups ? '1 / 3' : null">
+          @if (showSelectionColumn) {
+            <sic-checkbox size="sm" [label]="''" [formControl]="selectAllControl"></sic-checkbox>
+          }
+        </div>
+        @if (hasColumnGroups) {
+          @for (group of visibleColumnGroups; track group.label) {
+            <div
+              class="sic-gridpanel__header-cell sic-gridpanel__header-group-cell"
+              [class.sic-gridpanel__header-cell--right]="group.align === 'right'"
+              [class.sic-gridpanel__header-cell--left]="group.align === 'left'"
+              [style.gridColumn]="getGroupGridColumn(group)"
+              [style.gridRow]="'1 / 2'">
+              {{ group.label }}
+            </div>
+          }
+        }
+        @for (column of visibleColumns; track trackColumn($index, column)) {
+          <div
+            class="sic-gridpanel__header-cell"
+            [style.gridColumn]="hasColumnGroups ? getColumnGridColumn(column) : null"
+            [style.gridRow]="hasColumnGroups ? (isColumnGrouped(column) ? '2 / 3' : '1 / 3') : null">
+            @if (getHeaderTemplate(column); as headerTemplate) {
+              <ng-container
+                [ngTemplateOutlet]="headerTemplate"
+                [ngTemplateOutletContext]="{ $implicit: column, column: column, sortedAsc: isSortedAsc(column), sortedDesc: isSortedDesc(column) }"></ng-container>
+            } @else {
+              <button
+                type="button"
+                class="sic-gridpanel__sort"
+                [class.sic-gridpanel__sort--enabled]="column.sortable !== false"
+                [disabled]="column.sortable === false"
+                (click)="sortBy(column)">
+                <span>{{ column.label }}</span>
+                @if (column.sortable !== false) {
+                  <span class="sic-gridpanel__sort-icons">
+                    <span class="sic-gridpanel__sort-icon" [class.sic-gridpanel__sort-icon--active]="isSortedAsc(column)">▲</span>
+                    <span class="sic-gridpanel__sort-icon" [class.sic-gridpanel__sort-icon--active]="isSortedDesc(column)">▼</span>
+                  </span>
+                }
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      @if (loading && rows.length === 0) {
+        <div class="sic-gridpanel__state">{{ loadingText }}</div>
+      } @else if (rows.length === 0) {
+        <div class="sic-gridpanel__state sic-gridpanel__state--empty">
+          <div class="sic-gridpanel__state-visual" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7.5h18"></path>
+              <path d="M7 4.5h10"></path>
+              <path d="M5 7.5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-10"></path>
+              <path d="M9.5 11.5v4"></path>
+              <path d="M14.5 11.5v4"></path>
+            </svg>
+          </div>
+          <div class="sic-gridpanel__state-title">{{ noDataTitle }}</div>
+          <div class="sic-gridpanel__state-subtitle">{{ noDataSubtitle }}</div>
+        </div>
+      } @else {
+        @for (row of rows; track trackRow($index, row); let rowIndex = $index) {
+          <div class="sic-gridpanel__row" [class.sic-gridpanel__row--new]="getRowState(row) === 'new'" [class.sic-gridpanel__row--updated]="getRowState(row) === 'updated'" [class.sic-gridpanel__row--deleted]="isRowDeleted(row)" [class.sic-gridpanel__row--disabled]="isRowDisabled(row)" [class.sic-gridpanel__row--fixed-width]="gridColumnsFixedWidth" [style.gridTemplateColumns]="gridTemplateColumns">
+            <div class="sic-gridpanel__cell sic-gridpanel__cell--selection">
+              @if (canResetRow(row)) {
+                <button
+                  type="button"
+                  class="sic-gridpanel__reset-row-button"
+                  (click)="resetRow(row)"
+                  aria-label="Reset row to its original value"
+                  [sicTooltip]="'Reset row'">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 1 3 6.7"></path>
+                    <path d="M3 12V6"></path>
+                    <path d="M3 12h6"></path>
+                  </svg>
+                </button>
+              } @else if (showSelectionColumn) {
+                <sic-checkbox size="sm" [label]="''" [formControl]="getSelectionControl(row, rowIndex)"></sic-checkbox>
+              }
+            </div>
+            @for (column of visibleColumns; track trackColumn($index, column)) {
+              <div class="sic-gridpanel__cell" [class.sic-gridpanel__cell--number]="column.type === 'number'" [class.sic-gridpanel__cell--checkbox]="column.type === 'checkbox'" [class.sic-gridpanel__cell--radio]="column.type === 'radio'" [class.sic-gridpanel__cell--switch]="column.type === 'switch'" [class.sic-gridpanel__cell--button]="column.type === 'button' || column.type === 'action'" [class.sic-gridpanel__cell--upload]="column.type === 'upload'" [style.justify-content]="column.align === 'center' ? 'center' : column.align === 'right' ? 'flex-end' : column.align === 'left' ? 'flex-start' : null">
+                @if (getCellTemplate(column); as cellTemplate) {
+                  <ng-container
+                    [ngTemplateOutlet]="cellTemplate"
+                    [ngTemplateOutletContext]="{ $implicit: row, row: row, column: column, value: row[column.name], deleted: isRowDeleted(row), disabled: isRowDisabled(row) }"></ng-container>
+                } @else {
+                  @switch (column.type) {
+                    @case ('area') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-input-area
+                          size="sm"
+                          [label]="''"
+                          [rows]="column.rows ?? 3"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-input-area>
+                      } @else {
+                        <div class="sic-gridpanel__display sic-gridpanel__display--area">{{ formatCellValue(row, column) }}</div>
+                      }
+                    }
+                    @case ('number') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-input-number
+                          size="sm"
+                          [label]="''"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [decimals]="column.decimals ?? 2"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-input-number>
+                      } @else {
+                        <span class="sic-gridpanel__display sic-gridpanel__display--number">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('date') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-datepicker
+                          size="sm"
+                          [label]="''"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [format]="column.dateFormat ?? 'dd/MM/yyyy'"
+                          [clearable]="column.clearable ?? true"
+                          [min]="column.minDate"
+                          [max]="column.maxDate"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-datepicker>
+                      } @else {
+                        <span class="sic-gridpanel__display sic-gridpanel__display--with-icon">
+                          <span class="sic-gridpanel__display-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                              <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+                              <path d="M3 9h18"></path>
+                              <path d="M8 2v4"></path>
+                              <path d="M16 2v4"></path>
+                            </svg>
+                          </span>
+                          <span class="sic-gridpanel__display-value">{{ formatCellValue(row, column) }}</span>
+                        </span>
+                      }
+                    }
+                    @case ('time') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-timepicker
+                          size="sm"
+                          [label]="''"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [clearable]="column.clearable ?? true"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-timepicker>
+                      } @else {
+                        <span class="sic-gridpanel__display sic-gridpanel__display--with-icon">
+                          <span class="sic-gridpanel__display-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                          </span>
+                          <span class="sic-gridpanel__display-value">{{ formatCellValue(row, column) }}</span>
+                        </span>
+                      }
+                    }
+                    @case ('color') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-colorpicker
+                          size="sm"
+                          [label]="''"
+                          [clearable]="column.clearable ?? true"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-colorpicker>
+                      } @else {
+                        <span class="sic-gridpanel__display">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('upload') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-upload
+                          size="sm"
+                          [label]="''"
+                          [hint]="column.hint"
+                          [accept]="column.accept ?? '*'"
+                          [multiple]="column.multiple ?? true"
+                          [maxSizeMb]="column.maxSizeMb ?? 10"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-upload>
+                      } @else {
+                        <span class="sic-gridpanel__display">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('combobox') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-combobox
+                          size="sm"
+                          [label]="''"
+                          [options]="getComboboxOptions(column)"
+                          [optionLabel]="'label'"
+                          [optionValue]="'value'"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [clearable]="column.clearable ?? true"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-combobox>
+                      } @else {
+                        <span class="sic-gridpanel__display">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('checkbox') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-checkbox
+                          size="sm"
+                          [label]="''"
+                          [hint]="column.hint"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [checkedValue]="column.checkedValue ?? true"
+                          [uncheckedValue]="column.uncheckedValue ?? false"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-checkbox>
+                      } @else {
+                        <span class="sic-gridpanel__display sic-gridpanel__display--checkbox">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('switch') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-switch
+                          size="sm"
+                          [label]="''"
+                          [hint]="column.hint"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [checkedValue]="column.checkedValue ?? true"
+                          [uncheckedValue]="column.uncheckedValue ?? false"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-switch>
+                      } @else {
+                        <span class="sic-gridpanel__display sic-gridpanel__display--checkbox">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('radio') {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-radio
+                          size="sm"
+                          [label]="''"
+                          [options]="getRadioOptions(column)"
+                          [direction]="column.direction ?? 'column'"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [hint]="column.hint"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-radio>
+                      } @else {
+                        <span class="sic-gridpanel__display">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                    @case ('button') {
+                      <button type="button" class="sic-gridpanel__button" (click)="rowAction.emit({ action: column.name, row: row, column: column })">
+                        {{ column.buttonText || column.label }}
+                      </button>
+                    }
+                    @default {
+                      @if (shouldRenderCellField(row, column)) {
+                        <sic-input
+                          size="sm"
+                          [label]="''"
+                          [type]="'text'"
+                          [placeholder]="column.placeholder || ''"
+                          [hint]="column.hint"
+                          [readonly]="isCellReadonly(row, column, rowIndex)"
+                          [errorMessages]="column.errorMessages ?? {}"
+                          [formControl]="getControl(row, column, rowIndex)"></sic-input>
+                      } @else {
+                        <span class="sic-gridpanel__display">{{ formatCellValue(row, column) }}</span>
+                      }
+                    }
+                  }
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+      @if (hasFooter) {
+        <div class="sic-gridpanel__footer" [class.sic-gridpanel__footer--fixed-width]="gridColumnsFixedWidth" [style.gridTemplateColumns]="gridTemplateColumns">
+          <div class="sic-gridpanel__footer-cell sic-gridpanel__footer-cell--selection"></div>
+          @for (column of visibleColumns; track trackColumn($index, column)) {
+            <div
+              class="sic-gridpanel__footer-cell"
+              [class.sic-gridpanel__footer-cell--right]="hasSummary(column) && getSummaryAlign(column) === 'right'"
+              [class.sic-gridpanel__footer-cell--center]="hasSummary(column) && getSummaryAlign(column) === 'center'">
+              @if (getFooterTemplate(column); as footerTemplate) {
+                <ng-container
+                  [ngTemplateOutlet]="footerTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: rows, rows: rows, column: column, deletedCount: deletedCount }"></ng-container>
+              } @else if (getSummaryText(column); as summaryText) {
+                <span class="sic-gridpanel__footer-summary">{{ summaryText }}</span>
+              } @else {
+                <span>{{ column.footerText || '' }}</span>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (showGrandSummaryRow) {
+        <div class="sic-gridpanel__footer sic-gridpanel__footer--grand" [class.sic-gridpanel__footer--fixed-width]="gridColumnsFixedWidth" [style.gridTemplateColumns]="gridTemplateColumns">
+          <div class="sic-gridpanel__footer-cell sic-gridpanel__footer-cell--selection"></div>
+          @for (column of visibleColumns; track trackColumn($index, column)) {
+            <div
+              class="sic-gridpanel__footer-cell"
+              [class.sic-gridpanel__footer-cell--right]="hasGrandSummaryColumn(column) && getGrandSummaryAlign(column) === 'right'"
+              [class.sic-gridpanel__footer-cell--center]="hasGrandSummaryColumn(column) && getGrandSummaryAlign(column) === 'center'">
+              @if (getGrandSummaryText(column); as grandSummaryText) {
+                <span class="sic-gridpanel__footer-summary">{{ grandSummaryText }}</span>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (showFooterBar) {
+    <div class="sic-gridpanel__footer-bar">
+      <div class="sic-gridpanel__summary">
+        @if (showPageSizeSelector) {
+          <sic-combobox
+            size="sm"
+            [label]="''"
+            [searchable]="false"
+            [clearable]="false"
+            [options]="pageSizeSelectOptions"
+            optionLabel="label"
+            optionValue="value"
+            [formControl]="pageSizeControl"
+            class="sic-gridpanel__page-size-select"></sic-combobox>
+          <span>ต่อหน้า รวม {{ totalElements }} รายการ</span>
+        } @else {
+          <span>รวม {{ totalElements }} รายการ</span>
+        }
+      </div>
+
+      @if (showPager) {
+        <div class="sic-gridpanel__pager">
+          <div class="sic-gridpanel__pager-group sic-gridpanel__pager-group--nav">
+            <button type="button" class="sic-gridpanel__pager-button" [disabled]="currentPage <= 1 || loading" (click)="goToPage(1)">
+              First
+            </button>
+            <button type="button" class="sic-gridpanel__pager-button" [disabled]="currentPage <= 1 || loading" (click)="goToPreviousPage()">
+              Prev
+            </button>
+
+            <div class="sic-gridpanel__pager-pages" aria-label="Pagination pages">
+              @for (item of pagerItems; track $index) {
+                @if (item === 'start-ellipsis' || item === 'end-ellipsis') {
+                  <span class="sic-gridpanel__pager-ellipsis">...</span>
+                } @else {
+                  <button
+                    type="button"
+                    class="sic-gridpanel__pager-page"
+                    [class.sic-gridpanel__pager-page--active]="item === currentPage"
+                    [disabled]="loading || item === currentPage"
+                    (click)="goToPage(item)">
+                    {{ item }}
+                  </button>
+                }
+              }
+            </div>
+
+            <button type="button" class="sic-gridpanel__pager-button" [disabled]="currentPage >= totalPages || loading" (click)="goToNextPage()">
+              Next
+            </button>
+            <button type="button" class="sic-gridpanel__pager-button" [disabled]="currentPage >= totalPages || loading" (click)="goToPage(totalPages)">
+              Last
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+    }
+
+    @if (isBusy) {
+      <output class="sic-gridpanel__loading-overlay" aria-live="polite" aria-busy="true">
+        <span class="sic-gridpanel__loading-spinner" aria-hidden="true"></span>
+        <span class="sic-gridpanel__loading-text">{{ busyText }}</span>
+      </output>
+    }
+  </div>
+</div>
