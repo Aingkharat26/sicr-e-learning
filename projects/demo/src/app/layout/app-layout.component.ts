@@ -63,16 +63,23 @@ import { AuthStateService } from '../core/services/auth-state.service';
       background: var(--sic-color-surface, #f8fafc);
       color: var(--sic-color-text, #1e293b);
       transition: background-color 0.25s ease, color 0.25s ease;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     /* Role Alert Banner */
     .role-alert-bar {
-      padding: 0.45rem 1.5rem;
+      padding: 0.45rem 1rem;
       font-size: 0.8rem;
       border-bottom: 1px solid transparent;
       display: flex;
       justify-content: center;
       transition: all 0.3s ease;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
     }
 
     .bar-learner {
