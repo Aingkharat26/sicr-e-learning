@@ -7,7 +7,8 @@ import { CoursesCatalogComponent } from './features/courses/courses-catalog.comp
 import { CourseDetailComponent } from './features/courses/course-detail.component';
 import { ClassroomPlayerComponent } from './features/courses/classroom-player.component';
 import { MyLearningComponent } from './features/my-learning/my-learning.component';
-import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
+import { KmHubComponent } from './features/km/km-hub.component';
+import { KmArticleDetailComponent } from './features/km/km-article-detail.component';
 import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
 import { QuizRunnerComponent } from './features/quiz/quiz-runner.component';
 
@@ -57,8 +58,13 @@ export const appConfig: ApplicationConfig = {
             },
             {
               path: 'km',
-              component: KmPlaceholderComponent,
-              title: 'คลังความรู้องค์กร (KM) | SICR E-LEARNING',
+              component: KmHubComponent,
+              title: 'คลังความรู้องค์กร (KM Spaces) | SICR E-LEARNING',
+            },
+            {
+              path: 'km/:id',
+              component: KmArticleDetailComponent,
+              title: 'บทความองค์ความรู้ (KM) | SICR E-LEARNING',
             },
             {
               path: 'admin',

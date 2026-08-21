@@ -217,12 +217,47 @@ description: >-
 
 ---
 
+### ✅ Step 7: Knowledge Base KM Spaces & Wiki Platform (2026-08-21)
+- **KM Models & Dataset (`km.model.ts`):**
+  - กำหนด Interface สำหรับ `KmSpace`, `KmArticle`, `KmArticleSection`, `KmVersionHistory`, `KmAttachment`
+  - 5 แผนกความรู้หลัก (Spaces):
+    1. 💻 **Software Engineering:** Zoneless Signals Architecture, Git Flow & Commit Convention, REST API Standards
+    2. 🧪 **QA & Automated Testing:** Playwright E2E Testing Cookbook, Bug Severity & Priority Matrix
+    3. 🤝 **People & Culture:** คู่มือสวัสดิการพนักงาน, นโยบายวันลา และ Learning Budget 20,000 บาท
+    4. 📈 **Solutions & Business Development:** Solution Pitch Deck Guidelines & Proposal Template
+    5. 🛠️ **DevOps & IT Infrastructure:** VPN WireGuard Setup, SSH Bastion & Zero-Trust Security Access
+- **State Management Service (`km.service.ts`):**
+  - Signals-based Reactive State: Space Filter, Category Filter, Instant Multi-field Search (Title, Tags, Summary, Code, Author), Bookmarking, Liking, และ Article Counter
+  - ระบบสร้างบทความ Wiki ใหม่ `createArticle()` พร้อมบันทึก Version 1.0.0 อัตโนมัติ
+- **KM Hub Component (`KmHubComponent`):**
+  - Hero Header พร้อมสถิติ KPI (บทความทั้งหมด, แผนก/Spaces, ยอดเข้าอ่าน, คะแนนชื่นชอบ)
+  - กล่องค้นหาคำสำคัญความเร็วสูง (Instant Search) พร้อมปุ่ม Clear
+  - Space Cards Grid แสดงไอคอน, รายละเอียดแผนก, จำนวนบทความ, และโปรไฟล์ Space Lead
+  - Active Space Banner พร้อม Tag Cloud ยอดนิยมเมื่อเลือกโฟกัสแผนก
+  - แถบชิปตัวกรองหมวดหมู่ (`Guidelines`, `Cheat Sheet`, `Architecture`, `Setup & Config`, `Policy`, `Troubleshooting`)
+  - โหมดสลับดูบทความที่บันทึกไว้ (Bookmarked View)
+  - ป๊อปอัปสร้างบทความ Wiki ใหม่ (New Knowledge Modal) รองรับการเขียน Markdown และระบุ Tags
+- **KM Article Detail Component (`KmArticleDetailComponent`):**
+  - Breadcrumb Bar นำทาง
+  - Header Hero: Author Avatar, Role, Department, Last Updated, Read Time, Views, Likes
+  - แถบเครื่องมือ: ปุ่ม Like (พร้อมนับจำนวน), ปุ่ม Bookmark, ปุ่มคัดลอกลิงก์ (Share URL), ปุ่มพิมพ์เอกสาร (`window.print()`)
+  - 2-Column Responsive Layout:
+    - สารบัญเนื้อหา Sticky Table of Contents (TOC)
+    - กล่อง Callout แจ้งเตือนหลากสีสัน (`[!NOTE]`, `[!TIP]`, `[!WARNING]`, `[!IMPORTANT]`)
+    - Code Block พร้อม Syntax Highlighting (`sic-code`) และปุ่ม Copy
+    - รายการไฟล์แนบดาวน์โหลด (PDF, Excel, Word, PPT)
+    - ไทม์ไลน์ประวัติการแก้ไขบทความ (`sic-timeline`)
+    - วิดเจ็ตแบบประเมินความพึงพอใจ ("บทความนี้มีประโยชน์หรือไม่? 👍/👎")
+    - รายการบทความแนะนำที่เกี่ยวข้อง (Related Articles)
+- **Responsive & Theme Verification:**
+  - ผ่านการทดสอบบนความละเอียด 1920x1200, 1440x900, 768x1024, และ 375x812 อย่างสมบูรณ์แบบ
+  - Build ผ่าน 100% Zero Error / Zero Warnings (`npm run build` และ `npx ng build demo`)
+
+---
+
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 7: Knowledge Base KM Spaces (คลังความรู้องค์กรตามฝ่าย)**
-  - แยก Space ตามแผนก (Software Dev, QA & Testing, HR & Culture, Sales, IT Support)
-  - Instant Search ค้นหาเอกสารและโค้ดตัวอย่างความเร็วสูง
-  - Markdown & Code Viewer พร้อม Syntax Highlighting
 - **Step 8: Instructor Course Builder & Admin Reporting**
-  - หน้ารายงานสถิติภาพรวม Completion Rate และสถิติผู้เรียนของ HR และ Admin
+  - หน้าจัดการระบบและสถิติภาพรวม Completion Rate / User Matrix ของ HR และ Admin
+  - สตูดิโอสร้างหลักสูตรและจัดการแบบทดสอบสำหรับ Instructor
 
