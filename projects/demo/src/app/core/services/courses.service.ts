@@ -280,4 +280,19 @@ export class CoursesService {
     this._courses.set(updated);
     return true;
   }
+
+  addCourse(newCourse: Course): void {
+    this._courses.update((prev) => [newCourse, ...prev]);
+  }
+
+  updateCourse(updatedCourse: Course): void {
+    this._courses.update((prev) =>
+      prev.map((c) => (c.id === updatedCourse.id ? updatedCourse : c))
+    );
+  }
+
+  deleteCourse(courseId: string): void {
+    this._courses.update((prev) => prev.filter((c) => c.id !== courseId));
+  }
 }
+

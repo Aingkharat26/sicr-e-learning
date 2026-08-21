@@ -9,7 +9,7 @@ import { ClassroomPlayerComponent } from './features/courses/classroom-player.co
 import { MyLearningComponent } from './features/my-learning/my-learning.component';
 import { KmHubComponent } from './features/km/km-hub.component';
 import { KmArticleDetailComponent } from './features/km/km-article-detail.component';
-import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
+import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
 import { QuizRunnerComponent } from './features/quiz/quiz-runner.component';
 
 export const appConfig: ApplicationConfig = {
@@ -68,8 +68,8 @@ export const appConfig: ApplicationConfig = {
             },
             {
               path: 'admin',
-              component: AdminPlaceholderComponent,
-              title: 'ระบบจัดการ | SICR E-LEARNING',
+              component: AdminDashboardComponent,
+              title: 'ศูนย์บริหารจัดการ & สตูดิโอผู้สอน | SICR E-LEARNING',
             },
             {
               path: 'tutorial',

@@ -253,11 +253,53 @@ description: >-
   - ผ่านการทดสอบบนความละเอียด 1920x1200, 1440x900, 768x1024, และ 375x812 อย่างสมบูรณ์แบบ
   - Build ผ่าน 100% Zero Error / Zero Warnings (`npm run build` และ `npx ng build demo`)
 
+
+### ✅ Step 8: Instructor Course Studio & Admin Governance Platform (2026-08-21)
+- **Admin Model & Dataset (`admin.model.ts`):**
+  - Interface สำหรับ `EmployeeComplianceRecord`, `CourseGovernanceRecord`, `DepartmentComplianceSummary`, `AdminKpiMetrics`, `CoursePublishStatus`
+  - Mock Dataset: พนักงาน 7 คน ครอบคลุม 5 แผนก (Software Engineering, QA, Infrastructure & DevOps, Business & Solutions, People & Culture)
+  - Mock Department Compliance Summary พร้อม Compliance Rate % และ avgXp
+- **Admin Service (`admin.service.ts`):**
+  - Signals-based Reactive State: Employee Search, Department Filter, Compliance Status Filter, Course Governance Status/Search Filter
+  - `kpiMetrics` computed: Active Learners, Overall Completion Rate, Mandatory Compliance Rate %, Certificates, Learning Hours, XP Distributed, Pending Approvals
+  - `createNewCourse()` เชื่อมต่อ `CoursesService.addCourse()` ให้คอร์สที่สร้างจาก Studio ปรากฏใน Course Catalog ทันที
+  - `exportComplianceReportCsv()` สร้างและดาวน์โหลดไฟล์ CSV (UTF-8 BOM)
+- **CoursesService Expansion (`courses.service.ts`):**
+  - เพิ่มเมธอด: `addCourse()`, `updateCourse()`, `deleteCourse()`
+- **Admin KPI Summary Component (`admin-kpi-summary.component.ts`):**
+  - Metric Cards 6 ช่อง: Total Learners, Mandatory Compliance %, Overall Completion %, Certificates, Learning Hours, XP Distributed
+  - Department Compliance Grid: สี Traffic Light (เขียว/เหลือง/แดง) ตาม Compliance Rate
+- **Employee Compliance Table Component (`employee-compliance-table.component.ts`):**
+  - ตารางรายชื่อพนักงานพร้อม Search, Department Filter, Status Filter
+  - Modal รายละเอียดพนักงาน: สถิติส่วนตัว + รายการคอร์สที่ได้รับมอบหมาย + ปุ่มส่งแจ้งเตือน Slack/Email
+  - ปุ่ม Export CSV (ดาวน์โหลดรายงานจริง)
+- **Course Governance Table Component (`course-governance-table.component.ts`):**
+  - Status Filter Tabs: Published, Pending Approval, Draft, Archived (พร้อมนับจำนวนแต่ละสถานะ)
+  - Search คอร์สแบบ Real-time
+  - ปุ่มจัดการ: ✅ อนุมัติ, 🚀 เผยแพร่, 📦 เก็บถาวร, 🔄 กู้คืน พร้อม Toast Notification
+- **Course Builder Stepper Component (`course-builder-stepper.component.ts`):**
+  - **Step 1 (Course Info):** Form กรอกชื่อ, หมวดหมู่, ระดับ, XP, คอร์สบังคับ, คำอธิบาย, Tags, เลือก Thumbnail จาก Preset Gallery
+  - **Step 2 (Curriculum):** สร้าง Modules, เพิ่ม/ลบบทเรียน (Video/Article/Quiz) แต่ละชิ้น
+  - **Step 3 (Assessment):** ออกข้อสอบ Single-Choice, กำหนดเกณฑ์ % และเวลาทำข้อสอบ, ระบุคำเฉลยพร้อม Explanation
+  - **Step 4 (Preview & Publish):** ตรวจทาน Preview Card + Summary สรุป → บันทึก Draft หรือ Publish สู่ Course Catalog ทันที
+- **Admin Dashboard Component (`admin-dashboard.component.ts`):**
+  - Hero Banner: Role Badge, Org Tag, Dynamic Title & Subtitle ตามสิทธิ์
+  - Role Switcher Box จำลอง: Admin / Instructor / Learner (สลับ Tab อัตโนมัติ)
+  - Sub-navigation Tabs 4 ช่อง: Analytics, Compliance Matrix, Course Governance, Course Studio
+  - Tab-based routing ไม่ต้องเปลี่ยน URL
+- **Route Update (`app.config.ts`):**
+  - Route `/admin` เปลี่ยนจาก `AdminPlaceholderComponent` → `AdminDashboardComponent`
+  - Page Title: `ศูนย์บริหารจัดการ & สตูดิโอผู้สอน | SICR E-LEARNING`
+- **Build Validation:**
+  - `npm run build` (Library): ✅ 0 Errors / 0 Warnings
+  - `npx ng build demo` (Application): ✅ 0 Errors / 0 Warnings
+
 ---
 
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 8: Instructor Course Builder & Admin Reporting**
-  - หน้าจัดการระบบและสถิติภาพรวม Completion Rate / User Matrix ของ HR และ Admin
-  - สตูดิโอสร้างหลักสูตรและจัดการแบบทดสอบสำหรับ Instructor
-
+- **Step 9: Dashboard Enhancement & Final Integration Polish**
+  - ปรับปรุงหน้า Dashboard หลัก (/) ให้แสดงสถิติ Quick Wins และ Learning Streak ส่วนตัว
+  - เพิ่ม Widget "หลักสูตรที่แนะนำ" และ "เพื่อนร่วมงานที่กำลังเรียน"
+  - เชื่อมต่อปุ่มเข้าเรียนสู่ Classroom Player จากทุกหน้า
+  - Final E2E Smoke Test ผ่านทุก Route หลัก
