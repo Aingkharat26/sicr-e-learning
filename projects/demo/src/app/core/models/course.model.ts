@@ -254,7 +254,7 @@ export const MOCK_COURSES: Course[] = [
     duration: '8 ชม. 15 นาที',
     totalLessons: 16,
     xpAward: 1800,
-    thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?w=800&auto=format&fit=crop&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&auto=format&fit=crop&q=80',
     description: 'เจาะลึกเทคนิคการเชื่อมต่อ Large Language Models (Gemini, Claude, OpenAI) เข้ากับโครงสร้างระบบงานองค์กร การทำ RAG (Retrieval-Augmented Generation), Prompt Engineering ขั้นสูง และระบบรักษาความปลอดภัยข้อมูลความลับบริษัท',
     shortDescription: 'สร้างระบบ AI อัจฉริยะด้วย RAG, Vector Search และเชื่อมต่อ Gemini API เพื่อเพิ่มขีดความสามารถองค์กร',
     instructor: {

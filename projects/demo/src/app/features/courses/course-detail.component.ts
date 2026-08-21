@@ -36,6 +36,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
 
       <!-- 2. Course Hero Banner -->
       <header class="detail-hero">
+        <img [src]="course()!.thumbnail" [alt]="course()!.title" class="hero-bg-img" />
         <div class="hero-backdrop"></div>
         <div class="hero-inner">
           <div class="hero-main-content">
@@ -660,11 +661,25 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
       box-sizing: border-box;
     }
 
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(6px) brightness(0.45) saturate(1.3);
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .hero-backdrop {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top right, rgba(0, 168, 135, 0.25) 0%, transparent 60%);
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(30, 41, 59, 0.6) 100%),
+        radial-gradient(circle at top right, rgba(0, 168, 135, 0.25) 0%, transparent 60%);
       pointer-events: none;
+      z-index: 1;
     }
 
     .hero-inner {
