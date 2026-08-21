@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { SicThemeService } from 'sic-ng';
 import { AuthStateService } from '../../core/services/auth-state.service';
 import { UserRole } from '../../core/models/user.model';
+import { UserGuideService } from '../../core/services/user-guide.service';
 
 @Component({
   selector: 'app-nav-header',
@@ -151,6 +152,18 @@ import { UserRole } from '../../core/models/user.model';
             }
           </div>
 
+          <!-- Help & Guide Button -->
+          <button
+            type="button"
+            class="help-guide-btn"
+            (click)="openUserGuide()"
+            title="คู่มือการใช้งานระบบ (Help & User Guide)"
+            aria-label="Help and User Guide"
+          >
+            <span class="help-icon">❓</span>
+            <span class="help-text">คู่มือ</span>
+          </button>
+
           <!-- Theme Toggle Button -->
           <button
             type="button"
@@ -217,6 +230,9 @@ import { UserRole } from '../../core/models/user.model';
                 <span>🛡️ {{ isAdmin() ? 'แดชบอร์ดแอดมิน' : 'จัดการคอร์สผู้สอน' }}</span>
               </a>
             }
+            <button type="button" class="mobile-nav-item mobile-guide-btn" (click)="openUserGuideMobile()">
+              <span>📖 คู่มือการใช้งานระบบ (Help & Guide)</span>
+            </button>
           </nav>
         </div>
       }
@@ -556,6 +572,39 @@ import { UserRole } from '../../core/models/user.model';
       font-size: 0.95rem;
     }
 
+    /* Help & Guide Button */
+    .help-guide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      height: 38px;
+      padding: 0 0.65rem;
+      border-radius: 10px;
+      border: 1px solid var(--sic-color-border, #e2e8f0);
+      background: var(--sic-color-surface, #f8fafc);
+      color: var(--sic-color-text-active, #0f172a);
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .help-guide-btn:hover {
+      border-color: #00a887;
+      background: rgba(0, 168, 135, 0.08);
+      color: #00a887;
+    }
+
+    .help-icon {
+      font-size: 0.88rem;
+    }
+
+    .help-text {
+      white-space: nowrap;
+    }
+
     /* Theme Toggle */
     .theme-toggle-btn {
       width: 38px;
@@ -684,11 +733,22 @@ import { UserRole } from '../../core/models/user.model';
       color: var(--sic-color-text, #1e293b);
       background: var(--sic-color-surface, #f8fafc);
       transition: all 0.2s ease;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      text-align: left;
+      cursor: pointer;
     }
 
     .mobile-nav-item.active {
       background: rgba(0, 168, 135, 0.12);
       color: #00a887;
+    }
+
+    .mobile-guide-btn {
+      background: rgba(0, 168, 135, 0.08);
+      color: #00a887;
+      border: 1px dashed rgba(0, 168, 135, 0.35);
     }
 
     /* Responsive Breakpoints */
@@ -715,10 +775,12 @@ import { UserRole } from '../../core/models/user.model';
       .brand-sub-badge {
         display: none;
       }
-      .role-name-text {
+      .role-name-text,
+      .help-text {
         display: none;
       }
-      .role-dropdown-btn {
+      .role-dropdown-btn,
+      .help-guide-btn {
         padding: 0 0.5rem;
       }
     }
@@ -727,6 +789,7 @@ import { UserRole } from '../../core/models/user.model';
 export class NavHeaderComponent {
   private readonly authState = inject(AuthStateService);
   private readonly themeService = inject(SicThemeService);
+  private readonly userGuideService = inject(UserGuideService);
   private readonly elementRef = inject(ElementRef);
 
   readonly currentRole = this.authState.currentRole;
@@ -757,6 +820,21 @@ export class NavHeaderComponent {
 
   toggleTheme(): void {
     this.themeService.toggleDark();
+  }
+
+  openUserGuide(): void {
+    const role = this.currentRole();
+    const tabMap: Record<UserRole, 'learner' | 'instructor' | 'admin'> = {
+      learner: 'learner',
+      instructor: 'instructor',
+      admin: 'admin',
+    };
+    this.userGuideService.openGuide(tabMap[role] || 'learner');
+  }
+
+  openUserGuideMobile(): void {
+    this.closeAllMenus();
+    this.openUserGuide();
   }
 
   toggleMobileMenu(): void {

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavHeaderComponent } from './nav-header/nav-header.component';
 import { AuthStateService } from '../core/services/auth-state.service';
+import { UserGuideService } from '../core/services/user-guide.service';
+import { UserGuideModalComponent } from '../core/components/user-guide-modal/user-guide-modal.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavHeaderComponent],
+  imports: [CommonModule, RouterModule, NavHeaderComponent, UserGuideModalComponent],
   template: `
     <div class="app-wrapper">
       <!-- 1. Top Navigation Header -->
@@ -38,7 +40,10 @@ import { AuthStateService } from '../core/services/auth-state.service';
         <router-outlet />
       </main>
 
-      <!-- 4. Unified Corporate Footer -->
+      <!-- 4. Interactive User Guide Modal -->
+      <app-user-guide-modal />
+
+      <!-- 5. Unified Corporate Footer -->
       <footer class="app-footer">
         <div class="footer-container">
           <div class="footer-left">
@@ -46,6 +51,9 @@ import { AuthStateService } from '../core/services/auth-state.service';
             <span class="system-desc">SICR E-Learning & Knowledge Management System</span>
           </div>
           <div class="footer-links">
+            <button type="button" class="footer-guide-btn" (click)="openGuide()">
+              📖 คู่มือการใช้งาน (Help & Guide)
+            </button>
             <a href="https://www.softinterchiangrai.com" target="_blank" rel="noopener">เว็บไซต์องค์กร</a>
             <a routerLink="/km">คลังความรู้ KM</a>
             <a routerLink="/courses">หลักสูตร</a>
@@ -199,6 +207,24 @@ import { AuthStateService } from '../core/services/auth-state.service';
       color: #00a887;
     }
 
+    .footer-guide-btn {
+      background: none;
+      border: 1px dashed var(--sic-color-border, #cbd5e1);
+      border-radius: 8px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.8rem;
+      color: #00a887;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .footer-guide-btn:hover {
+      background: rgba(0, 168, 135, 0.1);
+      border-color: #00a887;
+    }
+
     .version-tag {
       font-size: 0.7rem;
       font-weight: 700;
@@ -219,5 +245,11 @@ import { AuthStateService } from '../core/services/auth-state.service';
 })
 export class AppLayoutComponent {
   private readonly authState = inject(AuthStateService);
+  private readonly userGuideService = inject(UserGuideService);
+
   readonly currentRole = this.authState.currentRole;
+
+  openGuide(): void {
+    this.userGuideService.openGuide('learner');
+  }
 }
