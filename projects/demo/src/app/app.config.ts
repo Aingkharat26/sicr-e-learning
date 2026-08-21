@@ -6,7 +6,7 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { CoursesCatalogComponent } from './features/courses/courses-catalog.component';
 import { CourseDetailComponent } from './features/courses/course-detail.component';
 import { ClassroomPlayerComponent } from './features/courses/classroom-player.component';
-import { MyLearningPlaceholderComponent } from './features/my-learning/my-learning-placeholder.component';
+import { MyLearningComponent } from './features/my-learning/my-learning.component';
 import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
 import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
 import { QuizRunnerComponent } from './features/quiz/quiz-runner.component';
@@ -52,7 +52,7 @@ export const appConfig: ApplicationConfig = {
             },
             {
               path: 'my-learning',
-              component: MyLearningPlaceholderComponent,
+              component: MyLearningComponent,
               title: 'การเรียนของฉัน | SICR E-LEARNING',
             },
             {

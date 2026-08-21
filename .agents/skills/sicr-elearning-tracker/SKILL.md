@@ -30,9 +30,10 @@ description: >-
    - เขียนข้อความ Commit เป็น **ภาษาไทย** เสมอ
    - มี **Description (คำอธิบายรายละเอียด)** เป็นภาษาไทยแจกแจงสิ่งที่แก้ไข/สร้างใหม่ชัดเจน
    - ห้าม Commit หรือ Push อัตโนมัติเด็ดขาด ต้องรอคำสั่งจากผู้ใช้เท่านั้น
-6. **การตรวจสอบ Build Error ทุกรอบการทำงาน (Mandatory Build Validation):**
+6. **การตรวจสอบ Build Error ทุกรอบการทำงานอย่างรอบคอบสูงสุด (Mandatory Thorough Build Validation):**
    - ต้องรัน `cmd /c npm run build` (Build Library) และ `cmd /c npx ng build demo` (Build Application) ทุกครั้งหลังจบแต่ละ Step
-   - ตรวจเช็คและแก้ไข Error ทั้งหมดจนผ่าน 100% (Zero Errors) ก่อนส่งตรวจงานเสมอ
+   - ตรวจเช็ค Assets/Theme CSS Paths ใน `angular.json` และทุกจุดให้อ้างอิงไปยัง Source paths เสมอ ป้องกันข้อผิดพลาดกรณีไม่มีโฟลเดอร์ `dist/`
+   - ตรวจเช็คและแก้ไข Error ทั้งหมดจนผ่าน 100% (Zero Errors / Zero Warnings) ก่อนส่งตรวจงานเสมอ ห้ามละเลยเป็นอันขาด
 
 ---
 
@@ -192,16 +193,36 @@ description: >-
 - **Responsive & Design Verification:**
   - ผ่านการทดสอบบนความละเอียด 1920x1200, 1440x900, 768x1024, และ 375x812 อย่างสมบูรณ์
 
+### ✅ Step 6: My Learning Dashboard & Digital Certificate Generator (2026-08-21)
+- **Certificate Models & Dataset (`certificate.model.ts`):**
+  - กำหนด Interface สำหรับ `Certificate` (รหัสใบรับรอง `SICR-CERT-YYYY-XXXXX`, ชื่อผู้เรียน, ตำแหน่ง, ฝ่าย, วันที่สำเร็จ, คะแนนสอบ %, XP, ลายเซ็นผู้สอน และลายเซ็น CEO)
+  - ข้อมูล Mock Certificate สำหรับคอร์สที่สำเร็จการศึกษา
+- **Certificate Management Service (`certificate.service.ts`):**
+  - จัดการ State ของใบประกาศนียบัตรแบบ Real-time Signals
+  - Auto-generate Certificate ทันทีเมื่อผู้เรียนสำเร็จหลักสูตรและสอบผ่านเกณฑ์
+  - ระบบควบคุมการเปิด/ปิด Certificate Viewer Modal
+- **Certificate Viewer Component (`CertificateViewerComponent`):**
+  - กรอบใบประกาศนียบัตรระดับพรีเมียม Soft Inter Chiangrai (ขอบ Emerald Teal ขลิบทอง Royal Gold, ตราประทับ Official Verified Badge, QR Code ตรวจสอบสิทธิ์)
+  - ปุ่มฟังก์ชัน: 🖨️ พิมพ์/บันทึก PDF (`window.print()` พร้อม CSS `@media print` จัดหน้า A4 แนวนอนอัตโนมัติ), 🔗 คัดลอกลิงก์ตรวจสอบสิทธิ์, ✖ ปิด Modal
+- **My Learning Component (`MyLearningComponent`):**
+  - Hero Header แสดงโปรไฟล์ผู้เรียน (Avatar, ชื่อ, ฝ่าย, ระดับ Pro Learner) และแถบเป้าหมายการเรียนรู้ประจำปี
+  - KPI Metric Cards 4 ช่อง (คอร์สที่กำลังเรียน, สำเร็จหลักสูตรแล้ว, ใบประกาศนียบัตรที่ได้รับ, แต้ม XP สะสม)
+  - 3 แท็บหลักสลับมุมมอง:
+    1. 📖 **กำลังเรียนอยู่ (In Progress):** การ์ดคอร์สพร้อมแถบ Progress %, บทเรียนล่าสุด และปุ่ม "▶ เรียนต่อทันที"
+    2. 🏆 **สำเร็จการศึกษา & ประกาศนียบัตร (Completed):** รายการคอร์สที่จบ 100% พร้อมปุ่ม "📜 ดูใบประกาศนียบัตร" และ "🔄 ทบทวนบทเรียน"
+    3. 📝 **ประวัติการสอบประเมิน (Quiz History):** ตารางประวัติคะแนนสอบ สถานะผ่าน/ไม่ผ่าน เวลาที่ใช้ และลิงก์ทบทวนเฉลย
+- **Responsive & Design Verification:**
+  - ผ่านการทดสอบบนความละเอียด 1920x1200, 1024x768, และ 375x812 อย่างสมบูรณ์แบบ
+  - Build ผ่าน 100% Zero Error (ทั้ง `@sic-ng` Library และ Demo Application)
+
 ---
 
 ## 🎯 แผนการพัฒนาในขั้นตอนถัดไป (Upcoming Steps Roadmap)
 
-- **Step 6: Automated Certificate Generator (ระบบสร้างใบประกาศนียบัตรดิจิทัล)**
-  - กรอบใบประกาศนียบัตรระดับพรีเมียม Soft Inter Chiangrai
-  - Auto-generate ชื่อผู้เรียน, รหัสใบรับรอง, วันที่สำเร็จการศึกษา, ลายเซ็นผู้บริหาร
-  - ปุ่ม Export / พิมพ์ PDF และปุ่มแชร์ลง LinkedIn / Social Media
 - **Step 7: Knowledge Base KM Spaces (คลังความรู้องค์กรตามฝ่าย)**
-  - แยก Space ตามแผนก (Dev, QA, HR, Sales, Support)
-  - Instant Search และหน้าอ่าน Wiki พร้อม Markdown/Code Viewer
+  - แยก Space ตามแผนก (Software Dev, QA & Testing, HR & Culture, Sales, IT Support)
+  - Instant Search ค้นหาเอกสารและโค้ดตัวอย่างความเร็วสูง
+  - Markdown & Code Viewer พร้อม Syntax Highlighting
 - **Step 8: Instructor Course Builder & Admin Reporting**
   - หน้ารายงานสถิติภาพรวม Completion Rate และสถิติผู้เรียนของ HR และ Admin
+

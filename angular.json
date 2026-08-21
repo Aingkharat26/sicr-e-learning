@@ -22,7 +22,7 @@
             "browser": "projects/demo/src/main.ts",
             "tsConfig": "projects/demo/tsconfig.app.json",
             "styles": [
-              "dist/sic-ng/theme/all-themes.css",
+              "projects/sic-ng/src/lib/tokens/all-themes.css",
               "projects/demo/src/styles.css"
             ],
             "scripts": []

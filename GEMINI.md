@@ -13,9 +13,10 @@
 5. **รูปแบบการเขียน Git Commit (เมื่อได้รับคำสั่งให้ Commit):**
    - ต้องเขียนหัวข้อ Commit เป็น **ภาษาไทย** เสมอ
    - ต้องมี **Description (คำอธิบายเพิ่มเติม)** เป็นภาษาไทยแจกแจงรายละเอียดว่าแก้ไขหรือสร้างอะไรไปบ้างอย่างชัดเจน
-6. **การตรวจสอบ Build Error ทุกรอบการทำงาน (Mandatory Build Validation):**
+6. **การตรวจสอบ Build Error ทุกรอบการทำงานอย่างรอบคอบสูงสุด (Mandatory Thorough Build Validation):**
    - ต้องรัน `cmd /c npm run build` และ `cmd /c npx ng build demo` ตรวจสอบทุกครั้งหลังเสร็จแต่ละรอบ/โมดูล
-   - หากมี Error หรือ Warning ต้องแก้ไขให้สมบูรณ์ (Build ผ่าน 100%) ก่อนส่งมอบงานเสมอ
+   - ตรวจสอบ Path การอ้างอิง Assets/CSS (เช่น ใน `angular.json`) ต้องชี้ไปยัง Source paths เสมอ ไม่ให้เกิดปัญหา Resolve path เมื่อโฟลเดอร์ `dist/` ยังไม่ถูกสร้าง
+   - หากมี Error หรือ Warning ต้องแก้ไขให้สมบูรณ์ (Build ผ่าน 100% Zero Errors/Zero Warnings) ก่อนส่งมอบงานเสมอ ห้ามละเลยโดยเด็ดขาด
 
 ## 📌 ข้อมูลและเอกสารอ้างอิง
 - เอกสารสเปกระบบฉบับสมบูรณ์: [HANDOFF.md](file:///c:/Project/sicr-framework-ng/HANDOFF.md)
