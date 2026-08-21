@@ -5,6 +5,7 @@ import { SicThemeService } from 'sic-ng';
 import { AuthStateService } from '../../core/services/auth-state.service';
 import { UserRole } from '../../core/models/user.model';
 import { UserGuideService } from '../../core/services/user-guide.service';
+import { AiAssistantService } from '../../core/services/ai-assistant.service';
 
 @Component({
   selector: 'app-nav-header',
@@ -152,6 +153,18 @@ import { UserGuideService } from '../../core/services/user-guide.service';
             }
           </div>
 
+          <!-- AI Assistant Quick Launch Button -->
+          <button
+            type="button"
+            class="ai-quick-btn"
+            (click)="openAiAssistant()"
+            title="ปรึกษา SICR AI Knowledge Assistant"
+            aria-label="Open AI Assistant"
+          >
+            <span class="ai-sparkle">✨</span>
+            <span class="ai-label">AI Assistant</span>
+          </button>
+
           <!-- Help & Guide Button -->
           <button
             type="button"
@@ -230,6 +243,9 @@ import { UserGuideService } from '../../core/services/user-guide.service';
                 <span>🛡️ {{ isAdmin() ? 'แดชบอร์ดแอดมิน' : 'จัดการคอร์สผู้สอน' }}</span>
               </a>
             }
+            <button type="button" class="mobile-nav-item mobile-ai-btn" (click)="openAiAssistantMobile()">
+              <span>✨ 🤖 ปรึกษา SICR AI Assistant</span>
+            </button>
             <button type="button" class="mobile-nav-item mobile-guide-btn" (click)="openUserGuideMobile()">
               <span>📖 คู่มือการใช้งานระบบ (Help & Guide)</span>
             </button>
@@ -751,6 +767,48 @@ import { UserGuideService } from '../../core/services/user-guide.service';
       border: 1px dashed rgba(0, 168, 135, 0.35);
     }
 
+    /* AI Quick Button */
+    .ai-quick-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      height: 38px;
+      padding: 0 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 168, 135, 0.35);
+      background: linear-gradient(135deg, rgba(0, 168, 135, 0.1) 0%, rgba(2, 132, 199, 0.1) 100%);
+      color: #00a887;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .ai-quick-btn:hover {
+      background: linear-gradient(135deg, #00a887 0%, #0284c7 100%);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(0, 168, 135, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .ai-sparkle {
+      font-size: 0.85rem;
+    }
+
+    .ai-label {
+      white-space: nowrap;
+    }
+
+    .mobile-ai-btn {
+      background: linear-gradient(135deg, rgba(0, 168, 135, 0.12) 0%, rgba(2, 132, 199, 0.12) 100%);
+      color: #00a887;
+      font-weight: 700;
+      border: 1px solid rgba(0, 168, 135, 0.3);
+    }
+
     /* Responsive Breakpoints */
     @media (max-width: 1366px) {
       .user-name {
@@ -776,11 +834,13 @@ import { UserGuideService } from '../../core/services/user-guide.service';
         display: none;
       }
       .role-name-text,
-      .help-text {
+      .help-text,
+      .ai-label {
         display: none;
       }
       .role-dropdown-btn,
-      .help-guide-btn {
+      .help-guide-btn,
+      .ai-quick-btn {
         padding: 0 0.5rem;
       }
     }
@@ -790,6 +850,7 @@ export class NavHeaderComponent {
   private readonly authState = inject(AuthStateService);
   private readonly themeService = inject(SicThemeService);
   private readonly userGuideService = inject(UserGuideService);
+  private readonly aiAssistantService = inject(AiAssistantService);
   private readonly elementRef = inject(ElementRef);
 
   readonly currentRole = this.authState.currentRole;
@@ -820,6 +881,15 @@ export class NavHeaderComponent {
 
   toggleTheme(): void {
     this.themeService.toggleDark();
+  }
+
+  openAiAssistant(): void {
+    this.aiAssistantService.openChat();
+  }
+
+  openAiAssistantMobile(): void {
+    this.closeAllMenus();
+    this.openAiAssistant();
   }
 
   openUserGuide(): void {

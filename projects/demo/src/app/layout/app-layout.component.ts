@@ -5,11 +5,18 @@ import { NavHeaderComponent } from './nav-header/nav-header.component';
 import { AuthStateService } from '../core/services/auth-state.service';
 import { UserGuideService } from '../core/services/user-guide.service';
 import { UserGuideModalComponent } from '../core/components/user-guide-modal/user-guide-modal.component';
+import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-assistant-widget.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavHeaderComponent, UserGuideModalComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NavHeaderComponent,
+    UserGuideModalComponent,
+    AiAssistantWidgetComponent,
+  ],
   template: `
     <div class="app-wrapper">
       <!-- 1. Top Navigation Header -->
@@ -43,7 +50,10 @@ import { UserGuideModalComponent } from '../core/components/user-guide-modal/use
       <!-- 4. Interactive User Guide Modal -->
       <app-user-guide-modal />
 
-      <!-- 5. Unified Corporate Footer -->
+      <!-- 5. SICR AI Knowledge Assistant Widget -->
+      <app-ai-assistant-widget />
+
+      <!-- 6. Unified Corporate Footer -->
       <footer class="app-footer">
         <div class="footer-container">
           <div class="footer-left">

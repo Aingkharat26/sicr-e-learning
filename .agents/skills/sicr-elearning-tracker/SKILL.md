@@ -341,6 +341,24 @@ description: >-
 
 ---
 
+### ✅ Step 11: SICR AI Knowledge Assistant (Dual Persona Modes) (2026-08-21)
+- **AI Models & State Management (`ai-assistant.model.ts` & `ai-assistant.service.ts`):**
+  - กำหนด Interface: `AiMessage`, `AiMode ('system' | 'learning')`, `AiPromptSuggestion`, `AiActionLink`
+  - Signals-based State: ข้อความแชท, สถานะพิมพ์ (Typing indicator simulation), Prompt suggestions แยกตามโหมด
+- **2 โหมดการทำงานอัจฉริยะ (Dual Persona AI Modes):**
+  - 🧭 **โหมด 1: แนะนำการใช้งานระบบ (System Guide):** ตอบคำถามเรื่องฟังก์ชัน, เมนู, การสลับ Role, การพิมพ์ Certificate, และมาพร้อม **Action Buttons** กดเพื่อนำทางไปยังหน้าปลายทางทันที
+  - 🎓 **โหมด 2: ติวบทเรียน & คลังความรู้ (Learning & KM Tutor):** อธิบายเนื้อหาเชิงลึก (Angular 22 Signals, Playwright Testing, VPN WireGuard, สวัสดิการ Learning Budget 20,000 บาท) พร้อมแสดง Code Block Highlighting + ปุ่ม Copy และป้าย Source Citation อ้างอิงบทความ/คอร์ส
+- **AI Assistant Widget Component (`ai-assistant-widget.component.ts`):**
+  - Floating Launcher Button สไตล์ Glassmorphism Gradient พร้อม Pulse Effect
+  - กล่องสนทนาแชทแยกโหมด (Mode Switcher Tabs) ที่ด้านบน
+  - แถบชิปคำถามยอดนิยม (Quick Prompt Chips) แนวนอนเลื่อนได้สมูท
+  - รองรับทั้ง Light Mode และ Dark Mode อย่างสมบูรณ์แบบ
+- **Integration & Build Validation:**
+  - เพิ่มใน `AppLayoutComponent` และปุ่มด่วน `✨ AI Assistant` บน `NavHeaderComponent`
+  - Build ผ่าน 100% Zero Error / Zero Warnings (`npm run build` และ `npx ng build demo`)
+
+---
+
 ## 🏆 สรุปสถานะโครงการ (Project Completion Summary)
-แพลตฟอร์ม **SICR E-LEARNING & Knowledge Management System** ได้รับการพัฒนาเสร็จสมบูรณ์ครบทั้ง 10 ขั้นตอนตามสเปกและข้อกำหนดทั้งหมด พร้อมส่งมอบให้ทีมงาน Soft Inter Chiangrai นำไปใช้งานหรือขยายผลในระดับองค์กรต่อไป!
+แพลตฟอร์ม **SICR E-LEARNING & Knowledge Management System** ได้รับการพัฒนาเสร็จสมบูรณ์ทั้ง 11 ขั้นตอนหลัก พร้อมระบบผู้ช่วย AI อัจฉริยะ 2 โหมด และส่งมอบให้ทีมงาน Soft Inter Chiangrai นำไปใช้งานได้อย่างเต็มประสิทธิภาพ!
 
