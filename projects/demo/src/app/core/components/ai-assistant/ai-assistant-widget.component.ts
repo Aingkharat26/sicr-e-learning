@@ -21,6 +21,12 @@ import { AiMode } from '../../models/ai-assistant.model';
   template: `
     <!-- 1. Floating Launcher Button (Bottom-Right) -->
     <div class="ai-launcher-wrapper" [class.hidden]="isOpen()">
+      <!-- Tooltip Bubble on Hover (Desktop) -->
+      <div class="launcher-tooltip">
+        <span class="tooltip-title">✨ SICR AI Assistant</span>
+        <span class="tooltip-sub">ถามการใช้งาน & ติวบทเรียน</span>
+      </div>
+
       <button
         type="button"
         class="ai-launcher-btn"
@@ -32,10 +38,6 @@ import { AiMode } from '../../models/ai-assistant.model';
         <div class="launcher-icon-box">
           <span class="ai-sparkle-icon">✨</span>
           <span class="ai-bot-icon">🤖</span>
-        </div>
-        <div class="launcher-text-box">
-          <span class="launcher-title">SICR AI Assistant</span>
-          <span class="launcher-subtitle">ถามการใช้งาน & ติวบทเรียน</span>
         </div>
       </button>
     </div>
@@ -256,6 +258,9 @@ import { AiMode } from '../../models/ai-assistant.model';
       bottom: 24px;
       right: 24px;
       z-index: 1500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
       animation: floatIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -274,31 +279,71 @@ import { AiMode } from '../../models/ai-assistant.model';
       }
     }
 
+    /* Floating Tooltip bubble on hover */
+    .launcher-tooltip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      padding: 0.45rem 0.85rem;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(8px) scale(0.95);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .ai-launcher-wrapper:hover .launcher-tooltip {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .tooltip-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      line-height: 1.2;
+    }
+
+    .tooltip-sub {
+      font-size: 0.7rem;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    /* Circular FAB Button */
     .ai-launcher-btn {
       position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem 1.15rem 0.65rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      padding: 0;
+      border: 2px solid rgba(255, 255, 255, 0.4);
       background: linear-gradient(135deg, #00a887 0%, #0284c7 100%);
       color: #ffffff;
       cursor: pointer;
       box-shadow: 0 10px 25px -4px rgba(0, 168, 135, 0.45);
-      transition: all 0.25s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .ai-launcher-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 14px 30px -4px rgba(0, 168, 135, 0.6);
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 14px 32px -4px rgba(0, 168, 135, 0.65);
     }
 
     .launcher-pulse {
       position: absolute;
-      inset: -4px;
-      border-radius: 999px;
+      inset: -5px;
+      border-radius: 50%;
       border: 2px solid #00a887;
       opacity: 0;
       animation: pulseAnim 2.5s infinite;
@@ -311,33 +356,32 @@ import { AiMode } from '../../models/ai-assistant.model';
         opacity: 0.8;
       }
       70% {
-        transform: scale(1.15);
+        transform: scale(1.2);
         opacity: 0;
       }
       100% {
-        transform: scale(1.15);
+        transform: scale(1.2);
         opacity: 0;
       }
     }
 
     .launcher-icon-box {
-      width: 40px;
-      height: 40px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      font-size: 1.25rem;
-      flex-shrink: 0;
+      font-size: 1.6rem;
+      user-select: none;
     }
 
     .ai-sparkle-icon {
       position: absolute;
-      top: -4px;
-      right: -4px;
-      font-size: 0.85rem;
+      top: 6px;
+      right: 6px;
+      font-size: 0.9rem;
       animation: sparkleRotate 3s ease-in-out infinite;
     }
 
@@ -346,23 +390,17 @@ import { AiMode } from '../../models/ai-assistant.model';
       50% { transform: rotate(20deg) scale(1.2); }
     }
 
-    .launcher-text-box {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-    }
-
-    .launcher-title {
-      font-size: 0.92rem;
-      font-weight: 800;
-      letter-spacing: -0.2px;
-      line-height: 1.2;
-    }
-
-    .launcher-subtitle {
-      font-size: 0.72rem;
-      opacity: 0.9;
-      font-weight: 500;
+    @media (max-width: 640px) {
+      .launcher-tooltip {
+        display: none;
+      }
+      .ai-launcher-btn {
+        width: 50px;
+        height: 50px;
+      }
+      .launcher-icon-box {
+        font-size: 1.4rem;
+      }
     }
 
     /* 2. AI Chat Window */

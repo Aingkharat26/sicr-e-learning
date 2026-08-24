@@ -188,7 +188,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
                 </p>
               </div>
               <button type="button" class="btn-toggle-all" (click)="toggleAllModules()">
-                {{ allExpanded() ? '▲ ยุบทั้งหมด' : '▼ ขยายทั้งหมด' }}
+                {{ allExpanded() ? '▲ ซ่อนบทเรียน' : '▼ ขยายบทเรียน' }}
               </button>
             </div>
 

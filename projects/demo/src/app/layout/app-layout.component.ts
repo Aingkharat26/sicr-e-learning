@@ -202,7 +202,9 @@ import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-a
     .footer-links {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 1.25rem;
+      padding-right: 4.5rem; /* Safe area for floating AI widget */
     }
 
     .footer-links a {
@@ -211,6 +213,7 @@ import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-a
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .footer-links a:hover {
@@ -228,6 +231,7 @@ import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-a
       font-family: inherit;
       cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .footer-guide-btn:hover {
@@ -243,12 +247,17 @@ import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-a
       border: 1px solid var(--sic-color-border, #cbd5e1);
       border-radius: 6px;
       color: var(--sic-color-text-muted, #475569);
+      white-space: nowrap;
     }
 
     @media (max-width: 640px) {
       .footer-container {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .footer-links {
+        padding-right: 3.5rem;
       }
     }
   `],
