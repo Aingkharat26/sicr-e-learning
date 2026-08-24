@@ -509,7 +509,7 @@ import { Course } from '../../../core/models/course.model';
 
     .progress-track {
       height: 6px;
-      background: #e2e8f0;
+      background: var(--sic-color-border, #e2e8f0);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -574,7 +574,7 @@ import { Course } from '../../../core/models/course.model';
 
     .btn-review {
       background: var(--sic-color-surface, #f1f5f9);
-      color: #007965;
+      color: #00a887;
       border: 1px solid rgba(0, 168, 135, 0.3);
     }
 

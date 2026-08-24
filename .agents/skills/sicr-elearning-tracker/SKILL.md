@@ -357,8 +357,27 @@ description: >-
   - เพิ่มใน `AppLayoutComponent` และปุ่มด่วน `✨ AI Assistant` บน `NavHeaderComponent`
   - Build ผ่าน 100% Zero Error / Zero Warnings (`npm run build` และ `npx ng build demo`)
 
+### ✅ Step 12: Comprehensive Dark Mode & Light Mode Theme QA (2026-08-24)
+- **My Learning (`my-learning.component.ts`):**
+  - แก้ไขปัญหาตัวหนังสือปุ่ม "รายละเอียดคอร์ส" (`.btn-detail`) จมกลืนกับพื้นหลังใน Dark Mode โดยปรับใช้ Token `--sic-color-surface`, `--sic-color-text-active` และ `--sic-color-border`
+  - ปรับป้ายสถานะ `.dept-tag`, `.btn-table-review`, `.tab-badge`, `.comp-stats-row` และตารางประวัติสอบ `.quiz-table th`
+- **Course Catalog & Cards (`courses-catalog.component.ts` & `course-card.component.ts`):**
+  - แก้ไขช่องค้นหา `.search-input:focus` ไม่ให้พื้นหลังกลายเป็นสีขาวล้วนใน Dark Mode
+  - ปรับปรุง `.search-clear-btn`, `.switch-btn.active`, `.active-chip` และ `.progress-track`
+- **Course Detail & Classroom (`course-detail.component.ts` & `classroom-player.component.ts`):**
+  - ปรับสี `.badge-preview`, `.tag-progress`, `.btn-toggle-all:hover` และเส้นคะแนนรีวิว `.bar-track`
+  - เพิ่ม `:host-context(.dark)` ใน `ClassroomPlayerComponent` รองรับการสลับคลาส `.dark`
+- **KM Hub & Quiz Runner (`km-hub.component.ts` & `quiz-runner.component.ts`):**
+  - ปรับสีปุ่มและแท็ก Modal, Search Clear, Option Label Circles และ Review Buttons
+- **Global Tokens & Navigation (`styles.css`, `nav-header.component.ts`, `app-layout.component.ts`):**
+  - นิยามตัวแปร Fallback `--sic-color-bg-hover`
+  - ปรับสีตัวอักษรปุ่ม Role Switcher และ Role Alert Banner
+- **Build Validation:**
+  - Build ผ่าน 100% Zero Errors / Zero Warnings (`npm run build` และ `npx ng build demo`)
+
 ---
 
 ## 🏆 สรุปสถานะโครงการ (Project Completion Summary)
-แพลตฟอร์ม **SICR E-LEARNING & Knowledge Management System** ได้รับการพัฒนาเสร็จสมบูรณ์ทั้ง 11 ขั้นตอนหลัก พร้อมระบบผู้ช่วย AI อัจฉริยะ 2 โหมด และส่งมอบให้ทีมงาน Soft Inter Chiangrai นำไปใช้งานได้อย่างเต็มประสิทธิภาพ!
+แพลตฟอร์ม **SICR E-LEARNING & Knowledge Management System** ได้รับการพัฒนาเสร็จสมบูรณ์ทั้ง 12 ขั้นตอนหลัก พร้อมระบบผู้ช่วย AI อัจฉริยะ 2 โหมด และรองรับ Dark/Light Theme ครบถ้วนทุกหน้าจอ พร้อมส่งมอบให้ทีมงาน Soft Inter Chiangrai นำไปใช้งานได้อย่างเต็มประสิทธิภาพ!
+
 

@@ -1089,24 +1089,31 @@ import { SicVideoPlayerComponent } from 'sic-ng';
     }
 
     /* ========== DARK MODE ========== */
+    :host-context(.dark) .classroom-page,
     :host-context(.sic-theme-dark) .classroom-page,
     :host-context([data-theme='dark']) .classroom-page {
       background: #0c1222;
     }
+    :host-context(.dark) .classroom-topbar,
     :host-context(.sic-theme-dark) .classroom-topbar,
     :host-context([data-theme='dark']) .classroom-topbar {
       background: #111827;
       border-color: #1e293b;
     }
+    :host-context(.dark) .classroom-sidebar,
     :host-context(.sic-theme-dark) .classroom-sidebar,
     :host-context([data-theme='dark']) .classroom-sidebar {
       background: #111827;
       border-color: #1e293b;
     }
+    :host-context(.dark) .content-viewer,
     :host-context(.sic-theme-dark) .content-viewer,
     :host-context([data-theme='dark']) .content-viewer {
       background: #111827;
     }
+    :host-context(.dark) .lesson-info-bar,
+    :host-context(.dark) .action-bar,
+    :host-context(.dark) .below-tabs,
     :host-context(.sic-theme-dark) .lesson-info-bar,
     :host-context(.sic-theme-dark) .action-bar,
     :host-context(.sic-theme-dark) .below-tabs,
@@ -1116,43 +1123,52 @@ import { SicVideoPlayerComponent } from 'sic-ng';
       background: #111827;
       border-color: #1e293b;
     }
+    :host-context(.dark) .btn-action,
     :host-context(.sic-theme-dark) .btn-action,
     :host-context([data-theme='dark']) .btn-action {
       background: #1e293b;
       border-color: #334155;
       color: #e2e8f0;
     }
+    :host-context(.dark) .tab-nav,
     :host-context(.sic-theme-dark) .tab-nav,
     :host-context([data-theme='dark']) .tab-nav {
       border-color: #1e293b;
     }
+    :host-context(.dark) .notes-textarea,
     :host-context(.sic-theme-dark) .notes-textarea,
     :host-context([data-theme='dark']) .notes-textarea {
       background: #0c1222;
       border-color: #334155;
       color: #e2e8f0;
     }
+    :host-context(.dark) .module-header:hover,
     :host-context(.sic-theme-dark) .module-header:hover,
     :host-context([data-theme='dark']) .module-header:hover {
       background: #1e293b;
     }
+    :host-context(.dark) .lesson-item:hover,
     :host-context(.sic-theme-dark) .lesson-item:hover,
     :host-context([data-theme='dark']) .lesson-item:hover {
       background: #1e293b;
     }
+    :host-context(.dark) .quiz-box,
     :host-context(.sic-theme-dark) .quiz-box,
     :host-context([data-theme='dark']) .quiz-box {
       background: #1e293b;
       box-shadow: 0 4px 24px rgba(0,0,0,0.3);
     }
+    :host-context(.dark) .course-info-card,
     :host-context(.sic-theme-dark) .course-info-card,
     :host-context([data-theme='dark']) .course-info-card {
       border-color: #334155;
     }
+    :host-context(.dark) .sidebar-module,
     :host-context(.sic-theme-dark) .sidebar-module,
     :host-context([data-theme='dark']) .sidebar-module {
       border-color: #1e293b;
     }
+    :host-context(.dark) .progress-track,
     :host-context(.sic-theme-dark) .progress-track,
     :host-context([data-theme='dark']) .progress-track {
       background: #1e293b;

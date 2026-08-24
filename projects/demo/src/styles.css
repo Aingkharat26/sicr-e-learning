@@ -23,3 +23,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+:root {
+  --sic-color-bg-hover: var(--sic-color-surface-hover, #f1f3f5);
+}
+
+:root.dark,
+html.dark {
+  --sic-color-bg-hover: var(--sic-color-surface-hover, #1e2127);
+}
+

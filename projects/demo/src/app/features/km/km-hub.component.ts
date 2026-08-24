@@ -499,8 +499,8 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
     .clear-search-btn {
       position: absolute;
       right: 1.25rem;
-      background: #e2e8f0;
-      color: #64748b;
+      background: var(--sic-color-surface-hover, #e2e8f0);
+      color: var(--sic-color-text-muted, #64748b);
       border: none;
       width: 24px;
       height: 24px;
@@ -700,7 +700,7 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
 
     .article-count-pill {
       font-weight: 700;
-      background: rgba(0, 0, 0, 0.04);
+      background: var(--sic-color-surface-hover, rgba(0, 0, 0, 0.04));
       padding: 0.2rem 0.6rem;
       border-radius: 6px;
     }
@@ -791,7 +791,7 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      background: rgba(0, 0, 0, 0.02);
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.02));
       border: 1px solid var(--sic-color-border, #e2e8f0);
       padding: 0.85rem 1.15rem;
       border-radius: 14px;
@@ -962,7 +962,7 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
       font-size: 0.72rem;
       font-weight: 700;
       color: var(--sic-color-text-muted, #64748b);
-      background: rgba(0, 0, 0, 0.04);
+      background: var(--sic-color-surface-hover, rgba(0, 0, 0, 0.04));
       padding: 0.2rem 0.55rem;
       border-radius: 6px;
     }
@@ -1028,8 +1028,9 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
 
     .article-tag {
       font-size: 0.75rem;
-      color: #64748b;
-      background: rgba(0, 0, 0, 0.03);
+      color: var(--sic-color-text-muted, #64748b);
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.03));
+      border: 1px solid var(--sic-color-border, transparent);
       padding: 0.15rem 0.45rem;
       border-radius: 4px;
       cursor: pointer;
@@ -1234,8 +1235,8 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
     }
 
     .btn-close-modal:hover {
-      background: #f1f5f9;
-      color: #0f172a;
+      background: var(--sic-color-surface-hover, #f1f5f9);
+      color: var(--sic-color-text-active, #0f172a);
     }
 
     .modal-body {
@@ -1301,12 +1302,12 @@ import { KmArticle, KmSpace, KmSpaceId } from '../../core/models/km.model';
     }
 
     .btn-cancel {
-      background: #f1f5f9;
-      border: none;
+      background: var(--sic-color-surface, #f1f5f9);
+      border: 1px solid var(--sic-color-border, #e2e8f0);
       padding: 0.65rem 1.25rem;
       border-radius: 10px;
       font-weight: 700;
-      color: #64748b;
+      color: var(--sic-color-text-muted, #64748b);
       cursor: pointer;
     }
 

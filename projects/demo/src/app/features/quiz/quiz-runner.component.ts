@@ -1058,8 +1058,8 @@ type QuizMode = 'intro' | 'taking' | 'result' | 'review';
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #e2e8f0;
-      color: #475569;
+      background: var(--sic-color-border, #e2e8f0);
+      color: var(--sic-color-text-muted, #475569);
       font-size: 0.78rem;
       font-weight: 800;
       display: flex;
@@ -1296,11 +1296,11 @@ type QuizMode = 'intro' | 'taking' | 'result' | 'review';
       transition: all 0.15s;
     }
     .btn-review {
-      background: #ede9fe;
-      color: #6d28d9;
-      border: 1px solid #ddd6fe;
+      background: rgba(124, 58, 237, 0.15);
+      color: #8b5cf6;
+      border: 1px solid rgba(124, 58, 237, 0.3);
     }
-    .btn-review:hover { background: #ddd6fe; }
+    .btn-review:hover { background: rgba(124, 58, 237, 0.25); }
     .btn-retake {
       background: var(--sic-color-bg, #f1f5f9);
       color: var(--sic-color-text, #1e293b);

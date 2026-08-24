@@ -1061,7 +1061,8 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
     }
 
     .btn-toggle-all:hover {
-      background: #e2e8f0;
+      background: var(--sic-color-surface-hover, #e2e8f0);
+      color: var(--sic-color-text-active, #0f172a);
     }
 
     .modules-accordion {
@@ -1227,7 +1228,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
       background: rgba(0, 168, 135, 0.12);
-      color: #007965;
+      color: #00a887;
       white-space: nowrap;
     }
 
@@ -1476,7 +1477,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
     .bar-track {
       flex: 1;
       height: 8px;
-      background: #e2e8f0;
+      background: var(--sic-color-border, #e2e8f0);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -1734,7 +1735,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
       border-radius: 6px;
     }
 
-    .tag-progress { background: rgba(0, 168, 135, 0.15); color: #007965; }
+    .tag-progress { background: rgba(0, 168, 135, 0.15); color: #00a887; }
     .tag-done { background: rgba(16, 185, 129, 0.15); color: #059669; }
 
     .progress-pct-num {
@@ -1745,7 +1746,7 @@ import { Course, CourseLesson, CourseModule } from '../../core/models/course.mod
 
     .progress-bar-track {
       height: 8px;
-      background: #e2e8f0;
+      background: var(--sic-color-border, #e2e8f0);
       border-radius: 999px;
       overflow: hidden;
     }

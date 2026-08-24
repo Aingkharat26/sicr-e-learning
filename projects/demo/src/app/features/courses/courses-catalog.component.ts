@@ -377,7 +377,7 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
       gap: 0.5rem;
       padding: 0.35rem 0.85rem;
       background: rgba(0, 168, 135, 0.15);
-      color: #007965;
+      color: #00a887;
       border: 1px solid rgba(0, 168, 135, 0.3);
       border-radius: 999px;
       font-size: 0.78rem;
@@ -590,7 +590,7 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
     }
 
     .search-input:focus {
-      background: #ffffff;
+      background: var(--sic-color-bg, #ffffff);
       border-color: #00a887;
       box-shadow: 0 0 0 4px rgba(0, 168, 135, 0.15);
     }
@@ -598,7 +598,7 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
     .search-clear-btn {
       position: absolute;
       right: 1rem;
-      background: rgba(0, 0, 0, 0.05);
+      background: var(--sic-color-surface-hover, rgba(0, 0, 0, 0.05));
       border: none;
       border-radius: 50%;
       width: 24px;
@@ -606,14 +606,14 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #64748b;
+      color: var(--sic-color-text-muted, #64748b);
       cursor: pointer;
       font-size: 0.8rem;
     }
 
     .search-clear-btn:hover {
-      background: rgba(0, 0, 0, 0.1);
-      color: #0f172a;
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.1));
+      color: var(--sic-color-text-active, #0f172a);
     }
 
     .filters-actions-group {
@@ -677,13 +677,13 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
       border: none;
       border-radius: 8px;
       font-size: 1.1rem;
-      color: #64748b;
+      color: var(--sic-color-text-muted, #64748b);
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .switch-btn.active {
-      background: #ffffff;
+      background: var(--sic-color-bg, #ffffff);
       color: #00a887;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       font-weight: bold;
@@ -753,13 +753,13 @@ import { CourseCategory, CourseLevel, EnrollmentStatus } from '../../core/models
       border-radius: 999px;
       font-size: 0.76rem;
       font-weight: 600;
-      color: #007965;
+      color: #00a887;
     }
 
     .active-chip button {
       background: transparent;
       border: none;
-      color: #007965;
+      color: #00a887;
       font-size: 0.85rem;
       cursor: pointer;
       padding: 0;

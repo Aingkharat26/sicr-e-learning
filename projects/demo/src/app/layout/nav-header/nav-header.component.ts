@@ -467,19 +467,19 @@ import { AiAssistantService } from '../../core/services/ai-assistant.service';
     .role-btn-learner {
       border-color: rgba(0, 168, 135, 0.35);
       background: rgba(0, 168, 135, 0.08);
-      color: #007965;
+      color: #00a887;
     }
 
     .role-btn-instructor {
       border-color: rgba(59, 130, 246, 0.35);
       background: rgba(59, 130, 246, 0.08);
-      color: #1d4ed8;
+      color: #3b82f6;
     }
 
     .role-btn-admin {
       border-color: rgba(139, 92, 246, 0.35);
       background: rgba(139, 92, 246, 0.08);
-      color: #6d28d9;
+      color: #8b5cf6;
     }
 
     .role-icon-badge {

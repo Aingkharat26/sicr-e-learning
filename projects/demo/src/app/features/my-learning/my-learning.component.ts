@@ -385,8 +385,8 @@ import { Certificate } from '../../core/models/certificate.model';
     .dept-tag {
       font-size: 0.75rem;
       font-weight: 600;
-      background: rgba(0, 168, 135, 0.1);
-      color: #008f72;
+      background: rgba(0, 168, 135, 0.12);
+      color: #00a887;
       padding: 0.2rem 0.55rem;
       border-radius: 6px;
       white-space: nowrap;
@@ -399,7 +399,7 @@ import { Certificate } from '../../core/models/certificate.model';
     }
 
     .overall-progress-bar-wrap {
-      background: rgba(0, 0, 0, 0.02);
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.02));
       border-radius: 10px;
       padding: 0.65rem 0.85rem;
       border: 1px solid var(--sic-color-border, #e2e8f0);
@@ -531,7 +531,8 @@ import { Certificate } from '../../core/models/certificate.model';
       font-size: 0.75rem;
       padding: 0.15rem 0.5rem;
       border-radius: 9999px;
-      background: rgba(0, 0, 0, 0.08);
+      background: var(--sic-color-surface-hover, rgba(0, 0, 0, 0.08));
+      color: var(--sic-color-text-muted, #64748b);
     }
 
     .tab-btn.active .tab-badge {
@@ -712,8 +713,9 @@ import { Certificate } from '../../core/models/certificate.model';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: var(--sic-color-bg-hover, #f1f5f9);
+      background: var(--sic-color-surface, #f1f5f9);
       color: var(--sic-color-text-active, #0f172a);
+      border: 1px solid var(--sic-color-border, #e2e8f0);
       padding: 0.75rem 1rem;
       border-radius: 10px;
       font-size: 0.85rem;
@@ -722,7 +724,9 @@ import { Certificate } from '../../core/models/certificate.model';
       transition: all 0.2s;
     }
     .btn-detail:hover {
-      background: #e2e8f0;
+      background: var(--sic-color-surface-hover, #e2e8f0);
+      color: var(--sic-color-text-active, #0f172a);
+      border-color: var(--sic-color-border, #cbd5e1);
     }
 
     /* Tab 2: Completed Courses */
@@ -816,7 +820,8 @@ import { Certificate } from '../../core/models/certificate.model';
       gap: 1rem;
       font-size: 0.8rem;
       color: var(--sic-color-text-muted, #64748b);
-      background: rgba(0, 0, 0, 0.02);
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.02));
+      border: 1px solid var(--sic-color-border, transparent);
       padding: 0.6rem 0.8rem;
       border-radius: 8px;
     }
@@ -895,7 +900,7 @@ import { Certificate } from '../../core/models/certificate.model';
     }
 
     .quiz-table th {
-      background: rgba(0, 0, 0, 0.02);
+      background: var(--sic-color-surface, rgba(0, 0, 0, 0.02));
       padding: 0.875rem 1rem;
       font-size: 0.8rem;
       font-weight: 700;
@@ -954,8 +959,8 @@ import { Certificate } from '../../core/models/certificate.model';
     .btn-table-review {
       display: inline-block;
       padding: 0.4rem 0.8rem;
-      background: rgba(0, 168, 135, 0.08);
-      color: #008f72;
+      background: rgba(0, 168, 135, 0.12);
+      color: #00a887;
       border-radius: 8px;
       font-size: 0.8rem;
       font-weight: 700;

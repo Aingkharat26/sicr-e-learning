@@ -103,19 +103,19 @@ import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-a
     .bar-learner {
       background: rgba(0, 168, 135, 0.08);
       border-color: rgba(0, 168, 135, 0.2);
-      color: #007965;
+      color: #00a887;
     }
 
     .bar-instructor {
       background: rgba(59, 130, 246, 0.08);
       border-color: rgba(59, 130, 246, 0.2);
-      color: #1d4ed8;
+      color: #3b82f6;
     }
 
     .bar-admin {
       background: rgba(139, 92, 246, 0.08);
       border-color: rgba(139, 92, 246, 0.2);
-      color: #6d28d9;
+      color: #8b5cf6;
     }
 
     .alert-content {
