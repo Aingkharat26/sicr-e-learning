@@ -34,6 +34,9 @@ description: >-
    - ต้องรัน `cmd /c npm run build` (Build Library) และ `cmd /c npx ng build demo` (Build Application) ทุกครั้งหลังจบแต่ละ Step
    - ตรวจเช็ค Assets/Theme CSS Paths ใน `angular.json` และทุกจุดให้อ้างอิงไปยัง Source paths เสมอ ป้องกันข้อผิดพลาดกรณีไม่มีโฟลเดอร์ `dist/`
    - ตรวจเช็คและแก้ไข Error ทั้งหมดจนผ่าน 100% (Zero Errors / Zero Warnings) ก่อนส่งตรวจงานเสมอ ห้ามละเลยเป็นอันขาด
+7. **ห้ามแก้ไขตัว Component ของ Sic โดยเด็ดขาด (Strictly No Modifying SIC Components):**
+   - ห้ามแก้ไขไฟล์ใดๆ ภายในโฟลเดอร์ `projects/sic-ng` (รวมถึง Components, Directives, Service, Theme Tokens หรือ Tests ของไลบรารี `@sic-ng`)
+   - พัฒนา ปรับแต่งสไตล์ และแก้ไขฟังก์ชันการทำงานเฉพาะในฝั่ง Application (`projects/demo`) เท่านั้น หากต้องการปรับแต่ง ให้ทำผ่าน Custom Class, CSS Tokens หรือ Wrapper ในโปรเจกต์ `projects/demo`
 
 ---
 

@@ -17,6 +17,9 @@
    - ต้องรัน `cmd /c npm run build` และ `cmd /c npx ng build demo` ตรวจสอบทุกครั้งหลังเสร็จแต่ละรอบ/โมดูล
    - ตรวจสอบ Path การอ้างอิง Assets/CSS (เช่น ใน `angular.json`) ต้องชี้ไปยัง Source paths เสมอ ไม่ให้เกิดปัญหา Resolve path เมื่อโฟลเดอร์ `dist/` ยังไม่ถูกสร้าง
    - หากมี Error หรือ Warning ต้องแก้ไขให้สมบูรณ์ (Build ผ่าน 100% Zero Errors/Zero Warnings) ก่อนส่งมอบงานเสมอ ห้ามละเลยโดยเด็ดขาด
+7. **ห้ามแก้ไขตัว Component ของ Sic โดยเด็ดขาด (Strictly No Modifying SIC Components):**
+   - ห้ามแก้ไขไฟล์ใดๆ ภายในโฟลเดอร์ `projects/sic-ng` (รวมถึง Components, Directives, Service, Theme Tokens หรือ Tests ของไลบรารี `@sic-ng`)
+   - พัฒนา ปรับแต่งสไตล์ และแก้ไขฟังก์ชันการทำงานเฉพาะในฝั่ง Application (`projects/demo`) เท่านั้น หากต้องการปรับแต่ง ให้ทำผ่าน Custom Class, CSS Tokens หรือ Wrapper ในโปรเจกต์ `projects/demo`
 
 ## 📌 ข้อมูลและเอกสารอ้างอิง
 - เอกสารสเปกระบบฉบับสมบูรณ์: [HANDOFF.md](file:///c:/Project/sicr-framework-ng/HANDOFF.md)
