@@ -3,10 +3,14 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideSicTheme, provideSicConfig, TutorialPageComponent } from 'sic-ng';
 import { AppLayoutComponent } from './layout/app-layout.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { CoursesPlaceholderComponent } from './features/courses/courses-placeholder.component';
-import { MyLearningPlaceholderComponent } from './features/my-learning/my-learning-placeholder.component';
-import { KmPlaceholderComponent } from './features/km/km-placeholder.component';
-import { AdminPlaceholderComponent } from './features/admin/admin-placeholder.component';
+import { CoursesCatalogComponent } from './features/courses/courses-catalog.component';
+import { CourseDetailComponent } from './features/courses/course-detail.component';
+import { ClassroomPlayerComponent } from './features/courses/classroom-player.component';
+import { MyLearningComponent } from './features/my-learning/my-learning.component';
+import { KmHubComponent } from './features/km/km-hub.component';
+import { KmArticleDetailComponent } from './features/km/km-article-detail.component';
+import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
+import { QuizRunnerComponent } from './features/quiz/quiz-runner.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,23 +28,48 @@ export const appConfig: ApplicationConfig = {
             },
             {
               path: 'courses',
-              component: CoursesPlaceholderComponent,
+              component: CoursesCatalogComponent,
               title: 'หลักสูตรทั้งหมด | SICR E-LEARNING',
             },
             {
+              path: 'courses/:id',
+              component: CourseDetailComponent,
+              title: 'รายละเอียดหลักสูตร | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/learn',
+              component: ClassroomPlayerComponent,
+              title: 'ห้องเรียน | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/learn/:lessonId',
+              component: ClassroomPlayerComponent,
+              title: 'ห้องเรียน | SICR E-LEARNING',
+            },
+            {
+              path: 'courses/:id/quiz/:quizId',
+              component: QuizRunnerComponent,
+              title: 'แบบทดสอบ | SICR E-LEARNING',
+            },
+            {
               path: 'my-learning',
-              component: MyLearningPlaceholderComponent,
+              component: MyLearningComponent,
               title: 'การเรียนของฉัน | SICR E-LEARNING',
             },
             {
               path: 'km',
-              component: KmPlaceholderComponent,
-              title: 'คลังความรู้องค์กร (KM) | SICR E-LEARNING',
+              component: KmHubComponent,
+              title: 'คลังความรู้องค์กร (KM Spaces) | SICR E-LEARNING',
+            },
+            {
+              path: 'km/:id',
+              component: KmArticleDetailComponent,
+              title: 'บทความองค์ความรู้ (KM) | SICR E-LEARNING',
             },
             {
               path: 'admin',
-              component: AdminPlaceholderComponent,
-              title: 'ระบบจัดการ | SICR E-LEARNING',
+              component: AdminDashboardComponent,
+              title: 'ศูนย์บริหารจัดการ & สตูดิโอผู้สอน | SICR E-LEARNING',
             },
             {
               path: 'tutorial',

@@ -6,7 +6,20 @@
 3. **Responsive Design ต้องสมบูรณ์แบบทุกขนาดจอ (Crucial):**
    - รองรับตั้งแต่จอใหญ่ **1920x1200**, 1920x1080, Laptop 1366-1440px, Tablet, จนถึง Mobile
    - ห้ามมีปุ่มล้นกล่อง, ห้ามมีข้อความเมนูตัดคำขึ้นบรรทัดใหม่แปลกๆ (ต้องใส่ `white-space: nowrap` และ Flex Layout ที่ยืดหยุ่นสวยงาม)
-   - Layout และ Header ต้องดูพรีเมียม สบายตา และจัดระเบียบองค์ประกอบอย่างลงตัวเสมอ
+4. **Branching Strategy (Strict):**
+   - **`dev`**: สำหรับพัฒนาและทดสอบฟีเจอร์ทั้งหมด (Active Working Branch)
+   - **`main`**: สงวนไว้สำหรับ Production Deployment เท่านั้น
+   - ห้าม Commit หรือ Push ขึ้น Git โดยพลการ ต้องรอคำสั่งจากผู้ใช้เสมอ
+5. **รูปแบบการเขียน Git Commit (เมื่อได้รับคำสั่งให้ Commit):**
+   - ต้องเขียนหัวข้อ Commit เป็น **ภาษาไทย** เสมอ
+   - ต้องมี **Description (คำอธิบายเพิ่มเติม)** เป็นภาษาไทยแจกแจงรายละเอียดว่าแก้ไขหรือสร้างอะไรไปบ้างอย่างชัดเจน
+6. **การตรวจสอบ Build Error ทุกรอบการทำงานอย่างรอบคอบสูงสุด (Mandatory Thorough Build Validation):**
+   - ต้องรัน `cmd /c npm run build` และ `cmd /c npx ng build demo` ตรวจสอบทุกครั้งหลังเสร็จแต่ละรอบ/โมดูล
+   - ตรวจสอบ Path การอ้างอิง Assets/CSS (เช่น ใน `angular.json`) ต้องชี้ไปยัง Source paths เสมอ ไม่ให้เกิดปัญหา Resolve path เมื่อโฟลเดอร์ `dist/` ยังไม่ถูกสร้าง
+   - หากมี Error หรือ Warning ต้องแก้ไขให้สมบูรณ์ (Build ผ่าน 100% Zero Errors/Zero Warnings) ก่อนส่งมอบงานเสมอ ห้ามละเลยโดยเด็ดขาด
+7. **ห้ามแก้ไขตัว Component ของ Sic โดยเด็ดขาด (Strictly No Modifying SIC Components):**
+   - ห้ามแก้ไขไฟล์ใดๆ ภายในโฟลเดอร์ `projects/sic-ng` (รวมถึง Components, Directives, Service, Theme Tokens หรือ Tests ของไลบรารี `@sic-ng`)
+   - พัฒนา ปรับแต่งสไตล์ และแก้ไขฟังก์ชันการทำงานเฉพาะในฝั่ง Application (`projects/demo`) เท่านั้น หากต้องการปรับแต่ง ให้ทำผ่าน Custom Class, CSS Tokens หรือ Wrapper ในโปรเจกต์ `projects/demo`
 
 ## 📌 ข้อมูลและเอกสารอ้างอิง
 - เอกสารสเปกระบบฉบับสมบูรณ์: [HANDOFF.md](file:///c:/Project/sicr-framework-ng/HANDOFF.md)

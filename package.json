@@ -8,6 +8,8 @@
     "prebuild": "node scripts/sync-version.js",
     "build": "ng build sic-ng",
     "postbuild": "node scripts/copy-theme-assets.js",
+    "build:demo": "ng build demo --configuration production",
+    "build:vercel": "npm run build && npm run build:demo",
     "release": "node scripts/release-sic-ng.mjs",
     "prepare": "npm run build",
     "watch": "node scripts/sync-version.js && ng build --watch --configuration development",

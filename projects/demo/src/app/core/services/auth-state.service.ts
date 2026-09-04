@@ -1,5 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { MOCK_USERS, UserProfile, UserRole } from '../models/user.model';
+export type { UserProfile, UserRole };
 
 @Injectable({
   providedIn: 'root',

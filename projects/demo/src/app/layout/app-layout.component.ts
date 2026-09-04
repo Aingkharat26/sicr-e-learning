@@ -3,11 +3,20 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavHeaderComponent } from './nav-header/nav-header.component';
 import { AuthStateService } from '../core/services/auth-state.service';
+import { UserGuideService } from '../core/services/user-guide.service';
+import { UserGuideModalComponent } from '../core/components/user-guide-modal/user-guide-modal.component';
+import { AiAssistantWidgetComponent } from '../core/components/ai-assistant/ai-assistant-widget.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavHeaderComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NavHeaderComponent,
+    UserGuideModalComponent,
+    AiAssistantWidgetComponent,
+  ],
   template: `
     <div class="app-wrapper">
       <!-- 1. Top Navigation Header -->
@@ -38,7 +47,13 @@ import { AuthStateService } from '../core/services/auth-state.service';
         <router-outlet />
       </main>
 
-      <!-- 4. Unified Corporate Footer -->
+      <!-- 4. Interactive User Guide Modal -->
+      <app-user-guide-modal />
+
+      <!-- 5. SICR AI Knowledge Assistant Widget -->
+      <app-ai-assistant-widget />
+
+      <!-- 6. Unified Corporate Footer -->
       <footer class="app-footer">
         <div class="footer-container">
           <div class="footer-left">
@@ -46,6 +61,9 @@ import { AuthStateService } from '../core/services/auth-state.service';
             <span class="system-desc">SICR E-Learning & Knowledge Management System</span>
           </div>
           <div class="footer-links">
+            <button type="button" class="footer-guide-btn" (click)="openGuide()">
+              📖 คู่มือการใช้งาน (Help & Guide)
+            </button>
             <a href="https://www.softinterchiangrai.com" target="_blank" rel="noopener">เว็บไซต์องค์กร</a>
             <a routerLink="/km">คลังความรู้ KM</a>
             <a routerLink="/courses">หลักสูตร</a>
@@ -63,34 +81,41 @@ import { AuthStateService } from '../core/services/auth-state.service';
       background: var(--sic-color-surface, #f8fafc);
       color: var(--sic-color-text, #1e293b);
       transition: background-color 0.25s ease, color 0.25s ease;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     /* Role Alert Banner */
     .role-alert-bar {
-      padding: 0.45rem 1.5rem;
+      padding: 0.45rem 1rem;
       font-size: 0.8rem;
       border-bottom: 1px solid transparent;
       display: flex;
       justify-content: center;
       transition: all 0.3s ease;
+      width: 100%;
+      max-width: 100vw;
+      box-sizing: border-box;
     }
 
     .bar-learner {
       background: rgba(0, 168, 135, 0.08);
       border-color: rgba(0, 168, 135, 0.2);
-      color: #007965;
+      color: #00a887;
     }
 
     .bar-instructor {
       background: rgba(59, 130, 246, 0.08);
       border-color: rgba(59, 130, 246, 0.2);
-      color: #1d4ed8;
+      color: #3b82f6;
     }
 
     .bar-admin {
       background: rgba(139, 92, 246, 0.08);
       border-color: rgba(139, 92, 246, 0.2);
-      color: #6d28d9;
+      color: #8b5cf6;
     }
 
     .alert-content {
@@ -177,7 +202,9 @@ import { AuthStateService } from '../core/services/auth-state.service';
     .footer-links {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 1.25rem;
+      padding-right: 4.5rem; /* Safe area for floating AI widget */
     }
 
     .footer-links a {
@@ -186,10 +213,30 @@ import { AuthStateService } from '../core/services/auth-state.service';
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .footer-links a:hover {
       color: #00a887;
+    }
+
+    .footer-guide-btn {
+      background: none;
+      border: 1px dashed var(--sic-color-border, #cbd5e1);
+      border-radius: 8px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.8rem;
+      color: #00a887;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .footer-guide-btn:hover {
+      background: rgba(0, 168, 135, 0.1);
+      border-color: #00a887;
     }
 
     .version-tag {
@@ -200,6 +247,7 @@ import { AuthStateService } from '../core/services/auth-state.service';
       border: 1px solid var(--sic-color-border, #cbd5e1);
       border-radius: 6px;
       color: var(--sic-color-text-muted, #475569);
+      white-space: nowrap;
     }
 
     @media (max-width: 640px) {
@@ -207,10 +255,20 @@ import { AuthStateService } from '../core/services/auth-state.service';
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .footer-links {
+        padding-right: 3.5rem;
+      }
     }
   `],
 })
 export class AppLayoutComponent {
   private readonly authState = inject(AuthStateService);
+  private readonly userGuideService = inject(UserGuideService);
+
   readonly currentRole = this.authState.currentRole;
+
+  openGuide(): void {
+    this.userGuideService.openGuide('learner');
+  }
 }
